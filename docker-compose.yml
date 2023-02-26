@@ -8,9 +8,9 @@ services:
     image: balance-mysql:1.0
     container_name: balance-mysql
     volumes:
-      - ./db/ddl/00_create_database.sql:/docker-entrypoint-initdb.d/00_create_database.sql
-      - ./db/ddl/01_create_user.sql:/docker-entrypoint-initdb.d/01_create_user.sql
-      - ./db/data:/var/lib/mysql
+      - ./server/db/ddl/00_create_database.sql:/docker-entrypoint-initdb.d/00_create_database.sql
+      - ./server/db/ddl/01_create_user.sql:/docker-entrypoint-initdb.d/01_create_user.sql
+      - ./server/db/data:/var/lib/mysql
     expose:
       - "3306"
     ports:
