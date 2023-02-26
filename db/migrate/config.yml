@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  host: host.docker.internal
+  username: root
+  password: root
+
+development:
+  <<: *default
+  database: balance
+
+test:
+  <<: *default
+  database: balance_test
+
+github:
+  <<: *default
+  host: 127.0.0.1
+  database: balance_ci

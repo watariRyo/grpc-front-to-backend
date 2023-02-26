@@ -1,0 +1,11 @@
+create_table "user_tag", primary_key: "id", id: {type: :bigint, comment:"ID"}, charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "ユーザータグ", force: :cascade do |t|
+  t.string "user_id", limit: 32, null: false, comment: "ユーザーID"
+  t.string "tag_name", limit: 128, null: false, comment: "タグ名"
+  t.bigint "group_id", null: true, comment: "グループID"
+  t.string "grant_limit", limit: 32, null: false, comment: "付与制限"
+  t.datetime "created_at", null: false, comment: "作成日時"
+  t.datetime "updated_at", null: false, comment: "更新日時"
+  t.index ["user_id"], name: "idx_user_tag_user_id"
+  t.index ["group_id"], name: "idx_user_tag_group_id"
+  t.index ["tag_name"], name: "idx_user_tag_tag_name"
+end

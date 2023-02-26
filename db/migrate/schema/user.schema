@@ -1,0 +1,6 @@
+create_table "user", primary_key: "user_id", id: {type: :string, limit:32, comment:"ユーザID"}, charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "ユーザー", force: :cascade do |t|
+  t.string "password", limit: 256, null: false, comment: "パスワード"
+  t.boolean "is_privacy_checked", null: false, default: 0, comment: "プライバシーチェック"
+  t.datetime "created_at", null: false, comment: "作成日時"
+  t.datetime "updated_at", null: false, comment: "更新日時"
+end

@@ -1,6 +1,0 @@
-syntax = "proto3";
-
-package server;
-
-option go_package = "github.com/watariRyo/balance/server/proto";
-

@@ -3,8 +3,7 @@ GOMOCK_VERSION = v1.6.0
 PROTOC_VERSION = v1.28
 SQLBOILER_VERSION = v4.14.0
 
-install:
-	brew install protobuf
+go-install:
 	go install github.com/golang/mock/mockgen@${GOMOCK_VERSION}
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@${PROTOC_VERSION}
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
@@ -91,9 +90,11 @@ BUILD_TAGS_DEVELOPMENT='development unittest'
 build-base:
 	go build -o ./build/${BIN_NAME} -tags '$(BUILD_TAGS) go' -installsuffix go -ldflags '-s -w' ./cmd/server.go
 
-# build先で実行してもそのままだとconfファイルを参照できずに起動失敗します
 build-development:
 	$(MAKE) build-base BUILD_TAGS=${BUILD_TAGS_DEVELOPMENT} BIN_NAME=dev
 
 build-production-linux:
 	$(MAKE) build-base BUILD_TAGS=${BUILD_TAGS_PRODUCTION} CGO_ENABLED=0 GOOS=linux GOARCH=amd64 BIN_NAME=prod
+
+sqlboiler:
+	sqlboiler mysql -c sqlboiler_local.toml

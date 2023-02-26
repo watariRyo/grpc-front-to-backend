@@ -44,7 +44,7 @@ node_modules
 frontend/public/build
 
 # docker
-server/db/data
+db/data
 
 # protobuf
 frontend/bin
@@ -52,3 +52,4 @@ server/bin
 
 # build
 build
+server/tmp
