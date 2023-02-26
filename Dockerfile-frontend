@@ -1,0 +1,11 @@
+FROM node:16
+
+WORKDIR /app
+
+COPY ./frontend .
+
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash && \
+    yarn
+
+RUN yarn install
+RUN yarn build && export

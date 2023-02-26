@@ -1,0 +1,76 @@
+version: "3"
+
+services:
+  db:
+    build:
+      context: ./
+      dockerfile: Dockerfile-mysql
+    image: balance-mysql:1.0
+    container_name: balance-mysql
+    volumes:
+      - ./db/ddl/00_create_database.sql:/docker-entrypoint-initdb.d/00_create_database.sql
+      - ./db/ddl/01_create_user.sql:/docker-entrypoint-initdb.d/01_create_user.sql
+      - ./db/data:/var/lib/mysql
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      - balance
+  redis:
+    build:
+      context: ./
+      dockerfile: Dockerfile-redis
+    image: balance-redis:1.0
+    container_name: balance-redis
+    volumes:
+      - ./redis/data:/data
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    networks:
+      - balance
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile-server
+    image: balance-server:1.0
+    container_name: balance-server
+    command: "air -c .air.toml"
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - balance
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile-frontend
+    image: balance-frontend:1.0
+    container_name: balance-frontend
+    command: "yarn preview"
+    ports:
+      - "4173:4173"
+    depends_on:
+      - https-portal
+    networks:
+      - balance
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - "3443:443"
+    environment:
+      STAGE: local
+      DOMAINS: "localhost -> http://host.docker.internal:4173"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - balance
+
+networks:
+  balance:
+    driver: bridge

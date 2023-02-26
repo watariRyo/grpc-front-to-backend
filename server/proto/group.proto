@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package server;
+
+option go_package = "github.com/watariRyo/balance/server/proto";
+
+message GroupListRequest {
+    string user_id = 1;
+}
+
+message GroupListResponse {
+    repeated GroupResponse group_list = 1;
+}
+
+message GroupRequest {
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+}
+
+message GroupResponse {
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+}
+
+message GroupID {
+    int64 id = 1;
+    string user_id = 2;
+}
+
+
+service GroupService {
+    rpc ListGroup (GroupListRequest) returns (GroupListResponse);
+    rpc GetGroup (GroupID) returns (GroupResponse);
+    rpc RegisterUserTag (GroupRequest) returns (GroupResponse);
+    rpc UpdateIncomeAndExpenditure (GroupRequest) returns (GroupResponse);
+    rpc DeleteIncomeAndExpenditure (GroupRequest) returns (GroupResponse);
+}

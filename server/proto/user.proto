@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package server;
+
+option go_package = "github.com/watariRyo/balance/server/proto";
+
+// use user schema
+message UserRequest {
+    string user_id = 1;
+    string password = 2;
+}
+
+message UserResponse {
+    string user_id = 1;
+    bool is_privacy_checked  = 2;
+}
+
+message UserID {
+    int32 user_id = 1;
+}
+
+service UserService {
+    rpc GetUser (UserID) returns (UserResponse);
+    rpc RegisterUser (UserRequest) returns (UserResponse);
+    rpc UpdateUser (UserRequest) returns (UserResponse);
+    rpc DeleteUser (UserID) returns (UserID);
+    rpc LogoutUser (UserID) returns (UserID);
+}
