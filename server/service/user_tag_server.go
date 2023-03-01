@@ -1,13 +1,20 @@
-package server
+package service
 
 import (
 	"context"
 	"log"
 
+	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
 )
 
-func (s *UserTagServer) ListUserTag(ctx context.Context, request *pb.UserTagListRequest) (*pb.UserTagListResponse, error) {
+func NewUserTagService(r repository.AllRepository) *userTagService {
+	return &userTagService{
+		AllRepository: r,
+	}
+}
+
+func (s *userTagService) ListUserTag(ctx context.Context, request *pb.UserTagListRequest) (*pb.UserTagListResponse, error) {
 	log.Println("ListUserTag was invoked.")
 
 	return &pb.UserTagListResponse{
@@ -15,7 +22,7 @@ func (s *UserTagServer) ListUserTag(ctx context.Context, request *pb.UserTagList
 	}, nil
 }
 
-func (s *UserTagServer) GetUserTag(ctx context.Context, userTagID *pb.UserTagID) (*pb.UserTagResponse, error) {
+func (s *userTagService) GetUserTag(ctx context.Context, userTagID *pb.UserTagID) (*pb.UserTagResponse, error) {
 	log.Println("GetUserTag was invoked.")
 
 	return &pb.UserTagResponse{
@@ -28,7 +35,7 @@ func (s *UserTagServer) GetUserTag(ctx context.Context, userTagID *pb.UserTagID)
 	}, nil
 }
 
-func (s *UserTagServer) RegisterUserTag(ctx context.Context, request *pb.UserTagRequest) (*pb.UserTagResponse, error) {
+func (s *userTagService) RegisterUserTag(ctx context.Context, request *pb.UserTagRequest) (*pb.UserTagResponse, error) {
 	log.Println("RegisterUserTag was invoked.")
 
 	return &pb.UserTagResponse{
@@ -41,7 +48,7 @@ func (s *UserTagServer) RegisterUserTag(ctx context.Context, request *pb.UserTag
 	}, nil
 }
 
-func (s *UserTagServer) UpdateUserTag(ctx context.Context, request *pb.UserTagRequest) (*pb.UserTagResponse, error) {
+func (s *userTagService) UpdateUserTag(ctx context.Context, request *pb.UserTagRequest) (*pb.UserTagResponse, error) {
 	log.Println("UpdateUserTag was invoked.")
 
 	return &pb.UserTagResponse{
@@ -54,7 +61,7 @@ func (s *UserTagServer) UpdateUserTag(ctx context.Context, request *pb.UserTagRe
 	}, nil
 }
 
-func (s *UserTagServer) DeleteUserTag(ctx context.Context, groupID *pb.UserTagID) (*pb.UserTagID, error) {
+func (s *userTagService) DeleteUserTag(ctx context.Context, groupID *pb.UserTagID) (*pb.UserTagID, error) {
 	log.Println("DeleteGroup was invoked.")
 
 	return &pb.UserTagID{

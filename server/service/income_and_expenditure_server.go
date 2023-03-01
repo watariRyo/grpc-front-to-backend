@@ -1,4 +1,4 @@
-package server
+package service
 
 // ListIncomeAndExpenditure(context.Context, *IncomeAndExpenditureListRequest) (*IncomeAndExpenditureListResponse, error)
 // GetIncomeAndExpenditure(context.Context, *IncomeAndExpenditureID) (*IncomeAndExpenditureResponse, error)
@@ -10,10 +10,17 @@ import (
 	"context"
 	"log"
 
+	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
 )
 
-func (s *IncomAndExpenditureServer) ListIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureListRequest) (*pb.IncomeAndExpenditureListResponse, error) {
+func NewIncomAndExpenditureService(r repository.AllRepository) *incomeAndExpenditureService {
+	return &incomeAndExpenditureService{
+		AllRepository: r,
+	}
+}
+
+func (s *incomeAndExpenditureService) ListIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureListRequest) (*pb.IncomeAndExpenditureListResponse, error) {
 	log.Println("ListIncomeAndExpenditure was invoked.")
 
 	return &pb.IncomeAndExpenditureListResponse{
@@ -21,7 +28,7 @@ func (s *IncomAndExpenditureServer) ListIncomeAndExpenditure(ctx context.Context
 	}, nil
 }
 
-func (s *IncomAndExpenditureServer) GetIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureResponse, error) {
+func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureResponse, error) {
 	log.Println("GetIncomeAndExpenditure was invoked.")
 
 	return &pb.IncomeAndExpenditureResponse{
@@ -34,7 +41,7 @@ func (s *IncomAndExpenditureServer) GetIncomeAndExpenditure(ctx context.Context,
 	}, nil
 }
 
-func (s *IncomAndExpenditureServer) RegisterIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
+func (s *incomeAndExpenditureService) RegisterIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
 	log.Println("RegisterIncomeAndExpenditure was invoked.")
 
 	return &pb.IncomeAndExpenditureResponse{
@@ -47,7 +54,7 @@ func (s *IncomAndExpenditureServer) RegisterIncomeAndExpenditure(ctx context.Con
 	}, nil
 }
 
-func (s *IncomAndExpenditureServer) UpdateIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
+func (s *incomeAndExpenditureService) UpdateIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
 	log.Println("UpdateIncomeAndExpenditure was invoked.")
 
 	return &pb.IncomeAndExpenditureResponse{
@@ -60,7 +67,7 @@ func (s *IncomAndExpenditureServer) UpdateIncomeAndExpenditure(ctx context.Conte
 	}, nil
 }
 
-func (s *IncomAndExpenditureServer) DeleteIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureID, error) {
+func (s *incomeAndExpenditureService) DeleteIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureID, error) {
 	log.Println("DeleteIncomeAndExpenditure was invoked.")
 
 	return &pb.IncomeAndExpenditureID{

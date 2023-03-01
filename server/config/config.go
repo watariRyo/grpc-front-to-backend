@@ -17,11 +17,12 @@ type (
 	}
 
 	Db struct {
-		Host     string `yaml:"host"`
-		Name     string `yaml:"name"`
-		Port     string `yaml:"port"`
-		User     string `yaml:"user"`
-		Password string `yaml:"password"`
+		Host      string `yaml:"host"`
+		Username  string `yaml:"username"`
+		Password  string `yaml:"password"`
+		Port      string `yaml:"port"`
+		Schema    string `yaml:"schema"`
+		DebugMode bool `yaml:"debugMode"`
 	}
 
 	Redis struct {

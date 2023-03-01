@@ -5,8 +5,10 @@ import (
 	"net"
 
 	"github.com/watariRyo/balance/server/config"
+	"github.com/watariRyo/balance/server/domain/repository"
+	"github.com/watariRyo/balance/server/infra/db"
 	pb "github.com/watariRyo/balance/server/proto"
-	"github.com/watariRyo/balance/server/server"
+	"github.com/watariRyo/balance/server/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -39,12 +41,42 @@ func main() {
 		opts = append(opts, grpc.Creds(creds))
 	}
 
+	// dbConnection取得
+	dbConnectionManager := db.NewConnectionManager(
+		db.Username(cfg.Db.Username),
+		db.Password(cfg.Db.Password),
+		db.Host(cfg.Db.Host),
+		db.Port(cfg.Db.Port),
+		db.Schema(cfg.Db.Schema),
+		db.DebugMode(cfg.Db.DebugMode),
+	)
+	conn, err := dbConnectionManager.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	// Repository作成
+	allRepository := &repository.AllRepository{
+		DBConnection: 					conn,
+		DBTransaction: 					db.Transaction,
+		UserRepository: 				db.NewUserRepository(),
+		UserTagRepository: 				db.NewUserTagRepository(),
+		GroupRepository: 				db.NewGroupRepository(),
+		IncomeAndExpenditureRepository: db.NewIncomeAndExpenditureRepository(),
+	}
+
+	// Service作成
+	userService := service.NewUserService(*allRepository)
+	userTagService := service.NewUserTagService(*allRepository)
+	groupService := service.NewGroupService(*allRepository)
+	incomeAndExpenditureService := service.NewIncomAndExpenditureService(*allRepository)
+
 	// Run Server
 	s := grpc.NewServer(opts...)
-	pb.RegisterUserServiceServer(s, &server.UserServer{})
-	pb.RegisterUserTagServiceServer(s, &server.UserTagServer{})
-	pb.RegisterGroupServiceServer(s, &server.GroupServer{})
-	pb.RegisterIncomeAndExpenditureServiceServer(s, &server.IncomAndExpenditureServer{})
+	pb.RegisterUserServiceServer(s, userService)
+	pb.RegisterUserTagServiceServer(s, userTagService)
+	pb.RegisterGroupServiceServer(s, groupService)
+	pb.RegisterIncomeAndExpenditureServiceServer(s, incomeAndExpenditureService)
 
 	if err = s.Serve(listen); err != nil {
 		log.Fatalf("Failed to server: %v\n", err)
