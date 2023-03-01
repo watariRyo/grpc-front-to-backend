@@ -16,7 +16,7 @@ message UserResponse {
 }
 
 message UserID {
-    int32 user_id = 1;
+    string user_id = 1;
 }
 
 service UserService {

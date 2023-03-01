@@ -24,9 +24,9 @@ const _ = grpc.SupportPackageIsVersion7
 type GroupServiceClient interface {
 	ListGroup(ctx context.Context, in *GroupListRequest, opts ...grpc.CallOption) (*GroupListResponse, error)
 	GetGroup(ctx context.Context, in *GroupID, opts ...grpc.CallOption) (*GroupResponse, error)
-	RegisterUserTag(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error)
-	UpdateIncomeAndExpenditure(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error)
-	DeleteIncomeAndExpenditure(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error)
+	RegisterGroup(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error)
+	UpdateGroup(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error)
+	DeleteGroup(ctx context.Context, in *GroupID, opts ...grpc.CallOption) (*GroupID, error)
 }
 
 type groupServiceClient struct {
@@ -55,27 +55,27 @@ func (c *groupServiceClient) GetGroup(ctx context.Context, in *GroupID, opts ...
 	return out, nil
 }
 
-func (c *groupServiceClient) RegisterUserTag(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error) {
+func (c *groupServiceClient) RegisterGroup(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error) {
 	out := new(GroupResponse)
-	err := c.cc.Invoke(ctx, "/server.GroupService/RegisterUserTag", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/server.GroupService/RegisterGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupServiceClient) UpdateIncomeAndExpenditure(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error) {
+func (c *groupServiceClient) UpdateGroup(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error) {
 	out := new(GroupResponse)
-	err := c.cc.Invoke(ctx, "/server.GroupService/UpdateIncomeAndExpenditure", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/server.GroupService/UpdateGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupServiceClient) DeleteIncomeAndExpenditure(ctx context.Context, in *GroupRequest, opts ...grpc.CallOption) (*GroupResponse, error) {
-	out := new(GroupResponse)
-	err := c.cc.Invoke(ctx, "/server.GroupService/DeleteIncomeAndExpenditure", in, out, opts...)
+func (c *groupServiceClient) DeleteGroup(ctx context.Context, in *GroupID, opts ...grpc.CallOption) (*GroupID, error) {
+	out := new(GroupID)
+	err := c.cc.Invoke(ctx, "/server.GroupService/DeleteGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,9 +88,9 @@ func (c *groupServiceClient) DeleteIncomeAndExpenditure(ctx context.Context, in 
 type GroupServiceServer interface {
 	ListGroup(context.Context, *GroupListRequest) (*GroupListResponse, error)
 	GetGroup(context.Context, *GroupID) (*GroupResponse, error)
-	RegisterUserTag(context.Context, *GroupRequest) (*GroupResponse, error)
-	UpdateIncomeAndExpenditure(context.Context, *GroupRequest) (*GroupResponse, error)
-	DeleteIncomeAndExpenditure(context.Context, *GroupRequest) (*GroupResponse, error)
+	RegisterGroup(context.Context, *GroupRequest) (*GroupResponse, error)
+	UpdateGroup(context.Context, *GroupRequest) (*GroupResponse, error)
+	DeleteGroup(context.Context, *GroupID) (*GroupID, error)
 	mustEmbedUnimplementedGroupServiceServer()
 }
 
@@ -104,14 +104,14 @@ func (UnimplementedGroupServiceServer) ListGroup(context.Context, *GroupListRequ
 func (UnimplementedGroupServiceServer) GetGroup(context.Context, *GroupID) (*GroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGroup not implemented")
 }
-func (UnimplementedGroupServiceServer) RegisterUserTag(context.Context, *GroupRequest) (*GroupResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RegisterUserTag not implemented")
+func (UnimplementedGroupServiceServer) RegisterGroup(context.Context, *GroupRequest) (*GroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterGroup not implemented")
 }
-func (UnimplementedGroupServiceServer) UpdateIncomeAndExpenditure(context.Context, *GroupRequest) (*GroupResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateIncomeAndExpenditure not implemented")
+func (UnimplementedGroupServiceServer) UpdateGroup(context.Context, *GroupRequest) (*GroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
 }
-func (UnimplementedGroupServiceServer) DeleteIncomeAndExpenditure(context.Context, *GroupRequest) (*GroupResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteIncomeAndExpenditure not implemented")
+func (UnimplementedGroupServiceServer) DeleteGroup(context.Context, *GroupID) (*GroupID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteGroup not implemented")
 }
 func (UnimplementedGroupServiceServer) mustEmbedUnimplementedGroupServiceServer() {}
 
@@ -162,56 +162,56 @@ func _GroupService_GetGroup_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GroupService_RegisterUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GroupService_RegisterGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GroupServiceServer).RegisterUserTag(ctx, in)
+		return srv.(GroupServiceServer).RegisterGroup(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.GroupService/RegisterUserTag",
+		FullMethod: "/server.GroupService/RegisterGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GroupServiceServer).RegisterUserTag(ctx, req.(*GroupRequest))
+		return srv.(GroupServiceServer).RegisterGroup(ctx, req.(*GroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GroupService_UpdateIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GroupService_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GroupRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GroupServiceServer).UpdateIncomeAndExpenditure(ctx, in)
+		return srv.(GroupServiceServer).UpdateGroup(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.GroupService/UpdateIncomeAndExpenditure",
+		FullMethod: "/server.GroupService/UpdateGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GroupServiceServer).UpdateIncomeAndExpenditure(ctx, req.(*GroupRequest))
+		return srv.(GroupServiceServer).UpdateGroup(ctx, req.(*GroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GroupService_DeleteIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GroupRequest)
+func _GroupService_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GroupID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GroupServiceServer).DeleteIncomeAndExpenditure(ctx, in)
+		return srv.(GroupServiceServer).DeleteGroup(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.GroupService/DeleteIncomeAndExpenditure",
+		FullMethod: "/server.GroupService/DeleteGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GroupServiceServer).DeleteIncomeAndExpenditure(ctx, req.(*GroupRequest))
+		return srv.(GroupServiceServer).DeleteGroup(ctx, req.(*GroupID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -232,16 +232,16 @@ var GroupService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _GroupService_GetGroup_Handler,
 		},
 		{
-			MethodName: "RegisterUserTag",
-			Handler:    _GroupService_RegisterUserTag_Handler,
+			MethodName: "RegisterGroup",
+			Handler:    _GroupService_RegisterGroup_Handler,
 		},
 		{
-			MethodName: "UpdateIncomeAndExpenditure",
-			Handler:    _GroupService_UpdateIncomeAndExpenditure_Handler,
+			MethodName: "UpdateGroup",
+			Handler:    _GroupService_UpdateGroup_Handler,
 		},
 		{
-			MethodName: "DeleteIncomeAndExpenditure",
-			Handler:    _GroupService_DeleteIncomeAndExpenditure_Handler,
+			MethodName: "DeleteGroup",
+			Handler:    _GroupService_DeleteGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

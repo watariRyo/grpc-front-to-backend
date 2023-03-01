@@ -33,7 +33,7 @@ message GroupID {
 service GroupService {
     rpc ListGroup (GroupListRequest) returns (GroupListResponse);
     rpc GetGroup (GroupID) returns (GroupResponse);
-    rpc RegisterUserTag (GroupRequest) returns (GroupResponse);
-    rpc UpdateIncomeAndExpenditure (GroupRequest) returns (GroupResponse);
-    rpc DeleteIncomeAndExpenditure (GroupRequest) returns (GroupResponse);
+    rpc RegisterGroup (GroupRequest) returns (GroupResponse);
+    rpc UpdateGroup (GroupRequest) returns (GroupResponse);
+    rpc DeleteGroup (GroupID) returns (GroupID);
 }

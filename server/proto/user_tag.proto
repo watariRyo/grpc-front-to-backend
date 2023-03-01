@@ -24,8 +24,9 @@ message UserTagResponse {
     int64 id = 1;
     string user_id = 2;
     string tag_name = 3;
-    int64 group_id = 4;
-    string grant_limit = 5;
+    bool has_group = 4;
+    int64 group_id = 5;
+    string grant_limit = 6;
 }
 
 message UserTagID {
@@ -35,9 +36,9 @@ message UserTagID {
 
 
 service UserTagService {
-    rpc ListUserTag (UserTagListRequest) returns (UserTagRequest);
-    rpc GetUserTag (UserTagID) returns (UserTagListResponse);
-    rpc RegisterUserTag (UserTagRequest) returns (UserTagListResponse);
-    rpc UpdateUserTag (UserTagRequest) returns (UserTagListResponse);
+    rpc ListUserTag (UserTagListRequest) returns (UserTagListResponse);
+    rpc GetUserTag (UserTagID) returns (UserTagResponse);
+    rpc RegisterUserTag (UserTagRequest) returns (UserTagResponse);
+    rpc UpdateUserTag (UserTagRequest) returns (UserTagResponse);
     rpc DeleteUserTag (UserTagID) returns (UserTagID);
 }
