@@ -41,6 +41,7 @@ func main() {
 		opts = append(opts, grpc.Creds(creds))
 	}
 
+
 	// dbConnection取得
 	dbConnectionManager := db.NewConnectionManager(
 		db.Username(cfg.Db.Username),
@@ -72,6 +73,7 @@ func main() {
 	incomeAndExpenditureService := service.NewIncomAndExpenditureService(*allRepository)
 
 	// Run Server
+	// TODO token認証のinterceptor
 	s := grpc.NewServer(opts...)
 	pb.RegisterUserServiceServer(s, userService)
 	pb.RegisterUserTagServiceServer(s, userTagService)
