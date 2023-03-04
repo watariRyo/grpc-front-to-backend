@@ -10,13 +10,15 @@ import (
 	"context"
 	"log"
 
+	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
 )
 
-func NewIncomAndExpenditureService(r repository.AllRepository) *incomeAndExpenditureService {
+func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Config) *incomeAndExpenditureService {
 	return &incomeAndExpenditureService{
 		AllRepository: r,
+		Config: cfg,
 	}
 }
 

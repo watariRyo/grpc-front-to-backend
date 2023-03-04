@@ -4,13 +4,15 @@ import (
 	"context"
 	"log"
 
+	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
 )
 
-func NewGroupService(r repository.AllRepository) *groupService {
+func NewGroupService(r *repository.AllRepository, cfg *config.Config) *groupService {
 	return &groupService{
 		AllRepository: r,
+		Config: cfg,
 	}
 }
 

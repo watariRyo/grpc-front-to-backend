@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/watariRyo/balance/server/domain/model"
 )
 
 const minSecretKeySize = 32
@@ -22,7 +23,7 @@ func NewJWTMaker(secretKey string) (Maker, error) {
 }
 
 func (m *JWTMaker) CreateToken(username string, duration time.Duration) (string, error) {
-	payload, err := NewPayload(username, duration)
+	payload, err := model.NewPayload(username, duration)
 	if err != nil {
 		return "", err
 	}
@@ -31,27 +32,27 @@ func (m *JWTMaker) CreateToken(username string, duration time.Duration) (string,
 	return jwtToken.SignedString([]byte(m.secretKey))
 }
 
-func (m *JWTMaker) VerifyToken(token string) (*Payload, error) {
+func (m *JWTMaker) VerifyToken(token string) (*model.Payload, error) {
 	keyFunc := func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
-			return nil, ErrInvalidToken
+			return nil, model.ErrInvalidToken
 		}
 		return []byte(m.secretKey), nil
 	}
 
-	jwtToken, err := jwt.ParseWithClaims(token, &Payload{}, keyFunc)
+	jwtToken, err := jwt.ParseWithClaims(token, &model.Payload{}, keyFunc)
 	if err != nil {
 		 verr, ok := err.(*jwt.ValidationError)
-		 if ok && errors.Is(verr.Inner, ErrExpiredToken) {
-			return nil, ErrExpiredToken
+		 if ok && errors.Is(verr.Inner, model.ErrExpiredToken) {
+			return nil, model.ErrExpiredToken
 		 }
-		 return nil, ErrInvalidToken
+		 return nil, model.ErrInvalidToken
 	}
 
-	payload, ok := jwtToken.Claims.(*Payload)
+	payload, ok := jwtToken.Claims.(*model.Payload)
 	if !ok {
-		return nil, ErrInvalidToken
+		return nil, model.ErrInvalidToken
 	}
 
 	return payload, nil

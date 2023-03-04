@@ -67,10 +67,10 @@ func main() {
 	}
 
 	// Service作成
-	userService := service.NewUserService(*allRepository)
-	userTagService := service.NewUserTagService(*allRepository)
-	groupService := service.NewGroupService(*allRepository)
-	incomeAndExpenditureService := service.NewIncomAndExpenditureService(*allRepository)
+	userService := service.NewUserService(allRepository, cfg)
+	userTagService := service.NewUserTagService(allRepository, cfg)
+	groupService := service.NewGroupService(allRepository, cfg)
+	incomeAndExpenditureService := service.NewIncomAndExpenditureService(allRepository, cfg)
 
 	// Run Server
 	// TODO token認証のinterceptor

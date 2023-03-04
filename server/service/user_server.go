@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
 	"github.com/watariRyo/balance/server/util"
@@ -14,9 +15,10 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func NewUserService(r repository.AllRepository) *userService {
+func NewUserService(r *repository.AllRepository, cfg *config.Config) *userService {
 	return &userService{
 		AllRepository: r,
+		Config: cfg,
 	}
 }
 

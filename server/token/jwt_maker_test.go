@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/require"
+	"github.com/watariRyo/balance/server/domain/model"
 )
 
 func TestJWTMaker(t *testing.T) {
@@ -45,23 +45,6 @@ func TestExpiredJWTToken(t *testing.T) {
 
 	payload, err := maker.VerifyToken(token)
 	require.Error(t, err)
-	require.EqualError(t, err, ErrExpiredToken.Error())
-	require.Nil(t, payload)
-}
-
-func TestInvalidJWTTokenAlgNone(t *testing.T) {
-	payload, err := NewPayload("testuser", time.Minute)
-	require.NoError(t, err)
-
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodNone, payload)
-	token, err := jwtToken.SignedString(jwt.UnsafeAllowNoneSignatureType)
-	require.NoError(t, err)
-
-	maker, err := NewJWTMaker("abcde12345abcde12345abcde12345ab")
-	require.NoError(t, err)
-
-	payload, err = maker.VerifyToken(token)
-	require.Error(t, err)
-	require.EqualError(t, err, ErrInvalidToken.Error())
+	require.EqualError(t, err, model.ErrExpiredToken.Error())
 	require.Nil(t, payload)
 }

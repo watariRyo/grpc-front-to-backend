@@ -4,13 +4,15 @@ import (
 	"context"
 	"log"
 
+	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
 )
 
-func NewUserTagService(r repository.AllRepository) *userTagService {
+func NewUserTagService(r *repository.AllRepository, cfg *config.Config) *userTagService {
 	return &userTagService{
 		AllRepository: r,
+		Config: cfg,
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 
 	"github.com/aead/chacha20poly1305"
 	"github.com/o1egl/paseto"
+	"github.com/watariRyo/balance/server/domain/model"
 )
 
 type PasetoMaker struct {
@@ -27,15 +28,15 @@ func NewPasetoMaker(symmetricKey []byte) (Maker, error) {
 
 
 func (m *PasetoMaker) CreateToken(username string, duration time.Duration) (string, error) {
-	payload, err := NewPayload(username, duration)
+	payload, err := model.NewPayload(username, duration)
 	if err != nil {
 		return "", err
 	}
 	return m.paset.Encrypt(m.symmetricKey, payload, nil)
 }
 
-func (m *PasetoMaker) VerifyToken(token string) (*Payload, error) {
-	payload := &Payload{}
+func (m *PasetoMaker) VerifyToken(token string) (*model.Payload, error) {
+	payload := &model.Payload{}
 	
 	err := m.paset.Decrypt(token, m.symmetricKey, payload, nil)
 	if err != nil {
