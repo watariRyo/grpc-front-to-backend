@@ -57,7 +57,7 @@ go-protoc:
 	@${CHECK_DIR_CMD}
 	protoc -I${PROTO_DIR} --go_opt=module=${PACKAGE} --go_out=. --go-grpc_opt=module=${PACKAGE} --go-grpc_out=. ${PROTO_DIR}/*.proto
 
-test: all ## Launch tests
+test: ## Launch tests
 	go test ./...
 
 clean: clean_greet clean_calculator clean_blog ## Clean generated files
@@ -70,7 +70,7 @@ clean: clean_greet clean_calculator clean_blog ## Clean generated files
 rebuild: clean all ## Rebuild the whole project
 
 bump: all ## Update packages version
-	go get -u ./...
+	go get -u ./... 
 
 about: ## Display info related to the build
 	@echo "OS: ${OS}"

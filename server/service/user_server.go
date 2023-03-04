@@ -7,6 +7,10 @@ import (
 
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/util"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -29,6 +33,18 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.UserRequest)
 	log.Println("RegisterUser was invoked.")
 	// create user
 	// TODO パスワードハッシュutil
+	hashedPassword, err := util.HashPassword(request.Password)
+	if err != nil {
+		st := status.New(codes.Internal, "Could not hashed password.")
+		st.WithDetails(
+			&errdetails.LocalizedMessage{
+				Locale: "ja-JP",
+				Message: "パスワードハッシュ化に失敗しました",
+			},
+		)
+		return nil, st.Err()
+	}
+	println(hashedPassword)
 
 	// token生成
 
