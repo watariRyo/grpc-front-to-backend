@@ -38,3 +38,14 @@ func FailedMakePasswordHash() *status.Status {
 	)
 	return st
 }
+
+func Unauthorized() *status.Status {
+	st := status.New(codes.Internal, "Unauthorized.")
+	st.WithDetails(
+		&errdetails.LocalizedMessage{
+			Locale: "ja-JP",
+			Message: "認証に失敗しました",
+		},
+	)
+	return st
+}

@@ -43,6 +43,7 @@ type (
 	Secret struct {
 		TokenSymmetricKey string `yaml:"tokenSymmetricKey"`
 		AccessTokenDuration time.Duration `yaml:"accessTokenDuration"`
+		RefreshTokenDuration time.Duration `yaml:"refreshTokenDuration"`
 	}
 )
 

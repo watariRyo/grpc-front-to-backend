@@ -3,18 +3,23 @@ package service
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	ltime "github.com/watariRyo/balance/server/time"
 	"github.com/watariRyo/balance/server/token"
 )
 
 func NewGroupService(r *repository.AllRepository, cfg *config.Config, tokenMaker token.Maker) *groupService {
+	t := ltime.NewRealClock(*time.Local)
+
 	return &groupService{
 		AllRepository: r,
 		Config: cfg,
 		TokenMaker: tokenMaker,
+		Time: t,
 	}
 }
 

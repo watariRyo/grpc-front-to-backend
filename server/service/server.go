@@ -4,6 +4,7 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/time"
 	"github.com/watariRyo/balance/server/token"
 )
 
@@ -15,6 +16,7 @@ type (
 		*repository.AllRepository
 		*config.Config
 		TokenMaker token.Maker
+		Time time.Clock
 	}
 
 	userTagService struct {
@@ -23,6 +25,7 @@ type (
 		*repository.AllRepository
 		*config.Config
 		TokenMaker token.Maker
+		Time time.Clock
 	}
 
 	groupService struct {
@@ -31,6 +34,7 @@ type (
 		*repository.AllRepository
 		*config.Config
 		TokenMaker token.Maker
+		Time time.Clock
 	}
 
 	incomeAndExpenditureService struct {
@@ -39,5 +43,6 @@ type (
 		*repository.AllRepository
 		*config.Config
 		TokenMaker token.Maker
+		Time time.Clock
 	}
 )

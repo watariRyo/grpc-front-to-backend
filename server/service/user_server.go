@@ -9,16 +9,20 @@ import (
 	"github.com/watariRyo/balance/server/domain/repository"
 	"github.com/watariRyo/balance/server/messages"
 	pb "github.com/watariRyo/balance/server/proto"
+	ltime "github.com/watariRyo/balance/server/time"
 	"github.com/watariRyo/balance/server/token"
 	"github.com/watariRyo/balance/server/util"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func NewUserService(r *repository.AllRepository, cfg *config.Config, tokenMaker token.Maker) *userService {
+	t := ltime.NewRealClock(*time.Local)
+
 	return &userService{
 		AllRepository: r,
 		Config: cfg,
 		TokenMaker: tokenMaker,
+		Time: t,
 	}
 }
 
@@ -41,20 +45,27 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.UserRequest)
 	println("password: " + hashedPassword)
 
 	// token生成
-	token, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.AccessTokenDuration)
+	accessToken, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.AccessTokenDuration)
 	if err != nil {
 		return nil, messages.CreateTokenError().Err()
 	}
+	refreshToken, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.RefreshTokenDuration)
+	if err != nil {
+		return nil, messages.CreateTokenError().Err()
+	}
+
+	p, err := s.TokenMaker.VerifyToken(accessToken)
+	log.Printf("token: %v", p)
 
 	// TODO セッション（Redis）格納
 
 	return &pb.LoginResponse{
 		UserId: "uuid-dummy",
 		SessionId: "Dummy",
-		AccessToken: token,
-		RefreshToken: "jwt",
-		AccessTokenExpiresAt: timestamppb.New(time.Now()),
-		RefreshTokenExpiresAt: timestamppb.New(time.Now()),
+		AccessToken: accessToken,
+		RefreshToken: refreshToken,
+		AccessTokenExpiresAt: timestamppb.New(s.Time.Now().Add(s.Config.Secret.AccessTokenDuration)), //TODO get token expires_at
+		RefreshTokenExpiresAt: timestamppb.New(s.Time.Now().Add(s.Config.Secret.RefreshTokenDuration)), // TODO get token expires_at
 	}, nil
 }
 
@@ -85,8 +96,12 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.UserRequest) (*
 		return nil, messages.PasswordMismatch().Err()
 	}
 
-	// TODO token生成
+	// token生成
 	accessToken, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.AccessTokenDuration)
+	if err != nil {
+		return nil, messages.CreateTokenError().Err()
+	}
+	refreshToken, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.RefreshTokenDuration)
 	if err != nil {
 		return nil, messages.CreateTokenError().Err()
 	}
@@ -96,9 +111,9 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.UserRequest) (*
 	return &pb.LoginResponse{
 		SessionId: "Dummy",
 		AccessToken: accessToken,
-		RefreshToken: "jwt",
-		AccessTokenExpiresAt: timestamppb.New(time.Now()),
-		RefreshTokenExpiresAt: timestamppb.New(time.Now().Add(s.Secret.AccessTokenDuration)),
+		RefreshToken: refreshToken,
+		AccessTokenExpiresAt: timestamppb.New(s.Time.Now().Add(s.Config.Secret.AccessTokenDuration)), //TODO get token expires_at
+		RefreshTokenExpiresAt: timestamppb.New(s.Time.Now().Add(s.Config.Secret.RefreshTokenDuration)), //TODO get token expires_at
 	}, nil
 }
 

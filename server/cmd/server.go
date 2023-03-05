@@ -7,6 +7,7 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	"github.com/watariRyo/balance/server/infra/db"
+	"github.com/watariRyo/balance/server/middleware"
 	pb "github.com/watariRyo/balance/server/proto"
 	"github.com/watariRyo/balance/server/service"
 	"github.com/watariRyo/balance/server/token"
@@ -26,22 +27,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to listen on: %v\n", err)
 	}
-
-	opts := []grpc.ServerOption{}
-	tls := cfg.Tls.TlsMode // load config
-
-	if tls {
-		certFile := cfg.Tls.CrtFile
-		keyFile := cfg.Tls.PemFile
-		creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
-
-		if err != nil {
-			log.Fatalf("Failed loading certification: %v\n", err)
-		}
-
-		opts = append(opts, grpc.Creds(creds))
-	}
-
 
 	// dbConnection取得
 	dbConnectionManager := db.NewConnectionManager(
@@ -79,8 +64,32 @@ func main() {
 	groupService := service.NewGroupService(allRepository, cfg, tokenMaker)
 	incomeAndExpenditureService := service.NewIncomAndExpenditureService(allRepository, cfg, tokenMaker)
 
+	// Middleware作成
+	tokenMiddleware := middleware.NewTokenMiddleware(tokenMaker)
+
+	// Server Opts...
+	opts := []grpc.ServerOption{}
+	tls := cfg.Tls.TlsMode // load config
+
+	var creds credentials.TransportCredentials
+	if tls {
+		certFile := cfg.Tls.CrtFile
+		keyFile := cfg.Tls.PemFile
+		creds, err = credentials.NewServerTLSFromFile(certFile, keyFile)
+
+		if err != nil {
+			log.Fatalf("Failed loading certification: %v\n", err)
+		}
+
+		opts = append(opts, grpc.Creds(creds))
+	}
+
+	// middleware
+	opts = append(opts, grpc.UnaryInterceptor(
+		tokenMiddleware.AuthFunc(),
+	))
+
 	// Run Server
-	// TODO token認証のinterceptor
 	s := grpc.NewServer(opts...)
 	pb.RegisterUserServiceServer(s, userService)
 	pb.RegisterUserTagServiceServer(s, userTagService)

@@ -19,3 +19,4 @@ redis:
 secret:
   tokenSymmetricKey: 12345678901234567890123456789012
   accessTokenDuration: 15m
+  refreshTokenDuration: 1h
