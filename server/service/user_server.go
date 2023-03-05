@@ -7,18 +7,18 @@ import (
 
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
+	"github.com/watariRyo/balance/server/messages"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/token"
 	"github.com/watariRyo/balance/server/util"
-	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func NewUserService(r *repository.AllRepository, cfg *config.Config) *userService {
+func NewUserService(r *repository.AllRepository, cfg *config.Config, tokenMaker token.Maker) *userService {
 	return &userService{
 		AllRepository: r,
 		Config: cfg,
+		TokenMaker: tokenMaker,
 	}
 }
 
@@ -34,28 +34,24 @@ func (s *userService) GetUser(ctx context.Context, userID *pb.UserID) (*pb.UserR
 func (s *userService) RegisterUser(ctx context.Context, request *pb.UserRequest) (*pb.LoginResponse, error) {
 	log.Println("RegisterUser was invoked.")
 	// create user
-	// TODO パスワードハッシュutil
 	hashedPassword, err := util.HashPassword(request.Password)
 	if err != nil {
-		st := status.New(codes.Internal, "Could not hashed password.")
-		st.WithDetails(
-			&errdetails.LocalizedMessage{
-				Locale: "ja-JP",
-				Message: "パスワードハッシュ化に失敗しました",
-			},
-		)
-		return nil, st.Err()
+		return nil, messages.FailedMakePasswordHash().Err()
 	}
-	println(hashedPassword)
+	println("password: " + hashedPassword)
 
 	// token生成
+	token, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.AccessTokenDuration)
+	if err != nil {
+		return nil, messages.CreateTokenError().Err()
+	}
 
 	// TODO セッション（Redis）格納
 
 	return &pb.LoginResponse{
 		UserId: "uuid-dummy",
 		SessionId: "Dummy",
-		AccessToken: "jwt",
+		AccessToken: token,
 		RefreshToken: "jwt",
 		AccessTokenExpiresAt: timestamppb.New(time.Now()),
 		RefreshTokenExpiresAt: timestamppb.New(time.Now()),
@@ -84,16 +80,25 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.UserRequest) (*
 
 	// TODO login処理
 
+	// password mismatch
+	if err := util.CheckPassword(request.Password, "user.password"); err != nil {
+		return nil, messages.PasswordMismatch().Err()
+	}
+
 	// TODO token生成
+	accessToken, err := s.TokenMaker.CreateToken(request.UserId, s.Config.Secret.AccessTokenDuration)
+	if err != nil {
+		return nil, messages.CreateTokenError().Err()
+	}
 
 	// TODO セッション（Redis）格納
 
 	return &pb.LoginResponse{
 		SessionId: "Dummy",
-		AccessToken: "jwt",
+		AccessToken: accessToken,
 		RefreshToken: "jwt",
 		AccessTokenExpiresAt: timestamppb.New(time.Now()),
-		RefreshTokenExpiresAt: timestamppb.New(time.Now()),
+		RefreshTokenExpiresAt: timestamppb.New(time.Now().Add(s.Secret.AccessTokenDuration)),
 	}, nil
 }
 

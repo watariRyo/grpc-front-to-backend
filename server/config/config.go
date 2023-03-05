@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -14,6 +15,7 @@ type (
 		Db      Db     	`yaml:"db"`
 		Tls		Tls 	`yaml:"tls"`
 		Redis  	Redis  	`yaml:"redis"`
+		Secret  Secret `yaml:"secret"`
 	}
 
 	Db struct {
@@ -36,6 +38,11 @@ type (
 		TlsMode bool `yaml:"tls"`
 		CrtFile string `yaml:"crtFile"`
 		PemFile string `yaml:"pemFile"`
+	}
+
+	Secret struct {
+		TokenSymmetricKey string `yaml:"tokenSymmetricKey"`
+		AccessTokenDuration time.Duration `yaml:"accessTokenDuration"`
 	}
 )
 

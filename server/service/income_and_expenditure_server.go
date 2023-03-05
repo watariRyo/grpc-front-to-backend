@@ -13,12 +13,14 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/token"
 )
 
-func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Config) *incomeAndExpenditureService {
+func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Config, tokenMaker token.Maker) *incomeAndExpenditureService {
 	return &incomeAndExpenditureService{
 		AllRepository: r,
 		Config: cfg,
+		TokenMaker: tokenMaker,
 	}
 }
 

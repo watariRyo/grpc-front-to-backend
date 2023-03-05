@@ -16,3 +16,6 @@ redis:
   port: 6379
   password: ""
   key: "my-investment"
+secret:
+  tokenSymmetricKey: 12345678901234567890123456789012
+  accessTokenDuration: 15m

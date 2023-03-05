@@ -7,12 +7,14 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/token"
 )
 
-func NewGroupService(r *repository.AllRepository, cfg *config.Config) *groupService {
+func NewGroupService(r *repository.AllRepository, cfg *config.Config, tokenMaker token.Maker) *groupService {
 	return &groupService{
 		AllRepository: r,
 		Config: cfg,
+		TokenMaker: tokenMaker,
 	}
 }
 

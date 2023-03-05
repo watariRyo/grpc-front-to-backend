@@ -4,6 +4,7 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/token"
 )
 
 type (
@@ -13,6 +14,7 @@ type (
 		pb.UnimplementedUserServiceServer
 		*repository.AllRepository
 		*config.Config
+		TokenMaker token.Maker
 	}
 
 	userTagService struct {
@@ -20,6 +22,7 @@ type (
 		pb.UnimplementedUserTagServiceServer
 		*repository.AllRepository
 		*config.Config
+		TokenMaker token.Maker
 	}
 
 	groupService struct {
@@ -27,6 +30,7 @@ type (
 		pb.UnimplementedGroupServiceServer
 		*repository.AllRepository
 		*config.Config
+		TokenMaker token.Maker
 	}
 
 	incomeAndExpenditureService struct {
@@ -34,5 +38,6 @@ type (
 		pb.UnimplementedIncomeAndExpenditureServiceServer
 		*repository.AllRepository
 		*config.Config
+		TokenMaker token.Maker
 	}
 )

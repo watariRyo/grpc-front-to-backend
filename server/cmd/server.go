@@ -9,6 +9,7 @@ import (
 	"github.com/watariRyo/balance/server/infra/db"
 	pb "github.com/watariRyo/balance/server/proto"
 	"github.com/watariRyo/balance/server/service"
+	"github.com/watariRyo/balance/server/token"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -66,11 +67,17 @@ func main() {
 		IncomeAndExpenditureRepository: db.NewIncomeAndExpenditureRepository(),
 	}
 
+	// tokenMaker作成
+	tokenMaker, err := token.NewPasetoMaker([]byte(cfg.Secret.TokenSymmetricKey))
+	if err != nil {
+		panic(err)
+	}
+
 	// Service作成
-	userService := service.NewUserService(allRepository, cfg)
-	userTagService := service.NewUserTagService(allRepository, cfg)
-	groupService := service.NewGroupService(allRepository, cfg)
-	incomeAndExpenditureService := service.NewIncomAndExpenditureService(allRepository, cfg)
+	userService := service.NewUserService(allRepository, cfg, tokenMaker)
+	userTagService := service.NewUserTagService(allRepository, cfg, tokenMaker)
+	groupService := service.NewGroupService(allRepository, cfg, tokenMaker)
+	incomeAndExpenditureService := service.NewIncomAndExpenditureService(allRepository, cfg, tokenMaker)
 
 	// Run Server
 	// TODO token認証のinterceptor

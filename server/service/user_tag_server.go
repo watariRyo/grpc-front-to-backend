@@ -7,12 +7,14 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	pb "github.com/watariRyo/balance/server/proto"
+	"github.com/watariRyo/balance/server/token"
 )
 
-func NewUserTagService(r *repository.AllRepository, cfg *config.Config) *userTagService {
+func NewUserTagService(r *repository.AllRepository, cfg *config.Config, tokenMaker token.Maker) *userTagService {
 	return &userTagService{
 		AllRepository: r,
 		Config: cfg,
+		TokenMaker: tokenMaker,
 	}
 }
 
