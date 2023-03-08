@@ -12,7 +12,7 @@ go-install:
 
 # protobuf make
 BIN_DIR = bin
-PROTO_DIR = proto
+PROTO_DIR = ../proto
 SERVER_DIR = server
 
 ifeq ($(OS), Windows_NT)
