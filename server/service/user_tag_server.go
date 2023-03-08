@@ -16,10 +16,10 @@ func NewUserTagService(r *repository.AllRepository, cfg *config.Config, tokenMak
 	t := ltime.NewRealClock(*time.Local)
 
 	return &userTagService{
-		AllRepository: r,
-		Config: cfg,
-		TokenMaker: tokenMaker,
-		Time: t,
+		repo: r,
+		cfg: cfg,
+		tokenMaker: tokenMaker,
+		time: t,
 	}
 }
 

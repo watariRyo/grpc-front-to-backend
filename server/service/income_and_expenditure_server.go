@@ -22,10 +22,10 @@ func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Conf
 	t := ltime.NewRealClock(*time.Local)
 
 	return &incomeAndExpenditureService{
-		AllRepository: r,
-		Config: cfg,
-		TokenMaker: tokenMaker,
-		Time: t,
+		repo: r,
+		cfg: cfg,
+		tokenMaker: tokenMaker,
+		time: t,
 	}
 }
 

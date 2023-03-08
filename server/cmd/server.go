@@ -7,6 +7,7 @@ import (
 	"github.com/watariRyo/balance/server/config"
 	"github.com/watariRyo/balance/server/domain/repository"
 	"github.com/watariRyo/balance/server/infra/db"
+	"github.com/watariRyo/balance/server/infra/redis"
 	"github.com/watariRyo/balance/server/middleware"
 	pb "github.com/watariRyo/balance/server/proto"
 	"github.com/watariRyo/balance/server/service"
@@ -42,10 +43,16 @@ func main() {
 		panic(err)
 	}
 
+	redisClient, err := redis.NewRedisClient(&cfg.Redis)
+	if err != nil {
+		panic(err)
+	}
+
 	// Repository作成
 	allRepository := &repository.AllRepository{
 		DBConnection: 					conn,
 		DBTransaction: 					db.Transaction,
+		RedisClient: 					redisClient,
 		UserRepository: 				db.NewUserRepository(),
 		UserTagRepository: 				db.NewUserTagRepository(),
 		GroupRepository: 				db.NewGroupRepository(),
@@ -85,7 +92,8 @@ func main() {
 	}
 
 	// middleware
-	opts = append(opts, grpc.UnaryInterceptor(
+	opts = append(opts, grpc.ChainUnaryInterceptor(
+		middleware.TraceUnaryServerInterceptor(),
 		tokenMiddleware.AuthFunc(),
 	))
 

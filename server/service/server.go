@@ -13,36 +13,36 @@ type (
 	userService struct {
 		// pb.UserServiceServer
 		pb.UnimplementedUserServiceServer
-		*repository.AllRepository
-		*config.Config
-		TokenMaker token.Maker
-		Time time.Clock
+		repo 		*repository.AllRepository
+		cfg  		*config.Config
+		tokenMaker 	token.Maker
+		time 		time.Clock
 	}
 
 	userTagService struct {
 		// pb.UserTagServiceServer
 		pb.UnimplementedUserTagServiceServer
-		*repository.AllRepository
-		*config.Config
-		TokenMaker token.Maker
-		Time time.Clock
+		repo 		*repository.AllRepository
+		cfg  		*config.Config
+		tokenMaker 	token.Maker
+		time 		time.Clock
 	}
 
 	groupService struct {
 		// pb.GroupServiceServer
 		pb.UnimplementedGroupServiceServer
-		*repository.AllRepository
-		*config.Config
-		TokenMaker token.Maker
-		Time time.Clock
+		repo 		*repository.AllRepository
+		cfg  		*config.Config
+		tokenMaker 	token.Maker
+		time 		time.Clock
 	}
 
 	incomeAndExpenditureService struct {
 		// pb.IncomeAndExpenditureServiceServer	
 		pb.UnimplementedIncomeAndExpenditureServiceServer
-		*repository.AllRepository
-		*config.Config
-		TokenMaker token.Maker
-		Time time.Clock
+		repo 		*repository.AllRepository
+		cfg  		*config.Config
+		tokenMaker 	token.Maker
+		time 		time.Clock
 	}
 )

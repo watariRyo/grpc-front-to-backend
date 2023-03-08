@@ -49,3 +49,26 @@ func Unauthorized() *status.Status {
 	)
 	return st
 }
+
+
+func SessionError(statusMessage string) *status.Status {
+	st := status.New(codes.Internal, statusMessage)
+	st.WithDetails(
+		&errdetails.LocalizedMessage{
+			Locale: "ja-JP",
+			Message: "sessionの取得に失敗しました",
+		},
+	)
+	return st
+}
+
+func CookieError(statusMessage string) *status.Status {
+	st := status.New(codes.InvalidArgument, statusMessage)
+	st.WithDetails(
+		&errdetails.LocalizedMessage{
+			Locale: "ja-JP",
+			Message: "cookieの取得に失敗しました",
+		},
+	)
+	return st
+}

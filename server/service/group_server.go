@@ -16,10 +16,10 @@ func NewGroupService(r *repository.AllRepository, cfg *config.Config, tokenMaker
 	t := ltime.NewRealClock(*time.Local)
 
 	return &groupService{
-		AllRepository: r,
-		Config: cfg,
-		TokenMaker: tokenMaker,
-		Time: t,
+		repo: r,
+		cfg: cfg,
+		tokenMaker: tokenMaker,
+		time: t,
 	}
 }
 
