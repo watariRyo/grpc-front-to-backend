@@ -36,10 +36,10 @@ func (m *MockUserTagRepository) EXPECT() *MockUserTagRepositoryMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockUserTagRepository) Delete(ctx context.Context, input *proto.UserTagID) (*proto.UserTagID, error) {
+func (m *MockUserTagRepository) Delete(ctx context.Context, input *proto.DeleteUserTagRequest) (*proto.DeleteUserTagResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, input)
-	ret0, _ := ret[0].(*proto.UserTagID)
+	ret0, _ := ret[0].(*proto.DeleteUserTagResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockUserTagRepositoryMockRecorder) Delete(ctx, input interface{}) *gom
 }
 
 // Get mocks base method.
-func (m *MockUserTagRepository) Get(ctx context.Context, input *proto.UserTagID) (*proto.UserTagResponse, error) {
+func (m *MockUserTagRepository) Get(ctx context.Context, input *proto.GetUserTagRequest) (*proto.GetUserTagResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, input)
-	ret0, _ := ret[0].(*proto.UserTagResponse)
+	ret0, _ := ret[0].(*proto.GetUserTagResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,11 +65,26 @@ func (mr *MockUserTagRepositoryMockRecorder) Get(ctx, input interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockUserTagRepository)(nil).Get), ctx, input)
 }
 
+// Insert mocks base method.
+func (m *MockUserTagRepository) Insert(ctx context.Context, input *proto.RegisterUserTagRequest) (*proto.RegisterUserTagResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Insert", ctx, input)
+	ret0, _ := ret[0].(*proto.RegisterUserTagResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockUserTagRepositoryMockRecorder) Insert(ctx, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockUserTagRepository)(nil).Insert), ctx, input)
+}
+
 // List mocks base method.
-func (m *MockUserTagRepository) List(tx context.Context, input *proto.UserTagListRequest) (*proto.UserTagListResponse, error) {
+func (m *MockUserTagRepository) List(tx context.Context, input *proto.ListUserTagRequest) (*proto.ListUserTagResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", tx, input)
-	ret0, _ := ret[0].(*proto.UserTagListResponse)
+	ret0, _ := ret[0].(*proto.ListUserTagResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -80,17 +95,17 @@ func (mr *MockUserTagRepositoryMockRecorder) List(tx, input interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockUserTagRepository)(nil).List), tx, input)
 }
 
-// Upsert mocks base method.
-func (m *MockUserTagRepository) Upsert(ctx context.Context, input *proto.UserTagRequest) (*proto.UserTagResponse, error) {
+// Update mocks base method.
+func (m *MockUserTagRepository) Update(ctx context.Context, input *proto.UpdateUserTagRequest) (*proto.UpdateUserTagResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Upsert", ctx, input)
-	ret0, _ := ret[0].(*proto.UserTagResponse)
+	ret := m.ctrl.Call(m, "Update", ctx, input)
+	ret0, _ := ret[0].(*proto.UpdateUserTagResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Upsert indicates an expected call of Upsert.
-func (mr *MockUserTagRepositoryMockRecorder) Upsert(ctx, input interface{}) *gomock.Call {
+// Update indicates an expected call of Update.
+func (mr *MockUserTagRepositoryMockRecorder) Update(ctx, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upsert", reflect.TypeOf((*MockUserTagRepository)(nil).Upsert), ctx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockUserTagRepository)(nil).Update), ctx, input)
 }

@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/watariRyo/balance/server/domain/model"
 	proto "github.com/watariRyo/balance/server/proto"
 )
 
@@ -36,10 +37,10 @@ func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockUserRepository) Delete(ctx context.Context, input *proto.UserID) (*proto.UserID, error) {
+func (m *MockUserRepository) Delete(ctx context.Context, input *proto.DeleteUserRequest) (*proto.DeleteUserResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, input)
-	ret0, _ := ret[0].(*proto.UserID)
+	ret0, _ := ret[0].(*proto.DeleteUserResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +52,10 @@ func (mr *MockUserRepositoryMockRecorder) Delete(ctx, input interface{}) *gomock
 }
 
 // Get mocks base method.
-func (m *MockUserRepository) Get(ctx context.Context, input *proto.UserID) (*proto.UserResponse, error) {
+func (m *MockUserRepository) Get(ctx context.Context, input *proto.GetUserRequest) (*proto.GetUserResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, input)
-	ret0, _ := ret[0].(*proto.UserResponse)
+	ret0, _ := ret[0].(*proto.GetUserResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,17 +66,32 @@ func (mr *MockUserRepositoryMockRecorder) Get(ctx, input interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockUserRepository)(nil).Get), ctx, input)
 }
 
-// Upsert mocks base method.
-func (m *MockUserRepository) Upsert(ctx context.Context, input *proto.UserRequest) (*proto.UserResponse, error) {
+// Insert mocks base method.
+func (m *MockUserRepository) Insert(ctx context.Context, input *proto.RegisterUserRequest) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Upsert", ctx, input)
-	ret0, _ := ret[0].(*proto.UserResponse)
+	ret := m.ctrl.Call(m, "Insert", ctx, input)
+	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Upsert indicates an expected call of Upsert.
-func (mr *MockUserRepositoryMockRecorder) Upsert(ctx, input interface{}) *gomock.Call {
+// Insert indicates an expected call of Insert.
+func (mr *MockUserRepositoryMockRecorder) Insert(ctx, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upsert", reflect.TypeOf((*MockUserRepository)(nil).Upsert), ctx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockUserRepository)(nil).Insert), ctx, input)
+}
+
+// Update mocks base method.
+func (m *MockUserRepository) Update(ctx context.Context, input *proto.UpdateUserRequest) (*proto.UpdateUserResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, input)
+	ret0, _ := ret[0].(*proto.UpdateUserResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockUserRepositoryMockRecorder) Update(ctx, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockUserRepository)(nil).Update), ctx, input)
 }

@@ -36,10 +36,10 @@ func (m *MockIncomeAndExpenditureRepository) EXPECT() *MockIncomeAndExpenditureR
 }
 
 // Delete mocks base method.
-func (m *MockIncomeAndExpenditureRepository) Delete(ctx context.Context, input *proto.IncomeAndExpenditureID) (*proto.IncomeAndExpenditureID, error) {
+func (m *MockIncomeAndExpenditureRepository) Delete(ctx context.Context, input *proto.DeleteIncomeAndExpenditureRequest) (*proto.DeleteIncomeAndExpenditureResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, input)
-	ret0, _ := ret[0].(*proto.IncomeAndExpenditureID)
+	ret0, _ := ret[0].(*proto.DeleteIncomeAndExpenditureResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Delete(ctx, input inte
 }
 
 // Get mocks base method.
-func (m *MockIncomeAndExpenditureRepository) Get(ctx context.Context, input *proto.IncomeAndExpenditureID) (*proto.IncomeAndExpenditureResponse, error) {
+func (m *MockIncomeAndExpenditureRepository) Get(ctx context.Context, input *proto.GetIncomeAndExpenditureRequest) (*proto.GetIncomeAndExpenditureResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, input)
-	ret0, _ := ret[0].(*proto.IncomeAndExpenditureResponse)
+	ret0, _ := ret[0].(*proto.GetIncomeAndExpenditureResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,11 +65,26 @@ func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Get(ctx, input interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).Get), ctx, input)
 }
 
+// Insert mocks base method.
+func (m *MockIncomeAndExpenditureRepository) Insert(ctx context.Context, input *proto.RegisterIncomeAndExpenditureRequest) (*proto.RegisterIncomeAndExpenditureResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Insert", ctx, input)
+	ret0, _ := ret[0].(*proto.RegisterIncomeAndExpenditureResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Insert(ctx, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).Insert), ctx, input)
+}
+
 // List mocks base method.
-func (m *MockIncomeAndExpenditureRepository) List(tx context.Context, input *proto.IncomeAndExpenditureListRequest) (*proto.IncomeAndExpenditureListResponse, error) {
+func (m *MockIncomeAndExpenditureRepository) List(tx context.Context, input *proto.ListIncomeAndExpenditureRequest) (*proto.ListIncomeAndExpenditureResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", tx, input)
-	ret0, _ := ret[0].(*proto.IncomeAndExpenditureListResponse)
+	ret0, _ := ret[0].(*proto.ListIncomeAndExpenditureResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -80,17 +95,17 @@ func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) List(tx, input interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).List), tx, input)
 }
 
-// Upsert mocks base method.
-func (m *MockIncomeAndExpenditureRepository) Upsert(ctx context.Context, input *proto.IncomeAndExpenditureRequest) (*proto.IncomeAndExpenditureResponse, error) {
+// Update mocks base method.
+func (m *MockIncomeAndExpenditureRepository) Update(ctx context.Context, input *proto.UpdateIncomeAndExpenditureRequest) (*proto.UpdateIncomeAndExpenditureResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Upsert", ctx, input)
-	ret0, _ := ret[0].(*proto.IncomeAndExpenditureResponse)
+	ret := m.ctrl.Call(m, "Update", ctx, input)
+	ret0, _ := ret[0].(*proto.UpdateIncomeAndExpenditureResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Upsert indicates an expected call of Upsert.
-func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Upsert(ctx, input interface{}) *gomock.Call {
+// Update indicates an expected call of Update.
+func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Update(ctx, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upsert", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).Upsert), ctx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).Update), ctx, input)
 }

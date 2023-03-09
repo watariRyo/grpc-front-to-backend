@@ -36,10 +36,10 @@ func (m *MockGroupRepository) EXPECT() *MockGroupRepositoryMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockGroupRepository) Delete(ctx context.Context, input *proto.GroupID) (*proto.GroupID, error) {
+func (m *MockGroupRepository) Delete(ctx context.Context, input *proto.DeleteGroupRequest) (*proto.DeleteGroupResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", ctx, input)
-	ret0, _ := ret[0].(*proto.GroupID)
+	ret0, _ := ret[0].(*proto.DeleteGroupResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,10 +51,10 @@ func (mr *MockGroupRepositoryMockRecorder) Delete(ctx, input interface{}) *gomoc
 }
 
 // Get mocks base method.
-func (m *MockGroupRepository) Get(ctx context.Context, input *proto.GroupID) (*proto.GroupResponse, error) {
+func (m *MockGroupRepository) Get(ctx context.Context, input *proto.GetGroupRequest) (*proto.GetGroupResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, input)
-	ret0, _ := ret[0].(*proto.GroupResponse)
+	ret0, _ := ret[0].(*proto.GetGroupResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -65,11 +65,26 @@ func (mr *MockGroupRepositoryMockRecorder) Get(ctx, input interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockGroupRepository)(nil).Get), ctx, input)
 }
 
+// Insert mocks base method.
+func (m *MockGroupRepository) Insert(ctx context.Context, input *proto.RegisterGroupRequest) (*proto.RegisterGroupResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Insert", ctx, input)
+	ret0, _ := ret[0].(*proto.RegisterGroupResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Insert indicates an expected call of Insert.
+func (mr *MockGroupRepositoryMockRecorder) Insert(ctx, input interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockGroupRepository)(nil).Insert), ctx, input)
+}
+
 // List mocks base method.
-func (m *MockGroupRepository) List(tx context.Context, input *proto.GroupListRequest) (*proto.GroupListResponse, error) {
+func (m *MockGroupRepository) List(tx context.Context, input *proto.ListGroupRequest) (*proto.ListGroupResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "List", tx, input)
-	ret0, _ := ret[0].(*proto.GroupListResponse)
+	ret0, _ := ret[0].(*proto.ListGroupResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -80,17 +95,17 @@ func (mr *MockGroupRepositoryMockRecorder) List(tx, input interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockGroupRepository)(nil).List), tx, input)
 }
 
-// Upsert mocks base method.
-func (m *MockGroupRepository) Upsert(ctx context.Context, input *proto.GroupRequest) (*proto.GroupResponse, error) {
+// Update mocks base method.
+func (m *MockGroupRepository) Update(ctx context.Context, input *proto.UpdateGroupRequest) (*proto.UpdateGroupResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Upsert", ctx, input)
-	ret0, _ := ret[0].(*proto.GroupResponse)
+	ret := m.ctrl.Call(m, "Update", ctx, input)
+	ret0, _ := ret[0].(*proto.UpdateGroupResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Upsert indicates an expected call of Upsert.
-func (mr *MockGroupRepositoryMockRecorder) Upsert(ctx, input interface{}) *gomock.Call {
+// Update indicates an expected call of Update.
+func (mr *MockGroupRepositoryMockRecorder) Update(ctx, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Upsert", reflect.TypeOf((*MockGroupRepository)(nil).Upsert), ctx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockGroupRepository)(nil).Update), ctx, input)
 }
