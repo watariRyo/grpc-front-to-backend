@@ -29,18 +29,18 @@ func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Conf
 	}
 }
 
-func (s *incomeAndExpenditureService) ListIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureListRequest) (*pb.IncomeAndExpenditureListResponse, error) {
+func (s *incomeAndExpenditureService) ListIncomeAndExpenditure(ctx context.Context, request *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error) {
 	log.Println("ListIncomeAndExpenditure was invoked.")
 
-	return &pb.IncomeAndExpenditureListResponse{
+	return &pb.ListIncomeAndExpenditureResponse{
 		IncomeAndExpenditureList: []*pb.IncomeAndExpenditureResponse{},
 	}, nil
 }
 
-func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureResponse, error) {
+func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error) {
 	log.Println("GetIncomeAndExpenditure was invoked.")
 
-	return &pb.IncomeAndExpenditureResponse{
+	return &pb.GetIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 		Amount: 100,
@@ -50,10 +50,10 @@ func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Contex
 	}, nil
 }
 
-func (s *incomeAndExpenditureService) RegisterIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
+func (s *incomeAndExpenditureService) RegisterIncomeAndExpenditure(ctx context.Context, request *pb.RegisterIncomeAndExpenditureRequest) (*pb.RegisterIncomeAndExpenditureResponse, error) {
 	log.Println("RegisterIncomeAndExpenditure was invoked.")
 
-	return &pb.IncomeAndExpenditureResponse{
+	return &pb.RegisterIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 		Amount: 100,
@@ -63,10 +63,10 @@ func (s *incomeAndExpenditureService) RegisterIncomeAndExpenditure(ctx context.C
 	}, nil
 }
 
-func (s *incomeAndExpenditureService) UpdateIncomeAndExpenditure(ctx context.Context, request *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
+func (s *incomeAndExpenditureService) UpdateIncomeAndExpenditure(ctx context.Context, request *pb.UpdateIncomeAndExpenditureRequest) (*pb.UpdateIncomeAndExpenditureResponse, error) {
 	log.Println("UpdateIncomeAndExpenditure was invoked.")
 
-	return &pb.IncomeAndExpenditureResponse{
+	return &pb.UpdateIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 		Amount: 100,
@@ -76,10 +76,10 @@ func (s *incomeAndExpenditureService) UpdateIncomeAndExpenditure(ctx context.Con
 	}, nil
 }
 
-func (s *incomeAndExpenditureService) DeleteIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureID, error) {
+func (s *incomeAndExpenditureService) DeleteIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.DeleteIncomeAndExpenditureRequest) (*pb.DeleteIncomeAndExpenditureResponse, error) {
 	log.Println("DeleteIncomeAndExpenditure was invoked.")
 
-	return &pb.IncomeAndExpenditureID{
+	return &pb.DeleteIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 	}, nil

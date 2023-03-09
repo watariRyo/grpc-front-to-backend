@@ -15,30 +15,38 @@ func NewGroupRepository() *GroupRepository {
 	return &GroupRepository{}
 }
 
-func (r *GroupRepository) List(ctx context.Context, input *pb.GroupListRequest) (*pb.GroupListResponse, error) {
-	return &pb.GroupListResponse{
+func (r *GroupRepository) List(tx context.Context, input *pb.ListGroupRequest) (*pb.ListGroupResponse, error) {
+	return &pb.ListGroupResponse{
 		GroupList: []*pb.GroupResponse{},
 	}, nil
 }
 
-func (r *GroupRepository) Get(ctx context.Context, input *pb.GroupID) (*pb.GroupResponse, error) {
-	return &pb.GroupResponse{
+func (r *GroupRepository) Get(ctx context.Context, input *pb.GetGroupRequest) (*pb.GetGroupResponse, error) {
+	return &pb.GetGroupResponse{
 		Id: 1,
 		UserId: "dummy-uuid",
 		GroupName: "dummy-group",		
 	}, nil
 }
 
-func (r *GroupRepository) Upsert(ctx context.Context, input *pb.GroupRequest) (*pb.GroupResponse, error) {
-	return &pb.GroupResponse{
+func (r *GroupRepository) Insert(ctx context.Context, input *pb.RegisterGroupRequest) (*pb.RegisterGroupResponse, error) {
+	return &pb.RegisterGroupResponse{
 		Id: 1,
 		UserId: "dummy-uuid",
 		GroupName: "dummy-group",		
 	}, nil
 }
 
-func (r *GroupRepository) Delete(ctx context.Context, input *pb.GroupID) (*pb.GroupID , error) {
-	return &pb.GroupID{
+func (r *GroupRepository) Update(ctx context.Context, input *pb.UpdateGroupRequest) (*pb.UpdateGroupResponse, error) {
+	return &pb.UpdateGroupResponse{
+		Id: 1,
+		UserId: "dummy-uuid",
+		GroupName: "dummy-group",		
+	}, nil
+}
+
+func (r *GroupRepository) Delete(ctx context.Context, input *pb.DeleteGroupRequest) (*pb.DeleteGroupResponse , error) {
+	return &pb.DeleteGroupResponse{
 		Id: 1,	
 	}, nil
 }

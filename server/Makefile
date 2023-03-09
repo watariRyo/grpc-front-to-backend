@@ -100,13 +100,13 @@ sqlboiler:
 	sqlboiler mysql -c sqlboiler_local.toml
 
 evans-user:
-	evans --host localhost -p 8080 ./proto/user.proto 
+	evans --host localhost -p 8080 ../proto/user.proto 
 
 evans-user_tag:
-	evans --host localhost -p 8080 ./proto/user_tag.proto 
+	evans --host localhost -p 8080 ../proto/user_tag.proto 
 
 evans-group:
-	evans --host localhost -p 8080 ./proto/group.proto 
+	evans --host localhost -p 8080 ../proto/group.proto 
 
 evans-income_and_expenditure:
-	evans --host localhost -p 8080 ./proto/income_and_expenditure.proto 
+	evans --host localhost -p 8080 ../proto/income_and_expenditure.proto 

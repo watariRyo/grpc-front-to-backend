@@ -22,11 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type IncomeAndExpenditureServiceClient interface {
-	ListIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureListRequest, opts ...grpc.CallOption) (*IncomeAndExpenditureListResponse, error)
-	GetIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureID, opts ...grpc.CallOption) (*IncomeAndExpenditureResponse, error)
-	RegisterIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureRequest, opts ...grpc.CallOption) (*IncomeAndExpenditureResponse, error)
-	UpdateIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureRequest, opts ...grpc.CallOption) (*IncomeAndExpenditureResponse, error)
-	DeleteIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureID, opts ...grpc.CallOption) (*IncomeAndExpenditureID, error)
+	ListIncomeAndExpenditure(ctx context.Context, in *ListIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*ListIncomeAndExpenditureResponse, error)
+	GetIncomeAndExpenditure(ctx context.Context, in *GetIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*GetIncomeAndExpenditureResponse, error)
+	RegisterIncomeAndExpenditure(ctx context.Context, in *RegisterIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*RegisterIncomeAndExpenditureResponse, error)
+	UpdateIncomeAndExpenditure(ctx context.Context, in *UpdateIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*UpdateIncomeAndExpenditureResponse, error)
+	DeleteIncomeAndExpenditure(ctx context.Context, in *DeleteIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*DeleteIncomeAndExpenditureResponse, error)
 }
 
 type incomeAndExpenditureServiceClient struct {
@@ -37,45 +37,45 @@ func NewIncomeAndExpenditureServiceClient(cc grpc.ClientConnInterface) IncomeAnd
 	return &incomeAndExpenditureServiceClient{cc}
 }
 
-func (c *incomeAndExpenditureServiceClient) ListIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureListRequest, opts ...grpc.CallOption) (*IncomeAndExpenditureListResponse, error) {
-	out := new(IncomeAndExpenditureListResponse)
-	err := c.cc.Invoke(ctx, "/server.IncomeAndExpenditureService/ListIncomeAndExpenditure", in, out, opts...)
+func (c *incomeAndExpenditureServiceClient) ListIncomeAndExpenditure(ctx context.Context, in *ListIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*ListIncomeAndExpenditureResponse, error) {
+	out := new(ListIncomeAndExpenditureResponse)
+	err := c.cc.Invoke(ctx, "/proto.IncomeAndExpenditureService/ListIncomeAndExpenditure", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *incomeAndExpenditureServiceClient) GetIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureID, opts ...grpc.CallOption) (*IncomeAndExpenditureResponse, error) {
-	out := new(IncomeAndExpenditureResponse)
-	err := c.cc.Invoke(ctx, "/server.IncomeAndExpenditureService/GetIncomeAndExpenditure", in, out, opts...)
+func (c *incomeAndExpenditureServiceClient) GetIncomeAndExpenditure(ctx context.Context, in *GetIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*GetIncomeAndExpenditureResponse, error) {
+	out := new(GetIncomeAndExpenditureResponse)
+	err := c.cc.Invoke(ctx, "/proto.IncomeAndExpenditureService/GetIncomeAndExpenditure", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *incomeAndExpenditureServiceClient) RegisterIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureRequest, opts ...grpc.CallOption) (*IncomeAndExpenditureResponse, error) {
-	out := new(IncomeAndExpenditureResponse)
-	err := c.cc.Invoke(ctx, "/server.IncomeAndExpenditureService/RegisterIncomeAndExpenditure", in, out, opts...)
+func (c *incomeAndExpenditureServiceClient) RegisterIncomeAndExpenditure(ctx context.Context, in *RegisterIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*RegisterIncomeAndExpenditureResponse, error) {
+	out := new(RegisterIncomeAndExpenditureResponse)
+	err := c.cc.Invoke(ctx, "/proto.IncomeAndExpenditureService/RegisterIncomeAndExpenditure", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *incomeAndExpenditureServiceClient) UpdateIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureRequest, opts ...grpc.CallOption) (*IncomeAndExpenditureResponse, error) {
-	out := new(IncomeAndExpenditureResponse)
-	err := c.cc.Invoke(ctx, "/server.IncomeAndExpenditureService/UpdateIncomeAndExpenditure", in, out, opts...)
+func (c *incomeAndExpenditureServiceClient) UpdateIncomeAndExpenditure(ctx context.Context, in *UpdateIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*UpdateIncomeAndExpenditureResponse, error) {
+	out := new(UpdateIncomeAndExpenditureResponse)
+	err := c.cc.Invoke(ctx, "/proto.IncomeAndExpenditureService/UpdateIncomeAndExpenditure", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *incomeAndExpenditureServiceClient) DeleteIncomeAndExpenditure(ctx context.Context, in *IncomeAndExpenditureID, opts ...grpc.CallOption) (*IncomeAndExpenditureID, error) {
-	out := new(IncomeAndExpenditureID)
-	err := c.cc.Invoke(ctx, "/server.IncomeAndExpenditureService/DeleteIncomeAndExpenditure", in, out, opts...)
+func (c *incomeAndExpenditureServiceClient) DeleteIncomeAndExpenditure(ctx context.Context, in *DeleteIncomeAndExpenditureRequest, opts ...grpc.CallOption) (*DeleteIncomeAndExpenditureResponse, error) {
+	out := new(DeleteIncomeAndExpenditureResponse)
+	err := c.cc.Invoke(ctx, "/proto.IncomeAndExpenditureService/DeleteIncomeAndExpenditure", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,11 +86,11 @@ func (c *incomeAndExpenditureServiceClient) DeleteIncomeAndExpenditure(ctx conte
 // All implementations must embed UnimplementedIncomeAndExpenditureServiceServer
 // for forward compatibility
 type IncomeAndExpenditureServiceServer interface {
-	ListIncomeAndExpenditure(context.Context, *IncomeAndExpenditureListRequest) (*IncomeAndExpenditureListResponse, error)
-	GetIncomeAndExpenditure(context.Context, *IncomeAndExpenditureID) (*IncomeAndExpenditureResponse, error)
-	RegisterIncomeAndExpenditure(context.Context, *IncomeAndExpenditureRequest) (*IncomeAndExpenditureResponse, error)
-	UpdateIncomeAndExpenditure(context.Context, *IncomeAndExpenditureRequest) (*IncomeAndExpenditureResponse, error)
-	DeleteIncomeAndExpenditure(context.Context, *IncomeAndExpenditureID) (*IncomeAndExpenditureID, error)
+	ListIncomeAndExpenditure(context.Context, *ListIncomeAndExpenditureRequest) (*ListIncomeAndExpenditureResponse, error)
+	GetIncomeAndExpenditure(context.Context, *GetIncomeAndExpenditureRequest) (*GetIncomeAndExpenditureResponse, error)
+	RegisterIncomeAndExpenditure(context.Context, *RegisterIncomeAndExpenditureRequest) (*RegisterIncomeAndExpenditureResponse, error)
+	UpdateIncomeAndExpenditure(context.Context, *UpdateIncomeAndExpenditureRequest) (*UpdateIncomeAndExpenditureResponse, error)
+	DeleteIncomeAndExpenditure(context.Context, *DeleteIncomeAndExpenditureRequest) (*DeleteIncomeAndExpenditureResponse, error)
 	mustEmbedUnimplementedIncomeAndExpenditureServiceServer()
 }
 
@@ -98,19 +98,19 @@ type IncomeAndExpenditureServiceServer interface {
 type UnimplementedIncomeAndExpenditureServiceServer struct {
 }
 
-func (UnimplementedIncomeAndExpenditureServiceServer) ListIncomeAndExpenditure(context.Context, *IncomeAndExpenditureListRequest) (*IncomeAndExpenditureListResponse, error) {
+func (UnimplementedIncomeAndExpenditureServiceServer) ListIncomeAndExpenditure(context.Context, *ListIncomeAndExpenditureRequest) (*ListIncomeAndExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListIncomeAndExpenditure not implemented")
 }
-func (UnimplementedIncomeAndExpenditureServiceServer) GetIncomeAndExpenditure(context.Context, *IncomeAndExpenditureID) (*IncomeAndExpenditureResponse, error) {
+func (UnimplementedIncomeAndExpenditureServiceServer) GetIncomeAndExpenditure(context.Context, *GetIncomeAndExpenditureRequest) (*GetIncomeAndExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIncomeAndExpenditure not implemented")
 }
-func (UnimplementedIncomeAndExpenditureServiceServer) RegisterIncomeAndExpenditure(context.Context, *IncomeAndExpenditureRequest) (*IncomeAndExpenditureResponse, error) {
+func (UnimplementedIncomeAndExpenditureServiceServer) RegisterIncomeAndExpenditure(context.Context, *RegisterIncomeAndExpenditureRequest) (*RegisterIncomeAndExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterIncomeAndExpenditure not implemented")
 }
-func (UnimplementedIncomeAndExpenditureServiceServer) UpdateIncomeAndExpenditure(context.Context, *IncomeAndExpenditureRequest) (*IncomeAndExpenditureResponse, error) {
+func (UnimplementedIncomeAndExpenditureServiceServer) UpdateIncomeAndExpenditure(context.Context, *UpdateIncomeAndExpenditureRequest) (*UpdateIncomeAndExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateIncomeAndExpenditure not implemented")
 }
-func (UnimplementedIncomeAndExpenditureServiceServer) DeleteIncomeAndExpenditure(context.Context, *IncomeAndExpenditureID) (*IncomeAndExpenditureID, error) {
+func (UnimplementedIncomeAndExpenditureServiceServer) DeleteIncomeAndExpenditure(context.Context, *DeleteIncomeAndExpenditureRequest) (*DeleteIncomeAndExpenditureResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteIncomeAndExpenditure not implemented")
 }
 func (UnimplementedIncomeAndExpenditureServiceServer) mustEmbedUnimplementedIncomeAndExpenditureServiceServer() {
@@ -128,7 +128,7 @@ func RegisterIncomeAndExpenditureServiceServer(s grpc.ServiceRegistrar, srv Inco
 }
 
 func _IncomeAndExpenditureService_ListIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IncomeAndExpenditureListRequest)
+	in := new(ListIncomeAndExpenditureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -137,16 +137,16 @@ func _IncomeAndExpenditureService_ListIncomeAndExpenditure_Handler(srv interface
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.IncomeAndExpenditureService/ListIncomeAndExpenditure",
+		FullMethod: "/proto.IncomeAndExpenditureService/ListIncomeAndExpenditure",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncomeAndExpenditureServiceServer).ListIncomeAndExpenditure(ctx, req.(*IncomeAndExpenditureListRequest))
+		return srv.(IncomeAndExpenditureServiceServer).ListIncomeAndExpenditure(ctx, req.(*ListIncomeAndExpenditureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _IncomeAndExpenditureService_GetIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IncomeAndExpenditureID)
+	in := new(GetIncomeAndExpenditureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -155,16 +155,16 @@ func _IncomeAndExpenditureService_GetIncomeAndExpenditure_Handler(srv interface{
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.IncomeAndExpenditureService/GetIncomeAndExpenditure",
+		FullMethod: "/proto.IncomeAndExpenditureService/GetIncomeAndExpenditure",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncomeAndExpenditureServiceServer).GetIncomeAndExpenditure(ctx, req.(*IncomeAndExpenditureID))
+		return srv.(IncomeAndExpenditureServiceServer).GetIncomeAndExpenditure(ctx, req.(*GetIncomeAndExpenditureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _IncomeAndExpenditureService_RegisterIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IncomeAndExpenditureRequest)
+	in := new(RegisterIncomeAndExpenditureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -173,16 +173,16 @@ func _IncomeAndExpenditureService_RegisterIncomeAndExpenditure_Handler(srv inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.IncomeAndExpenditureService/RegisterIncomeAndExpenditure",
+		FullMethod: "/proto.IncomeAndExpenditureService/RegisterIncomeAndExpenditure",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncomeAndExpenditureServiceServer).RegisterIncomeAndExpenditure(ctx, req.(*IncomeAndExpenditureRequest))
+		return srv.(IncomeAndExpenditureServiceServer).RegisterIncomeAndExpenditure(ctx, req.(*RegisterIncomeAndExpenditureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _IncomeAndExpenditureService_UpdateIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IncomeAndExpenditureRequest)
+	in := new(UpdateIncomeAndExpenditureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -191,16 +191,16 @@ func _IncomeAndExpenditureService_UpdateIncomeAndExpenditure_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.IncomeAndExpenditureService/UpdateIncomeAndExpenditure",
+		FullMethod: "/proto.IncomeAndExpenditureService/UpdateIncomeAndExpenditure",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncomeAndExpenditureServiceServer).UpdateIncomeAndExpenditure(ctx, req.(*IncomeAndExpenditureRequest))
+		return srv.(IncomeAndExpenditureServiceServer).UpdateIncomeAndExpenditure(ctx, req.(*UpdateIncomeAndExpenditureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _IncomeAndExpenditureService_DeleteIncomeAndExpenditure_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IncomeAndExpenditureID)
+	in := new(DeleteIncomeAndExpenditureRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -209,10 +209,10 @@ func _IncomeAndExpenditureService_DeleteIncomeAndExpenditure_Handler(srv interfa
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.IncomeAndExpenditureService/DeleteIncomeAndExpenditure",
+		FullMethod: "/proto.IncomeAndExpenditureService/DeleteIncomeAndExpenditure",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncomeAndExpenditureServiceServer).DeleteIncomeAndExpenditure(ctx, req.(*IncomeAndExpenditureID))
+		return srv.(IncomeAndExpenditureServiceServer).DeleteIncomeAndExpenditure(ctx, req.(*DeleteIncomeAndExpenditureRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -221,7 +221,7 @@ func _IncomeAndExpenditureService_DeleteIncomeAndExpenditure_Handler(srv interfa
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var IncomeAndExpenditureService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.IncomeAndExpenditureService",
+	ServiceName: "proto.IncomeAndExpenditureService",
 	HandlerType: (*IncomeAndExpenditureServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

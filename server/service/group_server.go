@@ -23,48 +23,48 @@ func NewGroupService(r *repository.AllRepository, cfg *config.Config, tokenMaker
 	}
 }
 
-func (s *groupService) ListGroup(ctx context.Context, request *pb.GroupListRequest) (*pb.GroupListResponse, error) {
+func (s *groupService) ListGroup(ctx context.Context, request *pb.ListGroupRequest) (*pb.ListGroupResponse, error) {
 	log.Println("ListGroup was invoked.")
 
-	return &pb.GroupListResponse{
+	return &pb.ListGroupResponse{
 		GroupList: []*pb.GroupResponse{},
 	}, nil
 }
 
-func (s *groupService) GetGroup(ctx context.Context, groupID *pb.GroupID) (*pb.GroupResponse, error) {
+func (s *groupService) GetGroup(ctx context.Context, groupID *pb.GetGroupRequest) (*pb.GetGroupResponse, error) {
 	log.Println("GetGroup was invoked.")
 
-	return &pb.GroupResponse{
+	return &pb.GetGroupResponse{
 		Id: 1,
 		UserId: "dummy-uuid",
 		GroupName: "dummy-group",		
 	}, nil
 }
 
-func (s *groupService) RegisterGroup(ctx context.Context, request *pb.GroupRequest) (*pb.GroupResponse, error) {
+func (s *groupService) RegisterGroup(ctx context.Context, request *pb.RegisterGroupRequest) (*pb.RegisterGroupResponse, error) {
 	log.Println("RegisterUserTag was invoked.")
 
-	return &pb.GroupResponse{
+	return &pb.RegisterGroupResponse{
 		Id: 1,
 		UserId: "dummy-uuid",
 		GroupName: "dummy-group",		
 	}, nil
 }
 
-func (s *groupService) UpdateGroup(ctx context.Context, request *pb.GroupRequest) (*pb.GroupResponse, error) {
+func (s *groupService) UpdateGroup(ctx context.Context, request *pb.UpdateGroupRequest) (*pb.UpdateGroupResponse, error) {
 	log.Println("UpdateUserTag was invoked.")
 
-	return &pb.GroupResponse{
+	return &pb.UpdateGroupResponse{
 		Id: 1,
 		UserId: "dummy-uuid",
 		GroupName: "dummy-group",		
 	}, nil
 }
 
-func (s *groupService) DeleteGroup(ctx context.Context, groupID *pb.GroupID) (*pb.GroupID, error) {
+func (s *groupService) DeleteGroup(ctx context.Context, groupID *pb.DeleteGroupRequest) (*pb.DeleteGroupResponse, error) {
 	log.Println("DeleteGroup was invoked.")
 
-	return &pb.GroupID{
+	return &pb.DeleteGroupResponse{
 		Id: 1,	
 	}, nil
 }

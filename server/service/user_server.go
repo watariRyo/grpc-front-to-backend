@@ -29,7 +29,7 @@ func NewUserService(r *repository.AllRepository, cfg *config.Config, tokenMaker 
 	}
 }
 
-func (s *userService) GetUser(ctx context.Context, userID *pb.UserID) (*pb.UserResponse, error) {
+func (s *userService) GetUser(ctx context.Context, userID *pb.GetUserRequest) (*pb.GetUserResponse, error) {
 	log.Println("GetUser was invoked.")
 
 	// Cookies取得
@@ -44,13 +44,13 @@ func (s *userService) GetUser(ctx context.Context, userID *pb.UserID) (*pb.UserR
 		return nil, messages.SessionError(err.Error()).Err()
 	}
 
-	return &pb.UserResponse{
+	return &pb.GetUserResponse{
 		UserId: sessionData,
 		IsPrivacyChecked: true,
 	}, nil
 }
 
-func (s *userService) RegisterUser(ctx context.Context, request *pb.UserRequest) (*pb.LoginResponse, error) {
+func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUserRequest) (*pb.RegisterUserResponse, error) {
 	log.Println("RegisterUser was invoked.")
 	// create user
 	_, err := util.HashPassword(request.Password)
@@ -67,7 +67,7 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.UserRequest)
 	accessTokenDuration := accessTokenPayload.ExpiredAt.Sub(s.time.Now())
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
-	return &pb.LoginResponse{
+	return &pb.RegisterUserResponse{
 		SessionId: "Dummy",
 		AccessToken: accessToken,
 		RefreshToken: refreshToken,
@@ -76,24 +76,24 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.UserRequest)
 	}, nil
 }
 
-func (s *userService) UpdateUser(ctx context.Context, request *pb.UserRequest) (*pb.UserResponse, error) {
+func (s *userService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
 	log.Println("UpdateUser was invoked.")
 
-	return &pb.UserResponse{
+	return &pb.UpdateUserResponse{
 		UserId: "uuid-dummy",
 		IsPrivacyChecked: true,
 	}, nil
 }
 
-func (s *userService) DeleteUser(ctx context.Context, userID *pb.UserID) (*pb.UserID, error) {
+func (s *userService) DeleteUser(ctx context.Context, userID *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
 	log.Println("DeleteUser was invoked.")
 
-	return &pb.UserID{
+	return &pb.DeleteUserResponse{
 		UserId: "uuid-dummy",
 	}, nil
 }
 
-func (s *userService) LoginUser(ctx context.Context, request *pb.UserRequest) (*pb.LoginResponse, error) {
+func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
 	log.Println("LoginUser was invoked.")
 
 	// password mismatch
@@ -109,7 +109,7 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.UserRequest) (*
 	accessTokenDuration := accessTokenPayload.ExpiredAt.Sub(s.time.Now())
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
-	return &pb.LoginResponse{
+	return &pb.LoginUserResponse{
 		SessionId: "Dummy",
 		AccessToken: accessToken,
 		RefreshToken: refreshToken,
@@ -118,12 +118,12 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.UserRequest) (*
 	}, nil
 }
 
-func (s *userService) LogoutUser(ctx context.Context, userID *pb.UserID) (*pb.UserID, error) {
+func (s *userService) LogoutUser(ctx context.Context, userID *pb.LogoutUserRequest) (*pb.LogoutUserResponse, error) {
 	log.Println("LogoutUser was invoked.")
 
 	// TODO セッション除去
 
-	return &pb.UserID{
+	return &pb.LogoutUserResponse{
 		UserId: "uuid-dummy",
 	}, nil
 }

@@ -1,21 +1,15 @@
 syntax = "proto3";
 
-package server;
+package proto;
 
 option go_package = "github.com/watariRyo/balance/server/proto";
 
-message GroupListRequest {
+message ListGroupRequest {
     string user_id = 1;
 }
 
-message GroupListResponse {
+message ListGroupResponse {
     repeated GroupResponse group_list = 1;
-}
-
-message GroupRequest {
-    int64 id = 1;
-    string user_id = 2;
-    string group_name = 3;
 }
 
 message GroupResponse {
@@ -24,16 +18,54 @@ message GroupResponse {
     string group_name = 3;
 }
 
-message GroupID {
+message GetGroupRequest {
+    string user_id = 1;
+    string group_name = 2;
+}
+
+message GetGroupResponse {
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+}
+
+message RegisterGroupRequest {
+    string user_id = 1;
+    string group_name = 2;
+}
+
+message RegisterGroupResponse {
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+}
+
+message UpdateGroupRequest {
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+}
+
+message UpdateGroupResponse {
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+}
+
+message DeleteGroupRequest {
     int64 id = 1;
     string user_id = 2;
 }
 
+message DeleteGroupResponse {
+    int64 id = 1;
+    string user_id = 2;
+}
 
 service GroupService {
-    rpc ListGroup (GroupListRequest) returns (GroupListResponse);
-    rpc GetGroup (GroupID) returns (GroupResponse);
-    rpc RegisterGroup (GroupRequest) returns (GroupResponse);
-    rpc UpdateGroup (GroupRequest) returns (GroupResponse);
-    rpc DeleteGroup (GroupID) returns (GroupID);
+    rpc ListGroup (ListGroupRequest) returns (ListGroupResponse);
+    rpc GetGroup (GetGroupRequest) returns (GetGroupResponse);
+    rpc RegisterGroup (RegisterGroupRequest) returns (RegisterGroupResponse);
+    rpc UpdateGroup (UpdateGroupRequest) returns (UpdateGroupResponse);
+    rpc DeleteGroup (DeleteGroupRequest) returns (DeleteGroupResponse);
 }

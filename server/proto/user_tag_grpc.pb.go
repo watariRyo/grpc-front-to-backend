@@ -22,11 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserTagServiceClient interface {
-	ListUserTag(ctx context.Context, in *UserTagListRequest, opts ...grpc.CallOption) (*UserTagListResponse, error)
-	GetUserTag(ctx context.Context, in *UserTagID, opts ...grpc.CallOption) (*UserTagResponse, error)
-	RegisterUserTag(ctx context.Context, in *UserTagRequest, opts ...grpc.CallOption) (*UserTagResponse, error)
-	UpdateUserTag(ctx context.Context, in *UserTagRequest, opts ...grpc.CallOption) (*UserTagResponse, error)
-	DeleteUserTag(ctx context.Context, in *UserTagID, opts ...grpc.CallOption) (*UserTagID, error)
+	ListUserTag(ctx context.Context, in *ListUserTagRequest, opts ...grpc.CallOption) (*ListUserTagResponse, error)
+	GetUserTag(ctx context.Context, in *GetUserTagRequest, opts ...grpc.CallOption) (*GetUserTagResponse, error)
+	RegisterUserTag(ctx context.Context, in *RegisterUserTagRequest, opts ...grpc.CallOption) (*RegisterUserTagResponse, error)
+	UpdateUserTag(ctx context.Context, in *UpdateUserTagRequest, opts ...grpc.CallOption) (*UpdateUserTagResponse, error)
+	DeleteUserTag(ctx context.Context, in *DeleteUserTagRequest, opts ...grpc.CallOption) (*DeleteUserTagResponse, error)
 }
 
 type userTagServiceClient struct {
@@ -37,45 +37,45 @@ func NewUserTagServiceClient(cc grpc.ClientConnInterface) UserTagServiceClient {
 	return &userTagServiceClient{cc}
 }
 
-func (c *userTagServiceClient) ListUserTag(ctx context.Context, in *UserTagListRequest, opts ...grpc.CallOption) (*UserTagListResponse, error) {
-	out := new(UserTagListResponse)
-	err := c.cc.Invoke(ctx, "/server.UserTagService/ListUserTag", in, out, opts...)
+func (c *userTagServiceClient) ListUserTag(ctx context.Context, in *ListUserTagRequest, opts ...grpc.CallOption) (*ListUserTagResponse, error) {
+	out := new(ListUserTagResponse)
+	err := c.cc.Invoke(ctx, "/proto.UserTagService/ListUserTag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userTagServiceClient) GetUserTag(ctx context.Context, in *UserTagID, opts ...grpc.CallOption) (*UserTagResponse, error) {
-	out := new(UserTagResponse)
-	err := c.cc.Invoke(ctx, "/server.UserTagService/GetUserTag", in, out, opts...)
+func (c *userTagServiceClient) GetUserTag(ctx context.Context, in *GetUserTagRequest, opts ...grpc.CallOption) (*GetUserTagResponse, error) {
+	out := new(GetUserTagResponse)
+	err := c.cc.Invoke(ctx, "/proto.UserTagService/GetUserTag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userTagServiceClient) RegisterUserTag(ctx context.Context, in *UserTagRequest, opts ...grpc.CallOption) (*UserTagResponse, error) {
-	out := new(UserTagResponse)
-	err := c.cc.Invoke(ctx, "/server.UserTagService/RegisterUserTag", in, out, opts...)
+func (c *userTagServiceClient) RegisterUserTag(ctx context.Context, in *RegisterUserTagRequest, opts ...grpc.CallOption) (*RegisterUserTagResponse, error) {
+	out := new(RegisterUserTagResponse)
+	err := c.cc.Invoke(ctx, "/proto.UserTagService/RegisterUserTag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userTagServiceClient) UpdateUserTag(ctx context.Context, in *UserTagRequest, opts ...grpc.CallOption) (*UserTagResponse, error) {
-	out := new(UserTagResponse)
-	err := c.cc.Invoke(ctx, "/server.UserTagService/UpdateUserTag", in, out, opts...)
+func (c *userTagServiceClient) UpdateUserTag(ctx context.Context, in *UpdateUserTagRequest, opts ...grpc.CallOption) (*UpdateUserTagResponse, error) {
+	out := new(UpdateUserTagResponse)
+	err := c.cc.Invoke(ctx, "/proto.UserTagService/UpdateUserTag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userTagServiceClient) DeleteUserTag(ctx context.Context, in *UserTagID, opts ...grpc.CallOption) (*UserTagID, error) {
-	out := new(UserTagID)
-	err := c.cc.Invoke(ctx, "/server.UserTagService/DeleteUserTag", in, out, opts...)
+func (c *userTagServiceClient) DeleteUserTag(ctx context.Context, in *DeleteUserTagRequest, opts ...grpc.CallOption) (*DeleteUserTagResponse, error) {
+	out := new(DeleteUserTagResponse)
+	err := c.cc.Invoke(ctx, "/proto.UserTagService/DeleteUserTag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,11 +86,11 @@ func (c *userTagServiceClient) DeleteUserTag(ctx context.Context, in *UserTagID,
 // All implementations must embed UnimplementedUserTagServiceServer
 // for forward compatibility
 type UserTagServiceServer interface {
-	ListUserTag(context.Context, *UserTagListRequest) (*UserTagListResponse, error)
-	GetUserTag(context.Context, *UserTagID) (*UserTagResponse, error)
-	RegisterUserTag(context.Context, *UserTagRequest) (*UserTagResponse, error)
-	UpdateUserTag(context.Context, *UserTagRequest) (*UserTagResponse, error)
-	DeleteUserTag(context.Context, *UserTagID) (*UserTagID, error)
+	ListUserTag(context.Context, *ListUserTagRequest) (*ListUserTagResponse, error)
+	GetUserTag(context.Context, *GetUserTagRequest) (*GetUserTagResponse, error)
+	RegisterUserTag(context.Context, *RegisterUserTagRequest) (*RegisterUserTagResponse, error)
+	UpdateUserTag(context.Context, *UpdateUserTagRequest) (*UpdateUserTagResponse, error)
+	DeleteUserTag(context.Context, *DeleteUserTagRequest) (*DeleteUserTagResponse, error)
 	mustEmbedUnimplementedUserTagServiceServer()
 }
 
@@ -98,19 +98,19 @@ type UserTagServiceServer interface {
 type UnimplementedUserTagServiceServer struct {
 }
 
-func (UnimplementedUserTagServiceServer) ListUserTag(context.Context, *UserTagListRequest) (*UserTagListResponse, error) {
+func (UnimplementedUserTagServiceServer) ListUserTag(context.Context, *ListUserTagRequest) (*ListUserTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUserTag not implemented")
 }
-func (UnimplementedUserTagServiceServer) GetUserTag(context.Context, *UserTagID) (*UserTagResponse, error) {
+func (UnimplementedUserTagServiceServer) GetUserTag(context.Context, *GetUserTagRequest) (*GetUserTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserTag not implemented")
 }
-func (UnimplementedUserTagServiceServer) RegisterUserTag(context.Context, *UserTagRequest) (*UserTagResponse, error) {
+func (UnimplementedUserTagServiceServer) RegisterUserTag(context.Context, *RegisterUserTagRequest) (*RegisterUserTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterUserTag not implemented")
 }
-func (UnimplementedUserTagServiceServer) UpdateUserTag(context.Context, *UserTagRequest) (*UserTagResponse, error) {
+func (UnimplementedUserTagServiceServer) UpdateUserTag(context.Context, *UpdateUserTagRequest) (*UpdateUserTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserTag not implemented")
 }
-func (UnimplementedUserTagServiceServer) DeleteUserTag(context.Context, *UserTagID) (*UserTagID, error) {
+func (UnimplementedUserTagServiceServer) DeleteUserTag(context.Context, *DeleteUserTagRequest) (*DeleteUserTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserTag not implemented")
 }
 func (UnimplementedUserTagServiceServer) mustEmbedUnimplementedUserTagServiceServer() {}
@@ -127,7 +127,7 @@ func RegisterUserTagServiceServer(s grpc.ServiceRegistrar, srv UserTagServiceSer
 }
 
 func _UserTagService_ListUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserTagListRequest)
+	in := new(ListUserTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -136,16 +136,16 @@ func _UserTagService_ListUserTag_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.UserTagService/ListUserTag",
+		FullMethod: "/proto.UserTagService/ListUserTag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserTagServiceServer).ListUserTag(ctx, req.(*UserTagListRequest))
+		return srv.(UserTagServiceServer).ListUserTag(ctx, req.(*ListUserTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserTagService_GetUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserTagID)
+	in := new(GetUserTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -154,16 +154,16 @@ func _UserTagService_GetUserTag_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.UserTagService/GetUserTag",
+		FullMethod: "/proto.UserTagService/GetUserTag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserTagServiceServer).GetUserTag(ctx, req.(*UserTagID))
+		return srv.(UserTagServiceServer).GetUserTag(ctx, req.(*GetUserTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserTagService_RegisterUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserTagRequest)
+	in := new(RegisterUserTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -172,16 +172,16 @@ func _UserTagService_RegisterUserTag_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.UserTagService/RegisterUserTag",
+		FullMethod: "/proto.UserTagService/RegisterUserTag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserTagServiceServer).RegisterUserTag(ctx, req.(*UserTagRequest))
+		return srv.(UserTagServiceServer).RegisterUserTag(ctx, req.(*RegisterUserTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserTagService_UpdateUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserTagRequest)
+	in := new(UpdateUserTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -190,16 +190,16 @@ func _UserTagService_UpdateUserTag_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.UserTagService/UpdateUserTag",
+		FullMethod: "/proto.UserTagService/UpdateUserTag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserTagServiceServer).UpdateUserTag(ctx, req.(*UserTagRequest))
+		return srv.(UserTagServiceServer).UpdateUserTag(ctx, req.(*UpdateUserTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserTagService_DeleteUserTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserTagID)
+	in := new(DeleteUserTagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -208,10 +208,10 @@ func _UserTagService_DeleteUserTag_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/server.UserTagService/DeleteUserTag",
+		FullMethod: "/proto.UserTagService/DeleteUserTag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserTagServiceServer).DeleteUserTag(ctx, req.(*UserTagID))
+		return srv.(UserTagServiceServer).DeleteUserTag(ctx, req.(*DeleteUserTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -220,7 +220,7 @@ func _UserTagService_DeleteUserTag_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserTagService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.UserTagService",
+	ServiceName: "proto.UserTagService",
 	HandlerType: (*UserTagServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

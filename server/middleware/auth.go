@@ -14,9 +14,9 @@ type AuthBypassFunction string
 
 var (
 	authBypassFunctions = []AuthBypassFunction {
-		"/server.UserService/RegisterUser",
-		"/server.UserService/LoginUser",
-		"/server.UserService/LogoutUser",
+		"/proto.UserService/RegisterUser",
+		"/proto.UserService/LoginUser",
+		"/proto.UserService/LogoutUser",
 	}
 )
 

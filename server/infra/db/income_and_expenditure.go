@@ -15,14 +15,14 @@ func NewIncomeAndExpenditureRepository() *IncomeAndExpenditureRepository {
 	return &IncomeAndExpenditureRepository{}
 }
 
-func (r *IncomeAndExpenditureRepository) List(ctx context.Context, input *pb.IncomeAndExpenditureListRequest) (*pb.IncomeAndExpenditureListResponse, error) {
-	return &pb.IncomeAndExpenditureListResponse{
+func (r *IncomeAndExpenditureRepository) List(tx context.Context, input *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error) {
+	return &pb.ListIncomeAndExpenditureResponse{
 		IncomeAndExpenditureList: []*pb.IncomeAndExpenditureResponse{},
 	}, nil
 }
 
-func (r *IncomeAndExpenditureRepository) Get(ctx context.Context, input *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureResponse, error) {
-	return &pb.IncomeAndExpenditureResponse{
+func (r *IncomeAndExpenditureRepository) Get(ctx context.Context, input *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error) {
+	return &pb.GetIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 		Amount: 100,
@@ -32,8 +32,8 @@ func (r *IncomeAndExpenditureRepository) Get(ctx context.Context, input *pb.Inco
 	}, nil
 }
 
-func (r *IncomeAndExpenditureRepository) Upsert(ctx context.Context, input *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error) {
-	return &pb.IncomeAndExpenditureResponse{
+func (r *IncomeAndExpenditureRepository) Insert(ctx context.Context, input *pb.RegisterIncomeAndExpenditureRequest) (*pb.RegisterIncomeAndExpenditureResponse, error) {
+	return &pb.RegisterIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 		Amount: 100,
@@ -43,8 +43,19 @@ func (r *IncomeAndExpenditureRepository) Upsert(ctx context.Context, input *pb.I
 	}, nil
 }
 
-func (r *IncomeAndExpenditureRepository) Delete(ctx context.Context, input *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureID , error) {
-	return &pb.IncomeAndExpenditureID{
+func (r *IncomeAndExpenditureRepository) Update(ctx context.Context, input *pb.UpdateIncomeAndExpenditureRequest) (*pb.UpdateIncomeAndExpenditureResponse, error) {
+	return &pb.UpdateIncomeAndExpenditureResponse{
+		Id: 1,
+		UserId: "userId",
+		Amount: 100,
+		OccurrenceDate: "2023-01-01",
+		UserTagId: 1,
+		Classification: "INCOME",
+	}, nil
+}
+
+func (r *IncomeAndExpenditureRepository) Delete(ctx context.Context, input *pb.DeleteIncomeAndExpenditureRequest) (*pb.DeleteIncomeAndExpenditureResponse , error) {
+	return &pb.DeleteIncomeAndExpenditureResponse{
 		Id: 1,
 		UserId: "userId",
 	}, nil

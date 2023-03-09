@@ -1,41 +1,81 @@
 syntax = "proto3";
 
-package server;
+package proto;
 
 import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 // use user schema
-message UserRequest {
+message GetUserRequest {
     string user_id = 1;
-    string password = 2;
 }
 
-message UserResponse {
+message GetUserResponse {
     string user_id = 1;
     bool is_privacy_checked  = 2;
 }
 
-message LoginResponse {
+
+message RegisterUserRequest {
+    string user_id = 1;
+    string password = 2;
+}
+
+message RegisterUserResponse {
     string user_id = 1;
     string session_id = 2;
     string access_token = 3;
     google.protobuf.Timestamp access_token_expires_at = 4;
     string refresh_token = 5;
     google.protobuf.Timestamp refresh_token_expires_at = 6;
-
 }
 
-message UserID {
+message UpdateUserRequest {
+    string user_id = 1;
+    string password = 2;
+}
+
+message UpdateUserResponse {
+    string user_id = 1;
+    bool is_privacy_checked  = 2;
+}
+
+message DeleteUserRequest {
+    string user_id = 1;
+}
+
+message DeleteUserResponse {
+    string user_id = 1;
+}
+
+message LoginUserRequest {
+    string user_id = 1;
+    string password = 2;
+}
+
+message LoginUserResponse {
+    string user_id = 1;
+    string session_id = 2;
+    string access_token = 3;
+    google.protobuf.Timestamp access_token_expires_at = 4;
+    string refresh_token = 5;
+    google.protobuf.Timestamp refresh_token_expires_at = 6;
+}
+
+message LogoutUserRequest {
+    string user_id = 1;
+}
+
+message LogoutUserResponse {
     string user_id = 1;
 }
 
 service UserService {
-    rpc GetUser (UserID) returns (UserResponse);
-    rpc RegisterUser (UserRequest) returns (LoginResponse);
-    rpc UpdateUser (UserRequest) returns (UserResponse);
-    rpc DeleteUser (UserID) returns (UserID);
-    rpc LoginUser (UserRequest) returns (LoginResponse);
-    rpc LogoutUser (UserID) returns (UserID);
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
+    rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse);
+    rpc LogoutUser (LogoutUserRequest) returns (LogoutUserResponse);
 }

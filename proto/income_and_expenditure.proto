@@ -1,26 +1,17 @@
 syntax = "proto3";
 
-package server;
+package proto;
 
 option go_package = "github.com/watariRyo/balance/server/proto";
 
-message IncomeAndExpenditureListRequest {
+message ListIncomeAndExpenditureRequest {
     string user_id = 1;
     string occurrence_date = 2;
     string classification = 3;
 }
 
-message IncomeAndExpenditureListResponse {
+message ListIncomeAndExpenditureResponse {
     repeated IncomeAndExpenditureResponse income_and_expenditure_list = 1;
-}
-
-message IncomeAndExpenditureRequest {
-    int64 id = 1;
-    string user_id = 2;
-    int32 amount = 3;
-    string occurrence_date = 4;
-    int64 user_tag_id = 5;
-    string classification = 6;
 }
 
 message IncomeAndExpenditureResponse {
@@ -32,16 +23,70 @@ message IncomeAndExpenditureResponse {
     string classification = 6;
 }
 
-message IncomeAndExpenditureID {
+message GetIncomeAndExpenditureRequest {
+    int64 id = 1;
+    string user_id = 2;    
+}
+
+message GetIncomeAndExpenditureResponse {
+    int64 id = 1;
+    string user_id = 2;
+    int32 amount = 3;
+    string occurrence_date = 4;
+    int64 user_tag_id = 5;
+    string classification = 6;
+}
+
+message RegisterIncomeAndExpenditureRequest {
+    string user_id = 1;
+    int32 amount = 2;
+    string occurrence_date = 3;
+    int64 user_tag_id = 4;
+    string classification = 5;
+}
+
+message RegisterIncomeAndExpenditureResponse {
+    int64 id = 1;
+    string user_id = 2;
+    int32 amount = 3;
+    string occurrence_date = 4;
+    int64 user_tag_id = 5;
+    string classification = 6;
+}
+
+message UpdateIncomeAndExpenditureRequest {
+    int64 id = 1;
+    string user_id = 2;
+    int32 amount = 3;
+    string occurrence_date = 4;
+    int64 user_tag_id = 5;
+    string classification = 6;
+}
+
+message UpdateIncomeAndExpenditureResponse {
+    int64 id = 1;
+    string user_id = 2;
+    int32 amount = 3;
+    string occurrence_date = 4;
+    int64 user_tag_id = 5;
+    string classification = 6;
+}
+
+message DeleteIncomeAndExpenditureRequest {
+    int64 id = 1;
+    string user_id = 2;
+}
+
+message DeleteIncomeAndExpenditureResponse {
     int64 id = 1;
     string user_id = 2;
 }
 
 
 service IncomeAndExpenditureService {
-    rpc ListIncomeAndExpenditure (IncomeAndExpenditureListRequest) returns (IncomeAndExpenditureListResponse);
-    rpc GetIncomeAndExpenditure (IncomeAndExpenditureID) returns (IncomeAndExpenditureResponse);
-    rpc RegisterIncomeAndExpenditure (IncomeAndExpenditureRequest) returns (IncomeAndExpenditureResponse);
-    rpc UpdateIncomeAndExpenditure (IncomeAndExpenditureRequest) returns (IncomeAndExpenditureResponse);
-    rpc DeleteIncomeAndExpenditure (IncomeAndExpenditureID) returns (IncomeAndExpenditureID);
+    rpc ListIncomeAndExpenditure (ListIncomeAndExpenditureRequest) returns (ListIncomeAndExpenditureResponse);
+    rpc GetIncomeAndExpenditure (GetIncomeAndExpenditureRequest) returns (GetIncomeAndExpenditureResponse);
+    rpc RegisterIncomeAndExpenditure (RegisterIncomeAndExpenditureRequest) returns (RegisterIncomeAndExpenditureResponse);
+    rpc UpdateIncomeAndExpenditure (UpdateIncomeAndExpenditureRequest) returns (UpdateIncomeAndExpenditureResponse);
+    rpc DeleteIncomeAndExpenditure (DeleteIncomeAndExpenditureRequest) returns (DeleteIncomeAndExpenditureResponse);
 }

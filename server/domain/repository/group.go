@@ -7,8 +7,9 @@ import (
 )
 
 type GroupRepository interface {
-	Get(ctx context.Context, input *pb.GroupID) (*pb.GroupResponse, error)
-	List(tx context.Context, input *pb.GroupListRequest) (*pb.GroupListResponse, error)
-	Upsert(ctx context.Context, input *pb.GroupRequest) (*pb.GroupResponse, error)
-	Delete(ctx context.Context, input *pb.GroupID) (*pb.GroupID , error)
+	Get(ctx context.Context, input *pb.GetGroupRequest) (*pb.GetGroupResponse, error)
+	List(tx context.Context, input *pb.ListGroupRequest) (*pb.ListGroupResponse, error)
+	Insert(ctx context.Context, input *pb.RegisterGroupRequest) (*pb.RegisterGroupResponse, error)
+	Update(ctx context.Context, input *pb.UpdateGroupRequest) (*pb.UpdateGroupResponse, error)
+	Delete(ctx context.Context, input *pb.DeleteGroupRequest) (*pb.DeleteGroupResponse , error)
 }

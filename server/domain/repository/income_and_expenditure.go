@@ -7,8 +7,9 @@ import (
 )
 
 type IncomeAndExpenditureRepository interface {
-	Get(ctx context.Context, input *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureResponse, error)
-	List(tx context.Context, input *pb.IncomeAndExpenditureListRequest) (*pb.IncomeAndExpenditureListResponse, error)
-	Upsert(ctx context.Context, input *pb.IncomeAndExpenditureRequest) (*pb.IncomeAndExpenditureResponse, error)
-	Delete(ctx context.Context, input *pb.IncomeAndExpenditureID) (*pb.IncomeAndExpenditureID , error)
+	Get(ctx context.Context, input *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error)
+	List(tx context.Context, input *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error)
+	Insert(ctx context.Context, input *pb.RegisterIncomeAndExpenditureRequest) (*pb.RegisterIncomeAndExpenditureResponse, error)
+	Update(ctx context.Context, input *pb.UpdateIncomeAndExpenditureRequest) (*pb.UpdateIncomeAndExpenditureResponse, error)
+	Delete(ctx context.Context, input *pb.DeleteIncomeAndExpenditureRequest) (*pb.DeleteIncomeAndExpenditureResponse , error)
 }
