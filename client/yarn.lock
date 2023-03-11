@@ -2,6 +2,47 @@
 # yarn lockfile v1
 
 
+"@bufbuild/connect-web@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@bufbuild/connect-web/-/connect-web-0.8.3.tgz#0a67d2b505a202a658de920ddb9dc519ce8951ed"
+  integrity sha512-36FZ8L6e/oNUglIclhLu3mHceTXRHp/QB/Pnphzhc0SYkZFFyjGfRJfm+qq89dFns8krchtP8sTyqV8G7EaJEQ==
+  dependencies:
+    "@bufbuild/connect" "0.8.3"
+
+"@bufbuild/connect@0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@bufbuild/connect/-/connect-0.8.3.tgz#5eed5b2231ce7b0f9e9c504ea231d21eb7266ec4"
+  integrity sha512-lk4JVYxRPRvELAiYIc4fALI2qh/gG8j0yYTSKzBkmy+DuJ7xvWQ81DX7zo1WhXaZRxiC9VDU3jfFwgbwYrd2eQ==
+
+"@bufbuild/protobuf@1.1.0", "@bufbuild/protobuf@^1.0.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-1.1.0.tgz#249fc602d0ca78564d6666bbffcbbaef9aa905ff"
+  integrity sha512-NYqSqOp+7u37sfQugoJaIWbnQdUTwB0UtfNhIeN71rr/xY8upO9zIvM865Ju7ws/21xbu05RUdC1gNhSggmCYg==
+
+"@bufbuild/protoc-gen-connect-web@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protoc-gen-connect-web/-/protoc-gen-connect-web-0.8.3.tgz#9374277b442ff01b660030327990eb3e0eca8620"
+  integrity sha512-BSlD3vrdhiizPVcVjJ4dwEIaeM64YWdNg84GPkAq/3+aen/bvAIaTl/2zQLgsU1evIEgxGjpVL8yzXHJ9nzglQ==
+  dependencies:
+    "@bufbuild/protobuf" "^1.0.0"
+    "@bufbuild/protoplugin" "^1.0.0"
+
+"@bufbuild/protoc-gen-es@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protoc-gen-es/-/protoc-gen-es-1.1.0.tgz#df4c48fb90ca31117d4d1816269daa88fedbfe51"
+  integrity sha512-2xASwRsd1pAh/tzqlH7L+HRrlfreuSMRGr0xbZGcSQI5kTixgLLPSaNwankQplwcWTyGA59hY3cx6o78RsvlcQ==
+  dependencies:
+    "@bufbuild/protoplugin" "1.1.0"
+
+"@bufbuild/protoplugin@1.1.0", "@bufbuild/protoplugin@^1.0.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protoplugin/-/protoplugin-1.1.0.tgz#62fc002e4a642cb76319004ef7188ec88f399a0e"
+  integrity sha512-yDBBdJn6/qmVu3A5K18Hif4WYLCd+1Ps89DTvhzBG/Og5EjbaPlkf/pZYLJQuKvJlDnRMfm0iF3Gl2NjC9G3yg==
+  dependencies:
+    "@bufbuild/protobuf" "1.1.0"
+    "@typescript/vfs" "^1.4.0"
+    typescript "4.5.2"
+
 "@esbuild/android-arm64@0.16.17":
   version "0.16.17"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.16.17.tgz#cf91e86df127aa3d141744edafcba0abdc577d23"
@@ -380,6 +421,13 @@
   dependencies:
     "@typescript-eslint/types" "5.53.0"
     eslint-visitor-keys "^3.3.0"
+
+"@typescript/vfs@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@typescript/vfs/-/vfs-1.4.0.tgz#2d22985c7666c9d4ce26eb025405e6f156aa32b0"
+  integrity sha512-Pood7yv5YWMIX+yCHo176OnF8WUlKGImFG7XlsuH14Zb1YN5+dYD3uUtS7lqZtsH7tAveNUi2NzdpQCN0yRbaw==
+  dependencies:
+    debug "^4.1.1"
 
 abbrev@1:
   version "1.1.1"
@@ -1838,6 +1886,11 @@ type-fest@^0.20.2:
   version "0.20.2"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
   integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
+
+typescript@4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.2.tgz#8ac1fba9f52256fdb06fb89e4122fa6a346c2998"
+  integrity sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==
 
 typescript@^4.9.3, typescript@^4.9.4:
   version "4.9.5"
