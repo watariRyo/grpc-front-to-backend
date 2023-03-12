@@ -51,19 +51,16 @@ services:
       CONFIG_FILE: "/app/config/config.yaml"
     networks:
       - balance
-  frontend:
-    build:
-      context: ./
-      dockerfile: Dockerfile-frontend
-    image: balance-frontend:1.0
-    container_name: balance-frontend
-    command: "yarn preview"
+  proxy:
+    image: nginx:1.15.6-alpine
     ports:
-      - "4173:4173"
-    depends_on:
-      - https-portal
-    networks:
-      - balance
+      - "9000:9000"
+    expose:
+      - "9000"
+    volumes:
+      - ./proxy/nginx/common:/etc/nginx/common
+      - ./proxy/nginx/conf.d:/etc/nginx/conf.d
+      - ./proxy/keys:/ssl
   https-portal:
     image: steveltn/https-portal:1
     ports:
