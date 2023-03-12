@@ -73,29 +73,32 @@ message DeleteGroupResponse {
 service GroupService {
     rpc ListGroup (ListGroupRequest) returns (ListGroupResponse) {
         option (google.api.http) = {
-            get: "/balance/api/group"
+            post: "/balance/api/list/group"
+            body: "*"
         };
     };
     rpc GetGroup (GetGroupRequest) returns (GetGroupResponse) {
         option (google.api.http) = {
-            get: "/balance/api/group/{id}"
+            post: "/balance/api/get/group"
+            body: "*"
         };
     };
     rpc RegisterGroup (RegisterGroupRequest) returns (RegisterGroupResponse) {
         option (google.api.http) = {
-            post: "/balance/api/group"
+            post: "/balance/api/register/group"
             body: "*"
         };
     };
     rpc UpdateGroup (UpdateGroupRequest) returns (UpdateGroupResponse) {
         option (google.api.http) = {
-            put: "/balance/api/group/{id}"
+            post: "/balance/api/update/group"
             body: "*"
         };
     };
     rpc DeleteGroup (DeleteGroupRequest) returns (DeleteGroupResponse) {
         option (google.api.http) = {
-            delete: "/balance/api/group/{id}"
+            post: "/balance/api/delete/group"
+            body: "*"
         };
     };
 }

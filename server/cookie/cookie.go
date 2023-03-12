@@ -44,7 +44,7 @@ func ParseMetadataCookieSessionID(ctx context.Context) (sessionID string, err er
 
 	parser := &http.Request{Header: http.Header{"cookie": []string{rowCookie}}}
 
-	cookie, err := parser.Cookie("sessionID")
+	cookie, err := parser.Cookie("balance-sessionID")
 
 	if err != nil {
 		return "", err

@@ -10,6 +10,7 @@ import (
 	"github.com/watariRyo/balance/server/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 const grpcServerAddress = "backend:8080"
@@ -24,6 +25,18 @@ func main() {
 	// gateway用のhttp.Handler
 	mux := runtime.NewServeMux(
 		runtime.WithMetadata(requestMetadata),
+		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
+            return runtime.DefaultHeaderMatcher(key)
+        }),
+		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				UseProtoNames: true,
+				EmitUnpopulated: true,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		}),
 	)
 
 	opts := []grpc.DialOption{
@@ -33,17 +46,16 @@ func main() {
 	// Handlerに, アドレス指定でアップストリームgRPCサーバの場所を教える.
 	// このHandlerはリクエストを受け取ったらgRPCのリクエストに詰め替えてサーバとやり取りする.
 	if err := proto.RegisterGroupServiceHandlerFromEndpoint(ctx, mux, grpcServerAddress, opts); err != nil {
-		log.Println(err)
-		log.Fatal("failed to register grpc-server 1")		
+		log.Fatalf("failed to register grpc-server-group. %v", err)
 	}
 	if err := proto.RegisterUserServiceHandlerFromEndpoint(ctx, mux, grpcServerAddress, opts); err != nil {
-		log.Fatal("failed to register grpc-server 2")
+		log.Fatalf("failed to register grpc-server-user. %v", err)
 	}
 	if err := proto.RegisterUserTagServiceHandlerFromEndpoint(ctx, mux, grpcServerAddress, opts); err != nil {
-		log.Fatal("failed to register grpc-server 3")
+		log.Fatalf("failed to register grpc-server-user-tag. %v", err)
 	}
 	if err := proto.RegisterIncomeAndExpenditureServiceHandlerFromEndpoint(ctx, mux, grpcServerAddress, opts); err != nil {
-		log.Fatal("failed to register grpc-server 4")
+		log.Fatalf("failed to register grpc-server-income-and-expenditure. %v", err)
 	}
 
 	// handler

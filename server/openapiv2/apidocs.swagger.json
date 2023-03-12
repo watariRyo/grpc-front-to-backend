@@ -25,14 +25,14 @@
     "application/json"
   ],
   "paths": {
-    "/balance/api": {
-      "get": {
-        "operationId": "IncomeAndExpenditureService_ListIncomeAndExpenditure",
+    "/balance/api/delete/group": {
+      "post": {
+        "operationId": "GroupService_DeleteGroup",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoListIncomeAndExpenditureResponse"
+              "$ref": "#/definitions/protoDeleteGroupResponse"
             }
           },
           "default": {
@@ -44,35 +44,21 @@
         },
         "parameters": [
           {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "occurrenceDate",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "classification",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoDeleteGroupRequest"
+            }
           }
         ],
         "tags": [
-          "IncomeAndExpenditureService"
+          "GroupService"
         ]
-      },
-      "delete": {
+      }
+    },
+    "/balance/api/delete/incomeAndExpenditure": {
+      "post": {
         "operationId": "IncomeAndExpenditureService_DeleteIncomeAndExpenditure",
         "responses": {
           "200": {
@@ -90,36 +76,27 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoDeleteIncomeAndExpenditureRequest"
+            }
           }
         ],
         "tags": [
           "IncomeAndExpenditureService"
         ]
-      },
+      }
+    },
+    "/balance/api/delete/tag": {
       "post": {
-        "operationId": "IncomeAndExpenditureService_RegisterIncomeAndExpenditure",
+        "operationId": "UserTagService_DeleteUserTag",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoRegisterIncomeAndExpenditureResponse"
+              "$ref": "#/definitions/protoDeleteUserTagResponse"
             }
           },
           "default": {
@@ -135,7 +112,103 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoRegisterIncomeAndExpenditureRequest"
+              "$ref": "#/definitions/protoDeleteUserTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserTagService"
+        ]
+      }
+    },
+    "/balance/api/delete/user": {
+      "post": {
+        "operationId": "UserService_DeleteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoDeleteUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoDeleteUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/balance/api/get/group": {
+      "post": {
+        "operationId": "GroupService_GetGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoGetGroupResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoGetGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GroupService"
+        ]
+      }
+    },
+    "/balance/api/get/incomeAndExpenditure": {
+      "post": {
+        "operationId": "IncomeAndExpenditureService_GetIncomeAndExpenditure",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoGetIncomeAndExpenditureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoGetIncomeAndExpenditureRequest"
             }
           }
         ],
@@ -144,8 +217,76 @@
         ]
       }
     },
-    "/balance/api/group": {
-      "get": {
+    "/balance/api/get/tag": {
+      "post": {
+        "operationId": "UserTagService_GetUserTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoGetUserTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoGetUserTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserTagService"
+        ]
+      }
+    },
+    "/balance/api/get/user": {
+      "post": {
+        "operationId": "UserService_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoGetUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sessoinId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/balance/api/list/group": {
+      "post": {
         "operationId": "GroupService_ListGroup",
         "responses": {
           "200": {
@@ -163,22 +304,84 @@
         },
         "parameters": [
           {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoListGroupRequest"
+            }
           }
         ],
         "tags": [
           "GroupService"
         ]
-      },
+      }
+    },
+    "/balance/api/list/incomeAndExpenditure": {
+      "post": {
+        "operationId": "IncomeAndExpenditureService_ListIncomeAndExpenditure",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoListIncomeAndExpenditureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoListIncomeAndExpenditureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "IncomeAndExpenditureService"
+        ]
+      }
+    },
+    "/balance/api/list/tag": {
+      "post": {
+        "operationId": "UserTagService_ListUserTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoListUserTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoListUserTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserTagService"
+        ]
+      }
+    },
+    "/balance/api/register/group": {
       "post": {
         "operationId": "GroupService_RegisterGroup",
         "responses": {
@@ -210,14 +413,14 @@
         ]
       }
     },
-    "/balance/api/group/{id}": {
-      "get": {
-        "operationId": "GroupService_GetGroup",
+    "/balance/api/register/incomeAndExpenditure": {
+      "post": {
+        "operationId": "IncomeAndExpenditureService_RegisterIncomeAndExpenditure",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoGetGroupResponse"
+              "$ref": "#/definitions/protoRegisterIncomeAndExpenditureResponse"
             }
           },
           "default": {
@@ -228,163 +431,21 @@
           }
         },
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "groupName",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "GroupService"
-        ]
-      },
-      "delete": {
-        "operationId": "GroupService_DeleteGroup",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoDeleteGroupResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "GroupService"
-        ]
-      },
-      "put": {
-        "operationId": "GroupService_UpdateGroup",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoUpdateGroupResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                },
-                "groupName": {
-                  "type": "string"
-                },
-                "sessoinId": {
-                  "type": "string"
-                }
-              }
+              "$ref": "#/definitions/protoRegisterIncomeAndExpenditureRequest"
             }
           }
         ],
         "tags": [
-          "GroupService"
+          "IncomeAndExpenditureService"
         ]
       }
     },
-    "/balance/api/tag": {
-      "get": {
-        "operationId": "UserTagService_ListUserTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoListUserTagResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UserTagService"
-        ]
-      }
-    },
-    "/balance/api/tag/user": {
+    "/balance/api/register/tag": {
       "post": {
         "operationId": "UserTagService_RegisterUserTag",
         "responses": {
@@ -416,170 +477,7 @@
         ]
       }
     },
-    "/balance/api/tag/{id}": {
-      "get": {
-        "operationId": "UserTagService_GetUserTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoGetUserTagResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UserTagService"
-        ]
-      },
-      "delete": {
-        "operationId": "UserTagService_DeleteUserTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoDeleteUserTagResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UserTagService"
-        ]
-      },
-      "put": {
-        "operationId": "UserTagService_UpdateUserTag",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoUpdateUserTagResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                },
-                "sessoinId": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "UserTagService"
-        ]
-      }
-    },
-    "/balance/api/user": {
-      "delete": {
-        "operationId": "UserService_DeleteUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoDeleteUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UserService"
-        ]
-      },
+    "/balance/api/register/user": {
       "post": {
         "operationId": "UserService_RegisterUser",
         "responses": {
@@ -609,8 +507,106 @@
         "tags": [
           "UserService"
         ]
-      },
-      "put": {
+      }
+    },
+    "/balance/api/update/group": {
+      "post": {
+        "operationId": "GroupService_UpdateGroup",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoUpdateGroupResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoUpdateGroupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GroupService"
+        ]
+      }
+    },
+    "/balance/api/update/incomeAndExpenditure": {
+      "post": {
+        "operationId": "IncomeAndExpenditureService_UpdateIncomeAndExpenditure",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoUpdateIncomeAndExpenditureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoUpdateIncomeAndExpenditureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "IncomeAndExpenditureService"
+        ]
+      }
+    },
+    "/balance/api/update/tag": {
+      "post": {
+        "operationId": "UserTagService_UpdateUserTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoUpdateUserTagResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoUpdateUserTagRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserTagService"
+        ]
+      }
+    },
+    "/balance/api/update/user": {
+      "post": {
         "operationId": "UserService_UpdateUser",
         "responses": {
           "200": {
@@ -638,144 +634,6 @@
         ],
         "tags": [
           "UserService"
-        ]
-      }
-    },
-    "/balance/api/user/{userId}": {
-      "get": {
-        "operationId": "UserService_GetUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoGetUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UserService"
-        ]
-      }
-    },
-    "/balance/api/{id}": {
-      "get": {
-        "operationId": "IncomeAndExpenditureService_GetIncomeAndExpenditure",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoGetIncomeAndExpenditureResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IncomeAndExpenditureService"
-        ]
-      },
-      "put": {
-        "operationId": "IncomeAndExpenditureService_UpdateIncomeAndExpenditure",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoUpdateIncomeAndExpenditureResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "occurrenceDate": {
-                  "type": "string"
-                },
-                "userTagId": {
-                  "type": "string",
-                  "format": "int64"
-                },
-                "classification": {
-                  "type": "string"
-                },
-                "sessoinId": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "IncomeAndExpenditureService"
         ]
       }
     },
@@ -845,6 +703,21 @@
     }
   },
   "definitions": {
+    "protoDeleteGroupRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
+        }
+      }
+    },
     "protoDeleteGroupResponse": {
       "type": "object",
       "properties": {
@@ -853,6 +726,21 @@
           "format": "int64"
         },
         "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "protoDeleteIncomeAndExpenditureRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
           "type": "string"
         }
       }
@@ -869,10 +757,36 @@
         }
       }
     },
+    "protoDeleteUserRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
+        }
+      }
+    },
     "protoDeleteUserResponse": {
       "type": "object",
       "properties": {
         "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "protoDeleteUserTagRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
           "type": "string"
         }
       }
@@ -889,6 +803,24 @@
         }
       }
     },
+    "protoGetGroupRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
+        }
+      }
+    },
     "protoGetGroupResponse": {
       "type": "object",
       "properties": {
@@ -900,6 +832,21 @@
           "type": "string"
         },
         "groupName": {
+          "type": "string"
+        }
+      }
+    },
+    "protoGetIncomeAndExpenditureRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
           "type": "string"
         }
       }
@@ -938,6 +885,21 @@
         },
         "isPrivacyChecked": {
           "type": "boolean"
+        }
+      }
+    },
+    "protoGetUserTagRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
         }
       }
     },
@@ -1007,6 +969,17 @@
         }
       }
     },
+    "protoListGroupRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
+        }
+      }
+    },
     "protoListGroupResponse": {
       "type": "object",
       "properties": {
@@ -1019,6 +992,23 @@
         }
       }
     },
+    "protoListIncomeAndExpenditureRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "occurrenceDate": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
+        }
+      }
+    },
     "protoListIncomeAndExpenditureResponse": {
       "type": "object",
       "properties": {
@@ -1028,6 +1018,17 @@
             "type": "object",
             "$ref": "#/definitions/protoIncomeAndExpenditureResponse"
           }
+        }
+      }
+    },
+    "protoListUserTagRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
         }
       }
     },
@@ -1263,6 +1264,24 @@
         }
       }
     },
+    "protoUpdateGroupRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
+        }
+      }
+    },
     "protoUpdateGroupResponse": {
       "type": "object",
       "properties": {
@@ -1274,6 +1293,35 @@
           "type": "string"
         },
         "groupName": {
+          "type": "string"
+        }
+      }
+    },
+    "protoUpdateIncomeAndExpenditureRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "occurrenceDate": {
+          "type": "string"
+        },
+        "userTagId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classification": {
+          "type": "string"
+        },
+        "sessoinId": {
           "type": "string"
         }
       }
@@ -1326,6 +1374,21 @@
         },
         "isPrivacyChecked": {
           "type": "boolean"
+        }
+      }
+    },
+    "protoUpdateUserTagRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "sessoinId": {
+          "type": "string"
         }
       }
     },

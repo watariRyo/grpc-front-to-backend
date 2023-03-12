@@ -86,29 +86,32 @@ message DeleteUserTagResponse {
 service UserTagService {
     rpc ListUserTag (ListUserTagRequest) returns (ListUserTagResponse) {
         option (google.api.http) = {
-            get: "/balance/api/tag"
+            post: "/balance/api/list/tag"
+            body: "*"
         };
     };
     rpc GetUserTag (GetUserTagRequest) returns (GetUserTagResponse) {
         option (google.api.http) = {
-            get: "/balance/api/tag/{id}"
+            post: "/balance/api/get/tag"
+            body: "*"
         };
     };
     rpc RegisterUserTag (RegisterUserTagRequest) returns (RegisterUserTagResponse) {
         option (google.api.http) = {
-            post: "/balance/api/tag/user",
+            post: "/balance/api/register/tag",
             body: "*"
         };
     };
     rpc UpdateUserTag (UpdateUserTagRequest) returns (UpdateUserTagResponse) {
         option (google.api.http) = {
-            put: "/balance/api/tag/{id}",
+            post: "/balance/api/update/tag",
             body: "*"
         };
     };
     rpc DeleteUserTag (DeleteUserTagRequest) returns (DeleteUserTagResponse) {
         option (google.api.http) = {
-            delete: "/balance/api/tag/{id}"
+            post: "/balance/api/delete/tag"
+            body: "*"
         };
     };
 }

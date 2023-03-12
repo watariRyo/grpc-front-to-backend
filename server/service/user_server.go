@@ -122,6 +122,12 @@ func (s *userService) LogoutUser(ctx context.Context, userID *pb.LogoutUserReque
 	log.Println("LogoutUser was invoked.")
 
 	// TODO セッション除去
+	hoge, err := cookie.ParseMetadataCookieSessionID(ctx)
+	if err != nil {
+		log.Printf("cookie: %v", err)
+		println("cookie error")
+	}
+	println(hoge)
 
 	return &pb.LogoutUserResponse{
 		UserId: "uuid-dummy",

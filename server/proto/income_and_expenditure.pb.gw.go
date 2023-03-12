@@ -31,18 +31,15 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-var (
-	filter_IncomeAndExpenditureService_ListIncomeAndExpenditure_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_IncomeAndExpenditureService_ListIncomeAndExpenditure_0(ctx context.Context, marshaler runtime.Marshaler, client IncomeAndExpenditureServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListIncomeAndExpenditureRequest
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncomeAndExpenditureService_ListIncomeAndExpenditure_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -55,10 +52,11 @@ func local_request_IncomeAndExpenditureService_ListIncomeAndExpenditure_0(ctx co
 	var protoReq ListIncomeAndExpenditureRequest
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncomeAndExpenditureService_ListIncomeAndExpenditure_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -67,35 +65,15 @@ func local_request_IncomeAndExpenditureService_ListIncomeAndExpenditure_0(ctx co
 
 }
 
-var (
-	filter_IncomeAndExpenditureService_GetIncomeAndExpenditure_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
-)
-
 func request_IncomeAndExpenditureService_GetIncomeAndExpenditure_0(ctx context.Context, marshaler runtime.Marshaler, client IncomeAndExpenditureServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetIncomeAndExpenditureRequest
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-
-	protoReq.Id, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncomeAndExpenditureService_GetIncomeAndExpenditure_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -108,27 +86,11 @@ func local_request_IncomeAndExpenditureService_GetIncomeAndExpenditure_0(ctx con
 	var protoReq GetIncomeAndExpenditureRequest
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-
-	protoReq.Id, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncomeAndExpenditureService_GetIncomeAndExpenditure_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -183,23 +145,6 @@ func request_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0(ctx contex
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
-	}
-
-	protoReq.Id, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
 	msg, err := client.UpdateIncomeAndExpenditure(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -217,40 +162,20 @@ func local_request_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0(ctx 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
-	}
-
-	protoReq.Id, err = runtime.Int64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
 	msg, err := server.UpdateIncomeAndExpenditure(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-var (
-	filter_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0(ctx context.Context, marshaler runtime.Marshaler, client IncomeAndExpenditureServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteIncomeAndExpenditureRequest
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -263,10 +188,11 @@ func local_request_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0(ctx 
 	var protoReq DeleteIncomeAndExpenditureRequest
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -281,7 +207,7 @@ func local_request_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0(ctx 
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterIncomeAndExpenditureServiceHandlerFromEndpoint instead.
 func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server IncomeAndExpenditureServiceServer) error {
 
-	mux.Handle("GET", pattern_IncomeAndExpenditureService_ListIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_ListIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -289,7 +215,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/ListIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/ListIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/list/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -306,7 +232,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 
 	})
 
-	mux.Handle("GET", pattern_IncomeAndExpenditureService_GetIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_GetIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -314,7 +240,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/GetIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/{id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/GetIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/get/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -339,7 +265,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/RegisterIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/RegisterIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/register/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -356,7 +282,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 
 	})
 
-	mux.Handle("PUT", pattern_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -364,7 +290,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/UpdateIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/{id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/UpdateIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/update/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -381,7 +307,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 
 	})
 
-	mux.Handle("DELETE", pattern_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -389,7 +315,7 @@ func RegisterIncomeAndExpenditureServiceHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/DeleteIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/DeleteIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/delete/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -447,13 +373,13 @@ func RegisterIncomeAndExpenditureServiceHandler(ctx context.Context, mux *runtim
 // "IncomeAndExpenditureServiceClient" to call the correct interceptors.
 func RegisterIncomeAndExpenditureServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client IncomeAndExpenditureServiceClient) error {
 
-	mux.Handle("GET", pattern_IncomeAndExpenditureService_ListIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_ListIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/ListIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/ListIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/list/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -469,13 +395,13 @@ func RegisterIncomeAndExpenditureServiceHandlerClient(ctx context.Context, mux *
 
 	})
 
-	mux.Handle("GET", pattern_IncomeAndExpenditureService_GetIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_GetIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/GetIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/{id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/GetIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/get/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -497,7 +423,7 @@ func RegisterIncomeAndExpenditureServiceHandlerClient(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/RegisterIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/RegisterIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/register/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -513,13 +439,13 @@ func RegisterIncomeAndExpenditureServiceHandlerClient(ctx context.Context, mux *
 
 	})
 
-	mux.Handle("PUT", pattern_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/UpdateIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/{id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/UpdateIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/update/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -535,13 +461,13 @@ func RegisterIncomeAndExpenditureServiceHandlerClient(ctx context.Context, mux *
 
 	})
 
-	mux.Handle("DELETE", pattern_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/DeleteIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.IncomeAndExpenditureService/DeleteIncomeAndExpenditure", runtime.WithHTTPPathPattern("/balance/api/delete/incomeAndExpenditure"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -561,15 +487,15 @@ func RegisterIncomeAndExpenditureServiceHandlerClient(ctx context.Context, mux *
 }
 
 var (
-	pattern_IncomeAndExpenditureService_ListIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"balance", "api"}, ""))
+	pattern_IncomeAndExpenditureService_ListIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"balance", "api", "list", "incomeAndExpenditure"}, ""))
 
-	pattern_IncomeAndExpenditureService_GetIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"balance", "api", "id"}, ""))
+	pattern_IncomeAndExpenditureService_GetIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"balance", "api", "get", "incomeAndExpenditure"}, ""))
 
-	pattern_IncomeAndExpenditureService_RegisterIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"balance", "api"}, ""))
+	pattern_IncomeAndExpenditureService_RegisterIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"balance", "api", "register", "incomeAndExpenditure"}, ""))
 
-	pattern_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"balance", "api", "id"}, ""))
+	pattern_IncomeAndExpenditureService_UpdateIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"balance", "api", "update", "incomeAndExpenditure"}, ""))
 
-	pattern_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"balance", "api"}, ""))
+	pattern_IncomeAndExpenditureService_DeleteIncomeAndExpenditure_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"balance", "api", "delete", "incomeAndExpenditure"}, ""))
 )
 
 var (

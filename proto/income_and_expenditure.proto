@@ -93,29 +93,32 @@ message DeleteIncomeAndExpenditureResponse {
 service IncomeAndExpenditureService {
     rpc ListIncomeAndExpenditure (ListIncomeAndExpenditureRequest) returns (ListIncomeAndExpenditureResponse) {
         option (google.api.http) = {
-            get: "/balance/api"
+            post: "/balance/api/list/incomeAndExpenditure"
+            body: "*"
         };
     };
     rpc GetIncomeAndExpenditure (GetIncomeAndExpenditureRequest) returns (GetIncomeAndExpenditureResponse) {
         option (google.api.http) = {
-            get: "/balance/api/{id}"
+            post: "/balance/api/get/incomeAndExpenditure"
+            body: "*"
         };
     };
     rpc RegisterIncomeAndExpenditure (RegisterIncomeAndExpenditureRequest) returns (RegisterIncomeAndExpenditureResponse) {
         option (google.api.http) = {
-            post: "/balance/api",
+            post: "/balance/api/register/incomeAndExpenditure",
             body: "*"
         };
     };
     rpc UpdateIncomeAndExpenditure (UpdateIncomeAndExpenditureRequest) returns (UpdateIncomeAndExpenditureResponse) {
         option (google.api.http) = {
-            put: "/balance/api/{id}"
+            post: "/balance/api/update/incomeAndExpenditure"
             body: "*"
         };
     };
     rpc DeleteIncomeAndExpenditure (DeleteIncomeAndExpenditureRequest) returns (DeleteIncomeAndExpenditureResponse) {
         option (google.api.http) = {
-            delete: "/balance/api"
+            post: "/balance/api/delete/incomeAndExpenditure"
+            body: "*"
         };
     };
 }

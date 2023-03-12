@@ -79,24 +79,25 @@ message LogoutUserResponse {
 service UserService {
     rpc GetUser (GetUserRequest) returns (GetUserResponse) {
         option (google.api.http) = {
-            get: "/balance/api/user/{user_id}"
+            post: "/balance/api/get/user"
         };
     };
     rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {
         option (google.api.http) = {
-            post: "/balance/api/user",
+            post: "/balance/api/register/user",
             body: "*"
         };
     };
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
         option (google.api.http) = {
-            put: "/balance/api/user",
+            post: "/balance/api/update/user",
             body: "*"
         };
     };
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
         option (google.api.http) = {
-            delete: "/balance/api/user",
+            post: "/balance/api/delete/user",
+            body: "*"
         };
     };
     rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {
