@@ -3,12 +3,14 @@ syntax = "proto3";
 package proto;
 
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 // use user schema
 message GetUserRequest {
     string user_id = 1;
+    string sessoin_id = 2;
 }
 
 message GetUserResponse {
@@ -34,6 +36,7 @@ message RegisterUserResponse {
 message UpdateUserRequest {
     string user_id = 1;
     string password = 2;
+    string sessoin_id = 3;
 }
 
 message UpdateUserResponse {
@@ -43,6 +46,7 @@ message UpdateUserResponse {
 
 message DeleteUserRequest {
     string user_id = 1;
+    string sessoin_id = 2;
 }
 
 message DeleteUserResponse {
@@ -65,6 +69,7 @@ message LoginUserResponse {
 
 message LogoutUserRequest {
     string user_id = 1;
+    string sessoin_id = 2;
 }
 
 message LogoutUserResponse {
@@ -72,10 +77,38 @@ message LogoutUserResponse {
 }
 
 service UserService {
-    rpc GetUser (GetUserRequest) returns (GetUserResponse);
-    rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
-    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
-    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
-    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse);
-    rpc LogoutUser (LogoutUserRequest) returns (LogoutUserResponse);
+    rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+        option (google.api.http) = {
+            get: "/balance/api/user/{user_id}"
+        };
+    };
+    rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {
+        option (google.api.http) = {
+            post: "/balance/api/user",
+            body: "*"
+        };
+    };
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
+        option (google.api.http) = {
+            put: "/balance/api/user",
+            body: "*"
+        };
+    };
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
+        option (google.api.http) = {
+            delete: "/balance/api/user",
+        };
+    };
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {
+        option (google.api.http) = {
+            post: "/balance/login",
+            body: "*"
+        };
+    };
+    rpc LogoutUser (LogoutUserRequest) returns (LogoutUserResponse) {
+        option (google.api.http) = {
+            post: "/balance/logout",
+            body: "*"
+        };
+    };
 }

@@ -37,13 +37,12 @@ func (m *PasetoMaker) CreateToken(username string, duration time.Duration) (stri
 
 func (m *PasetoMaker) VerifyToken(token string) (*model.Payload, error) {
 	payload := &model.Payload{}
-	
+
 	err := m.paset.Decrypt(token, m.symmetricKey, payload, nil)
 	if err != nil {
+		println(err.Error())
 		return nil, err
 	}
 
 	return payload, nil
 }
-
-

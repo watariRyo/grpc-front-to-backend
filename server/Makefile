@@ -2,6 +2,8 @@
 GOMOCK_VERSION = v1.6.0 
 PROTOC_VERSION = v1.28
 SQLBOILER_VERSION = v4.14.0
+GRPC_GATEWAY_VERSION = v2.15.2
+GRPC_OPENAPI_VERSOIN = v2.15.2
 
 go-install:
 	go install github.com/golang/mock/mockgen@${GOMOCK_VERSION}
@@ -9,10 +11,13 @@ go-install:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 	go install github.com/volatiletech/sqlboiler/v4@${SQLBOILER_VERSION}
 	go install github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql@${SQLBOILER_VERSION}
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@${GRPC_GATEWAY_VERSION}
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@${GRPC_OPENAPI_VERSOIN}
 
 # protobuf make
 BIN_DIR = bin
 PROTO_DIR = ../proto
+OPENAPI_OUT_DIR = openapiv2
 SERVER_DIR = server
 
 ifeq ($(OS), Windows_NT)
@@ -52,10 +57,21 @@ endif
 # user_tag: $@ ## Generate Pbs and build for user_tag
 # admin_tag: $@ ## Generate Pbs and build for admin_tag
 # group: $@ ## Generate Pbs and build for group
+## protoc -I${PROTO_DIR} --go_opt=module=${PACKAGE} --go_out=. --go-grpc_opt=module=${PACKAGE} --go-grpc_out=. --grpc-gateway_opt=module=${PACKAGE} --grpc-gateway_out=. --openapiv2_opt=allow_merge=true --openapiv2_out=${OPENAPI_OUT_DIR} ${PROTO_DIR}/*.proto
 
 go-protoc:
 	@${CHECK_DIR_CMD}
-	protoc -I${PROTO_DIR} --go_opt=module=${PACKAGE} --go_out=. --go-grpc_opt=module=${PACKAGE} --go-grpc_out=. ${PROTO_DIR}/*.proto
+	
+	find ${PROTO_DIR} -name '*.proto' -maxdepth 1 -print0 \
+	| xargs -0 protoc -I ${PROTO_DIR} \
+	--go_out=. \
+	--go_opt=module=${PACKAGE} \
+	--go-grpc_out=. \
+	--go-grpc_opt=module=${PACKAGE} \
+	--grpc-gateway_out=. \
+	--grpc-gateway_opt=module=${PACKAGE} \
+	--openapiv2_out=${OPENAPI_OUT_DIR} \
+	--openapiv2_opt=allow_merge=true
 
 test: ## Launch tests
 	go test ./...
@@ -100,7 +116,7 @@ sqlboiler:
 	sqlboiler mysql -c sqlboiler_local.toml
 
 evans-user:
-	evans --host localhost -p 8080 ../proto/user.proto 
+	evans --host localhost -p 8080 ../proto/user.proto ../proto/google/api/annotations.proto
 
 evans-user_tag:
 	evans --host localhost -p 8080 ../proto/user_tag.proto 

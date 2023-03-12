@@ -2,10 +2,13 @@ syntax = "proto3";
 
 package proto;
 
+import "google/api/annotations.proto";
+
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 message ListGroupRequest {
     string user_id = 1;
+    string sessoin_id = 2;
 }
 
 message ListGroupResponse {
@@ -19,8 +22,10 @@ message GroupResponse {
 }
 
 message GetGroupRequest {
-    string user_id = 1;
-    string group_name = 2;
+    int64 id = 1;
+    string user_id = 2;
+    string group_name = 3;
+    string sessoin_id = 4;
 }
 
 message GetGroupResponse {
@@ -32,6 +37,7 @@ message GetGroupResponse {
 message RegisterGroupRequest {
     string user_id = 1;
     string group_name = 2;
+    string sessoin_id = 3; 
 }
 
 message RegisterGroupResponse {
@@ -44,6 +50,7 @@ message UpdateGroupRequest {
     int64 id = 1;
     string user_id = 2;
     string group_name = 3;
+    string sessoin_id = 4;
 }
 
 message UpdateGroupResponse {
@@ -55,6 +62,7 @@ message UpdateGroupResponse {
 message DeleteGroupRequest {
     int64 id = 1;
     string user_id = 2;
+    string sessoin_id = 3;
 }
 
 message DeleteGroupResponse {
@@ -63,9 +71,31 @@ message DeleteGroupResponse {
 }
 
 service GroupService {
-    rpc ListGroup (ListGroupRequest) returns (ListGroupResponse);
-    rpc GetGroup (GetGroupRequest) returns (GetGroupResponse);
-    rpc RegisterGroup (RegisterGroupRequest) returns (RegisterGroupResponse);
-    rpc UpdateGroup (UpdateGroupRequest) returns (UpdateGroupResponse);
-    rpc DeleteGroup (DeleteGroupRequest) returns (DeleteGroupResponse);
+    rpc ListGroup (ListGroupRequest) returns (ListGroupResponse) {
+        option (google.api.http) = {
+            get: "/balance/api/group"
+        };
+    };
+    rpc GetGroup (GetGroupRequest) returns (GetGroupResponse) {
+        option (google.api.http) = {
+            get: "/balance/api/group/{id}"
+        };
+    };
+    rpc RegisterGroup (RegisterGroupRequest) returns (RegisterGroupResponse) {
+        option (google.api.http) = {
+            post: "/balance/api/group"
+            body: "*"
+        };
+    };
+    rpc UpdateGroup (UpdateGroupRequest) returns (UpdateGroupResponse) {
+        option (google.api.http) = {
+            put: "/balance/api/group/{id}"
+            body: "*"
+        };
+    };
+    rpc DeleteGroup (DeleteGroupRequest) returns (DeleteGroupResponse) {
+        option (google.api.http) = {
+            delete: "/balance/api/group/{id}"
+        };
+    };
 }

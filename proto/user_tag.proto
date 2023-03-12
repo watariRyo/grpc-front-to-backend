@@ -2,10 +2,13 @@ syntax = "proto3";
 
 package proto;
 
+import "google/api/annotations.proto";
+
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 message ListUserTagRequest {
     string user_id = 1;
+    string sessoin_id = 2;
 }
 
 message ListUserTagResponse {
@@ -22,7 +25,9 @@ message UserTagResponse {
 }
 
 message GetUserTagRequest {
-    string user_id = 1;
+    int64 id = 1;
+    string user_id = 2;
+    string sessoin_id = 3;
 }
 
 message GetUserTagResponse {
@@ -40,6 +45,7 @@ message RegisterUserTagRequest {
     bool has_group = 3;
     int64 group_id = 4;
     string grant_limit = 5;
+    string sessoin_id = 6;
 }
 
 message RegisterUserTagResponse {
@@ -52,7 +58,9 @@ message RegisterUserTagResponse {
 }
 
 message UpdateUserTagRequest {
-    string user_id = 1;
+    int64 id = 1;
+    string user_id = 2;
+    string sessoin_id = 3;
 }
 
 message UpdateUserTagResponse {
@@ -65,7 +73,9 @@ message UpdateUserTagResponse {
 }
 
 message DeleteUserTagRequest {
-    string user_id = 1;
+    int64 id = 1;
+    string user_id = 2;
+    string sessoin_id = 3;
 }
 
 message DeleteUserTagResponse {
@@ -74,9 +84,31 @@ message DeleteUserTagResponse {
 }
 
 service UserTagService {
-    rpc ListUserTag (ListUserTagRequest) returns (ListUserTagResponse);
-    rpc GetUserTag (GetUserTagRequest) returns (GetUserTagResponse);
-    rpc RegisterUserTag (RegisterUserTagRequest) returns (RegisterUserTagResponse);
-    rpc UpdateUserTag (UpdateUserTagRequest) returns (UpdateUserTagResponse);
-    rpc DeleteUserTag (DeleteUserTagRequest) returns (DeleteUserTagResponse);
+    rpc ListUserTag (ListUserTagRequest) returns (ListUserTagResponse) {
+        option (google.api.http) = {
+            get: "/balance/api/tag"
+        };
+    };
+    rpc GetUserTag (GetUserTagRequest) returns (GetUserTagResponse) {
+        option (google.api.http) = {
+            get: "/balance/api/tag/{id}"
+        };
+    };
+    rpc RegisterUserTag (RegisterUserTagRequest) returns (RegisterUserTagResponse) {
+        option (google.api.http) = {
+            post: "/balance/api/tag/user",
+            body: "*"
+        };
+    };
+    rpc UpdateUserTag (UpdateUserTagRequest) returns (UpdateUserTagResponse) {
+        option (google.api.http) = {
+            put: "/balance/api/tag/{id}",
+            body: "*"
+        };
+    };
+    rpc DeleteUserTag (DeleteUserTagRequest) returns (DeleteUserTagResponse) {
+        option (google.api.http) = {
+            delete: "/balance/api/tag/{id}"
+        };
+    };
 }

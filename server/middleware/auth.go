@@ -37,12 +37,10 @@ func NewTokenMiddleware(tokenMaker token.Maker) TokenMiddleware {
 func (tm *tokenMiddleware) AuthFunc() grpc.UnaryServerInterceptor  {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
-		// TODO Auth Skip
 		if util.Contains(authBypassFunctions, info.FullMethod) {
 			resp, err := handler(ctx, req)
 	        return resp, err
 		}
-		println(info.FullMethod)
 
 		md, _ := metadata.FromIncomingContext(ctx)
 
@@ -50,10 +48,11 @@ func (tm *tokenMiddleware) AuthFunc() grpc.UnaryServerInterceptor  {
 		if (len(token) < 1) {
 			return nil, messages.Unauthorized().Err()
 		}
-		_, err := tm.tokenMaker.VerifyToken(token[0])
+		payload, err := tm.tokenMaker.VerifyToken(token[0])
 		if err != nil {
 			return nil, messages.Unauthorized().Err()
 		}
+		println(payload.Username)
 
 		resp, err := handler(ctx, req)
         return resp, err

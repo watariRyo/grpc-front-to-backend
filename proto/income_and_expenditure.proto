@@ -2,12 +2,15 @@ syntax = "proto3";
 
 package proto;
 
+import "google/api/annotations.proto";
+
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 message ListIncomeAndExpenditureRequest {
     string user_id = 1;
     string occurrence_date = 2;
     string classification = 3;
+    string sessoin_id = 4;
 }
 
 message ListIncomeAndExpenditureResponse {
@@ -26,6 +29,7 @@ message IncomeAndExpenditureResponse {
 message GetIncomeAndExpenditureRequest {
     int64 id = 1;
     string user_id = 2;    
+    string sessoin_id = 3;
 }
 
 message GetIncomeAndExpenditureResponse {
@@ -43,6 +47,7 @@ message RegisterIncomeAndExpenditureRequest {
     string occurrence_date = 3;
     int64 user_tag_id = 4;
     string classification = 5;
+    string sessoin_id = 6;
 }
 
 message RegisterIncomeAndExpenditureResponse {
@@ -61,6 +66,7 @@ message UpdateIncomeAndExpenditureRequest {
     string occurrence_date = 4;
     int64 user_tag_id = 5;
     string classification = 6;
+    string sessoin_id = 7;
 }
 
 message UpdateIncomeAndExpenditureResponse {
@@ -75,6 +81,7 @@ message UpdateIncomeAndExpenditureResponse {
 message DeleteIncomeAndExpenditureRequest {
     int64 id = 1;
     string user_id = 2;
+    string sessoin_id = 3;
 }
 
 message DeleteIncomeAndExpenditureResponse {
@@ -84,9 +91,31 @@ message DeleteIncomeAndExpenditureResponse {
 
 
 service IncomeAndExpenditureService {
-    rpc ListIncomeAndExpenditure (ListIncomeAndExpenditureRequest) returns (ListIncomeAndExpenditureResponse);
-    rpc GetIncomeAndExpenditure (GetIncomeAndExpenditureRequest) returns (GetIncomeAndExpenditureResponse);
-    rpc RegisterIncomeAndExpenditure (RegisterIncomeAndExpenditureRequest) returns (RegisterIncomeAndExpenditureResponse);
-    rpc UpdateIncomeAndExpenditure (UpdateIncomeAndExpenditureRequest) returns (UpdateIncomeAndExpenditureResponse);
-    rpc DeleteIncomeAndExpenditure (DeleteIncomeAndExpenditureRequest) returns (DeleteIncomeAndExpenditureResponse);
+    rpc ListIncomeAndExpenditure (ListIncomeAndExpenditureRequest) returns (ListIncomeAndExpenditureResponse) {
+        option (google.api.http) = {
+            get: "/balance/api"
+        };
+    };
+    rpc GetIncomeAndExpenditure (GetIncomeAndExpenditureRequest) returns (GetIncomeAndExpenditureResponse) {
+        option (google.api.http) = {
+            get: "/balance/api/{id}"
+        };
+    };
+    rpc RegisterIncomeAndExpenditure (RegisterIncomeAndExpenditureRequest) returns (RegisterIncomeAndExpenditureResponse) {
+        option (google.api.http) = {
+            post: "/balance/api",
+            body: "*"
+        };
+    };
+    rpc UpdateIncomeAndExpenditure (UpdateIncomeAndExpenditureRequest) returns (UpdateIncomeAndExpenditureResponse) {
+        option (google.api.http) = {
+            put: "/balance/api/{id}"
+            body: "*"
+        };
+    };
+    rpc DeleteIncomeAndExpenditure (DeleteIncomeAndExpenditureRequest) returns (DeleteIncomeAndExpenditureResponse) {
+        option (google.api.http) = {
+            delete: "/balance/api"
+        };
+    };
 }

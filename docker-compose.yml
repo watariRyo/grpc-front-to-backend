@@ -51,16 +51,21 @@ services:
       CONFIG_FILE: "/app/config/config.yaml"
     networks:
       - balance
-  proxy:
-    image: nginx:1.15.6-alpine
-    ports:
-      - "9000:9000"
+  gateway:
+    build:
+      context: ./
+      dockerfile: Dockerfile-server
+    image: balance-server:1.0
+    container_name: balance-gateway
+    command: "air -c .air.gateway.toml"
     expose:
       - "9000"
+    ports:
+      - "9000:9000"
     volumes:
-      - ./proxy/nginx/common:/etc/nginx/common
-      - ./proxy/nginx/conf.d:/etc/nginx/conf.d
-      - ./proxy/keys:/ssl
+      - ./server:/app
+    networks:
+      - balance
   https-portal:
     image: steveltn/https-portal:1
     ports:
