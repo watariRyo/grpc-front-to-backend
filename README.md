@@ -31,3 +31,6 @@ clientのみdockerを作っていない
 ### ・Makefile
 [server側](https://github.com/watariRyo/balance/blob/main/server/Makefile)にMakefile  
 ※evansはgateway挟むようにした都合、動かない
+
+### ・openapi v2
+[rest側のdoc](https://github.com/watariRyo/balance/tree/main/server/openapiv2)
