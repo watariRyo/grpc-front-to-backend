@@ -1,10 +1,11 @@
-import { BASE_URL } from '$env/static/private';
 import { json, type RequestHandler } from '@sveltejs/kit';
+import { apiClient, ApiError } from '../apiClient';
+import { BASE_URL } from '$env/static/private';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { userID, password } = await request.json();
 
-	const response = await fetch(`${BASE_URL}/login`, {
+	const response = await apiClient(`${BASE_URL}/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -15,8 +16,15 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 	});
 
-	const responseJson = await response.json();
-
-	// throw redirect(307, '/');
-	return json(responseJson);
+	if (response instanceof ApiError) {
+		return json({
+			ok: false,
+			grpcResponse: response
+		});
+	} else {
+		return json({
+			ok: true,
+			grpcResponse: response
+		});
+	}
 };

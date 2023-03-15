@@ -1,42 +1,32 @@
-<script>
-    let userID = "";
-    let password = "";
-  
-    const handleLogin = async() => {
-        const response = await fetch("/api/login", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userID,
-              password,
-            }),
-        });
+<script lang="ts">
+	import { ApiError } from "../api/apiClient";
 
-        if (response.ok) {
-            console.log("ログインに成功しました。");
-        } else {
-            console.error("ログインに失敗しました。");
-        }
+
+  let userID = "";
+  let password = "";
+
+  let errors = {}
+
+  const handleLogin = async() => {
+    const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID,
+          password,
+        }),
+    });
+    const responseJson = await response.json()
+    if (responseJson.ok) {
+      console.log(responseJson.grpcResponse)
+    } else {
+      // statusごとの処理
+      console.log(responseJson.grpcResponse.status)
     }
-  </script>
-  
-  <!-- <h1>ログインフォーム</h1>
-  
-  <form on:submit|preventDefault={handleLogin}>
-    <label>
-      Email:
-      <input type="email" bind:value={email} />
-    </label>
-  
-    <label>
-      Password:
-      <input type="password" bind:value={password} />
-    </label>
-  
-    <button type="submit">ログイン</button>
-  </form> -->
+  }
+</script>
 
 <div class="bg-white py-6 sm:py-8 lg:py-12">
   <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
