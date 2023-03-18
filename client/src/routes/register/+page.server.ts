@@ -45,7 +45,9 @@ export const actions: Actions = {
 			throw redirect(HttpStatusCodes300.SEE_OTHER, url.searchParams.get('redirectTo') || '/');
 		} else {
 			// statusごとの処理
-			return error(responseJson.status, { message: responseJson.serverErrorContent.message });
+			throw error(responseJson.grpcResponse.status, {
+				message: responseJson.grpcResponse.serverErrorContent.message
+			});
 		}
 	}
 };

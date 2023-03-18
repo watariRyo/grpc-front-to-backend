@@ -29,17 +29,11 @@ func NewUserService(r *repository.AllRepository, cfg *config.Config, tokenMaker 
 	}
 }
 
-func (s *userService) GetUser(ctx context.Context, userID *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+func (s *userService) GetUser(ctx context.Context, request *pb.GetUserRequest) (*pb.GetUserResponse, error) {
 	log.Println("GetUser was invoked.")
 
-	// Cookies取得
-	sessionID, err := cookie.ParseMetadataCookieSessionID(ctx)
-	if err != nil {
-		return nil, messages.CookieError(err.Error()).Err()
-	}
-
 	// セッション（Redis）取得
-	sessionData, err := s.repo.RedisClient.GetSession(sessionID)
+	sessionData, err := s.repo.RedisClient.GetSession(request.SessionId)
 	if err != nil {
 		return nil, messages.SessionError(err.Error()).Err()
 	}
@@ -52,6 +46,7 @@ func (s *userService) GetUser(ctx context.Context, userID *pb.GetUserRequest) (*
 
 func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUserRequest) (*pb.RegisterUserResponse, error) {
 	log.Println("RegisterUser was invoked.")
+
 	// create user
 	_, err := util.HashPassword(request.Password)
 	if err != nil {
@@ -59,7 +54,7 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUser
 	}
 
 	// sessionとtoken処理
-	accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, err := s.setSessionAndToken(ctx, request.UserId)
+	accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, sessionID, err := s.setSessionAndToken(ctx, request.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +64,7 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUser
 
 	return &pb.RegisterUserResponse{
 		UserId:                "dummy-123",
-		SessionId:             "Dummy",
+		SessionId:             sessionID,
 		AccessToken:           accessToken,
 		RefreshToken:          refreshToken,
 		AccessTokenExpiresAt:  timestamppb.New(s.time.Now().Add(accessTokenDuration)),  //TODO get token expires_at
@@ -103,7 +98,7 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 	}
 
 	// sessionとtoken処理
-	accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, err := s.setSessionAndToken(ctx, request.UserId)
+	accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, sessionID, err := s.setSessionAndToken(ctx, request.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +107,7 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 
 	return &pb.LoginUserResponse{
 		UserId:                "dummy-123",
-		SessionId:             "Dummy",
+		SessionId:             sessionID,
 		AccessToken:           accessToken,
 		RefreshToken:          refreshToken,
 		AccessTokenExpiresAt:  timestamppb.New(s.time.Now().Add(accessTokenDuration)),  //TODO get token expires_at
@@ -124,27 +119,26 @@ func (s *userService) LogoutUser(ctx context.Context, userID *pb.LogoutUserReque
 	log.Println("LogoutUser was invoked.")
 
 	// TODO セッション除去
-	hoge, err := cookie.ParseMetadataCookieSessionID(ctx)
+	_, err := cookie.ParseMetadataCookieSessionID(ctx)
 	if err != nil {
 		log.Printf("cookie: %v", err)
 		println("cookie error")
 	}
-	println(hoge)
 
 	return &pb.LogoutUserResponse{
 		UserId: "uuid-dummy",
 	}, nil
 }
 
-func (s *userService) setSessionAndToken(ctx context.Context, userID string) (string, string, *model.Payload, *model.Payload, error) {
+func (s *userService) setSessionAndToken(ctx context.Context, userID string) (string, string, *model.Payload, *model.Payload, string, error) {
 	// token生成
 	accessToken, err := s.tokenMaker.CreateToken(userID, s.cfg.Secret.AccessTokenDuration)
 	if err != nil {
-		return "", "", nil, nil, messages.CreateTokenError().Err()
+		return "", "", nil, nil, "", messages.CreateTokenError().Err()
 	}
 	refreshToken, err := s.tokenMaker.CreateToken(userID, s.cfg.Secret.RefreshTokenDuration)
 	if err != nil {
-		return "", "", nil, nil, messages.CreateTokenError().Err()
+		return "", "", nil, nil, "", messages.CreateTokenError().Err()
 	}
 
 	accessTokenPayload, err := s.tokenMaker.VerifyToken(accessToken)
@@ -156,10 +150,10 @@ func (s *userService) setSessionAndToken(ctx context.Context, userID string) (st
 	err = s.repo.RedisClient.SaveSession(sessionID, model.SessionData{UserID: userID}, refreshTokenDuration)
 	if err != nil {
 		println(err.Error())
-		return "", "", nil, nil, messages.SessionError(err.Error()).Err()
+		return "", "", nil, nil, "", messages.SessionError(err.Error()).Err()
 	}
 	// Cookieセット
-	cookie.SetCookie(ctx, sessionID)
+	// cookie.SetCookie(ctx, sessionID)
 
-	return accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, nil
+	return accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, sessionID, nil
 }

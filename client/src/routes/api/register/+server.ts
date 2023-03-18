@@ -4,7 +4,6 @@ import { BASE_URL } from '$env/static/private';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const data = await request.json();
-	const { userID, password } = data;
 
 	const response = await apiClient(`${BASE_URL}/api/register/user`, {
 		method: 'POST',
@@ -12,8 +11,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			userID,
-			password
+			user_id: data.userID,
+			password: data.password
 		})
 	});
 

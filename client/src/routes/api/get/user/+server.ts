@@ -5,6 +5,7 @@ import { BASE_URL } from '$env/static/private';
 export const GET: RequestHandler = async ({ cookies }) => {
 	const accessToken = cookies.get('access_token');
 	const sessionID = cookies.get('session_id');
+	console.log(sessionID);
 	const response = await apiClient(`${BASE_URL}/api/get/user`, {
 		method: 'POST',
 		headers: {
@@ -12,7 +13,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
 			Authorization: accessToken || ''
 		},
 		body: JSON.stringify({
-			sessionID
+			session_id: sessionID
 		})
 	});
 

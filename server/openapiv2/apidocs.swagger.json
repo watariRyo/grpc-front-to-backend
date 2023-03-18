@@ -268,10 +268,12 @@
         },
         "parameters": [
           {
-            "name": "sessoinId",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoGetUserRequest"
+            }
           }
         ],
         "tags": [
@@ -853,6 +855,15 @@
         }
       }
     },
+    "protoGetUserRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        }
+      },
+      "title": "use user schema"
+    },
     "protoGetUserResponse": {
       "type": "object",
       "properties": {
@@ -1044,7 +1055,7 @@
     "protoLogoutUserRequest": {
       "type": "object",
       "properties": {
-        "sessoinId": {
+        "sessionId": {
           "type": "string"
         }
       }
@@ -1301,7 +1312,7 @@
         "password": {
           "type": "string"
         },
-        "sessoinId": {
+        "sessionId": {
           "type": "string"
         }
       }

@@ -10,7 +10,8 @@ export const POST: RequestHandler = async ({ request }) => {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			data
+			user_id: data.userID,
+			password: data.password
 		})
 	});
 

@@ -9,7 +9,7 @@ option go_package = "github.com/watariRyo/balance/server/proto";
 
 // use user schema
 message GetUserRequest {
-    string sessoin_id = 1;
+    string session_id = 1;
 }
 
 message GetUserResponse {
@@ -34,7 +34,7 @@ message RegisterUserResponse {
 
 message UpdateUserRequest {
     string password = 1;
-    string sessoin_id = 2;
+    string session_id = 2;
 }
 
 message UpdateUserResponse {
@@ -65,7 +65,7 @@ message LoginUserResponse {
 }
 
 message LogoutUserRequest {
-    string sessoin_id = 1;
+    string session_id = 1;
 }
 
 message LogoutUserResponse {
@@ -75,7 +75,8 @@ message LogoutUserResponse {
 service UserService {
     rpc GetUser (GetUserRequest) returns (GetUserResponse) {
         option (google.api.http) = {
-            post: "/balance/api/get/user"
+            post: "/balance/api/get/user",
+            body: "*"
         };
     };
     rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {
