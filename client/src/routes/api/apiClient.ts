@@ -1,3 +1,5 @@
+import type { HttpStatusCodes } from './httpStatusCode';
+
 export type ErrorResponseSchema = {
 	code?: number;
 	message?: string;
@@ -22,6 +24,15 @@ export class ApiError extends Error {
 		return Object.assign({}, this);
 	}
 }
+
+export const createCustomApiError = (message: string, code: HttpStatusCodes) => {
+	const serverErrorContent = {
+		message
+	};
+	const apiError = new ApiError(undefined, serverErrorContent);
+	apiError.status = code;
+	return apiError;
+};
 
 export const apiClient = async (endPoint: RequestInfo, config: RequestInit) => {
 	const response = await fetch(endPoint, {
