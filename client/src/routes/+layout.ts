@@ -7,7 +7,9 @@ export const load: LayoutLoad = ({ data, url }) => {
 		throw redirect(307, '/');
 	}
 	if (!user && url.pathname !== '/login') {
-		throw redirect(307, '/login');
+		if (url.pathname !== '/register') {
+			throw redirect(307, '/login');
+		}
 	}
 
 	return {

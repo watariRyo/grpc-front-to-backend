@@ -14,7 +14,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$components: 'src/lib/components',
-			$enum: 'src/enu'
+			$enum: 'src/lib/enum'
 		}
 	}
 };

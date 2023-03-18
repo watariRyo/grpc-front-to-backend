@@ -268,12 +268,6 @@
         },
         "parameters": [
           {
-            "name": "userId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "sessoinId",
             "in": "query",
             "required": false,
@@ -710,9 +704,6 @@
           "type": "string",
           "format": "int64"
         },
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -737,9 +728,6 @@
           "type": "string",
           "format": "int64"
         },
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -760,9 +748,6 @@
     "protoDeleteUserRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -782,9 +767,6 @@
         "id": {
           "type": "string",
           "format": "int64"
-        },
-        "userId": {
-          "type": "string"
         },
         "sessoinId": {
           "type": "string"
@@ -809,9 +791,6 @@
         "id": {
           "type": "string",
           "format": "int64"
-        },
-        "userId": {
-          "type": "string"
         },
         "groupName": {
           "type": "string"
@@ -842,9 +821,6 @@
         "id": {
           "type": "string",
           "format": "int64"
-        },
-        "userId": {
-          "type": "string"
         },
         "sessoinId": {
           "type": "string"
@@ -895,9 +871,6 @@
           "type": "string",
           "format": "int64"
         },
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -935,9 +908,6 @@
           "type": "string",
           "format": "int64"
         },
-        "userId": {
-          "type": "string"
-        },
         "groupName": {
           "type": "string"
         }
@@ -972,9 +942,6 @@
     "protoListGroupRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -995,9 +962,6 @@
     "protoListIncomeAndExpenditureRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "occurrenceDate": {
           "type": "string"
         },
@@ -1024,9 +988,6 @@
     "protoListUserTagRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -1083,9 +1044,6 @@
     "protoLogoutUserRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "sessoinId": {
           "type": "string"
         }
@@ -1102,9 +1060,6 @@
     "protoRegisterGroupRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "groupName": {
           "type": "string"
         },
@@ -1131,9 +1086,6 @@
     "protoRegisterIncomeAndExpenditureRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "amount": {
           "type": "integer",
           "format": "int32"
@@ -1218,9 +1170,6 @@
     "protoRegisterUserTagRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "tagName": {
           "type": "string"
         },
@@ -1271,9 +1220,6 @@
           "type": "string",
           "format": "int64"
         },
-        "userId": {
-          "type": "string"
-        },
         "groupName": {
           "type": "string"
         },
@@ -1303,9 +1249,6 @@
         "id": {
           "type": "string",
           "format": "int64"
-        },
-        "userId": {
-          "type": "string"
         },
         "amount": {
           "type": "integer",
@@ -1355,9 +1298,6 @@
     "protoUpdateUserRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "password": {
           "type": "string"
         },
@@ -1384,7 +1324,17 @@
           "type": "string",
           "format": "int64"
         },
-        "userId": {
+        "hasGroup": {
+          "type": "boolean"
+        },
+        "groupId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "grantLimit": {
+          "type": "string"
+        },
+        "tagName": {
           "type": "string"
         },
         "sessoinId": {

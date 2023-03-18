@@ -7,10 +7,9 @@ import "google/api/annotations.proto";
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 message ListIncomeAndExpenditureRequest {
-    string user_id = 1;
-    string occurrence_date = 2;
-    string classification = 3;
-    string sessoin_id = 4;
+    string occurrence_date = 1;
+    string classification = 2;
+    string sessoin_id = 3;
 }
 
 message ListIncomeAndExpenditureResponse {
@@ -28,8 +27,7 @@ message IncomeAndExpenditureResponse {
 
 message GetIncomeAndExpenditureRequest {
     int64 id = 1;
-    string user_id = 2;    
-    string sessoin_id = 3;
+    string sessoin_id = 2;
 }
 
 message GetIncomeAndExpenditureResponse {
@@ -42,12 +40,11 @@ message GetIncomeAndExpenditureResponse {
 }
 
 message RegisterIncomeAndExpenditureRequest {
-    string user_id = 1;
-    int32 amount = 2;
-    string occurrence_date = 3;
-    int64 user_tag_id = 4;
-    string classification = 5;
-    string sessoin_id = 6;
+    int32 amount = 1;
+    string occurrence_date = 2;
+    int64 user_tag_id = 3;
+    string classification = 4;
+    string sessoin_id = 5;
 }
 
 message RegisterIncomeAndExpenditureResponse {
@@ -61,12 +58,11 @@ message RegisterIncomeAndExpenditureResponse {
 
 message UpdateIncomeAndExpenditureRequest {
     int64 id = 1;
-    string user_id = 2;
-    int32 amount = 3;
-    string occurrence_date = 4;
-    int64 user_tag_id = 5;
-    string classification = 6;
-    string sessoin_id = 7;
+    int32 amount = 2;
+    string occurrence_date = 3;
+    int64 user_tag_id = 4;
+    string classification = 5;
+    string sessoin_id = 6;
 }
 
 message UpdateIncomeAndExpenditureResponse {
@@ -80,8 +76,7 @@ message UpdateIncomeAndExpenditureResponse {
 
 message DeleteIncomeAndExpenditureRequest {
     int64 id = 1;
-    string user_id = 2;
-    string sessoin_id = 3;
+    string sessoin_id = 2;
 }
 
 message DeleteIncomeAndExpenditureResponse {

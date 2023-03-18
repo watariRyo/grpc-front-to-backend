@@ -9,8 +9,7 @@ option go_package = "github.com/watariRyo/balance/server/proto";
 
 // use user schema
 message GetUserRequest {
-    string user_id = 1;
-    string sessoin_id = 2;
+    string sessoin_id = 1;
 }
 
 message GetUserResponse {
@@ -34,9 +33,8 @@ message RegisterUserResponse {
 }
 
 message UpdateUserRequest {
-    string user_id = 1;
-    string password = 2;
-    string sessoin_id = 3;
+    string password = 1;
+    string sessoin_id = 2;
 }
 
 message UpdateUserResponse {
@@ -45,8 +43,7 @@ message UpdateUserResponse {
 }
 
 message DeleteUserRequest {
-    string user_id = 1;
-    string sessoin_id = 2;
+    string sessoin_id = 1;
 }
 
 message DeleteUserResponse {
@@ -68,8 +65,7 @@ message LoginUserResponse {
 }
 
 message LogoutUserRequest {
-    string user_id = 1;
-    string sessoin_id = 2;
+    string sessoin_id = 1;
 }
 
 message LogoutUserResponse {

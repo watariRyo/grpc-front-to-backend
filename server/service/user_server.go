@@ -22,10 +22,10 @@ func NewUserService(r *repository.AllRepository, cfg *config.Config, tokenMaker 
 	t := ltime.NewRealClock(*time.Local)
 
 	return &userService{
-		repo: r,
-		cfg: cfg,
+		repo:       r,
+		cfg:        cfg,
 		tokenMaker: tokenMaker,
-		time: t,
+		time:       t,
 	}
 }
 
@@ -45,7 +45,7 @@ func (s *userService) GetUser(ctx context.Context, userID *pb.GetUserRequest) (*
 	}
 
 	return &pb.GetUserResponse{
-		UserId: sessionData,
+		UserId:           sessionData,
 		IsPrivacyChecked: true,
 	}, nil
 }
@@ -68,10 +68,11 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUser
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
 	return &pb.RegisterUserResponse{
-		SessionId: "Dummy",
-		AccessToken: accessToken,
-		RefreshToken: refreshToken,
-		AccessTokenExpiresAt: timestamppb.New(s.time.Now().Add(accessTokenDuration)), //TODO get token expires_at
+		UserId:                "dummy-123",
+		SessionId:             "Dummy",
+		AccessToken:           accessToken,
+		RefreshToken:          refreshToken,
+		AccessTokenExpiresAt:  timestamppb.New(s.time.Now().Add(accessTokenDuration)),  //TODO get token expires_at
 		RefreshTokenExpiresAt: timestamppb.New(s.time.Now().Add(refreshTokenDuration)), //TODO get token expires_at
 	}, nil
 }
@@ -80,7 +81,7 @@ func (s *userService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequ
 	log.Println("UpdateUser was invoked.")
 
 	return &pb.UpdateUserResponse{
-		UserId: "uuid-dummy",
+		UserId:           "uuid-dummy",
 		IsPrivacyChecked: true,
 	}, nil
 }
@@ -110,10 +111,11 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
 	return &pb.LoginUserResponse{
-		SessionId: "Dummy",
-		AccessToken: accessToken,
-		RefreshToken: refreshToken,
-		AccessTokenExpiresAt: timestamppb.New(s.time.Now().Add(accessTokenDuration)), //TODO get token expires_at
+		UserId:                "dummy-123",
+		SessionId:             "Dummy",
+		AccessToken:           accessToken,
+		RefreshToken:          refreshToken,
+		AccessTokenExpiresAt:  timestamppb.New(s.time.Now().Add(accessTokenDuration)),  //TODO get token expires_at
 		RefreshTokenExpiresAt: timestamppb.New(s.time.Now().Add(refreshTokenDuration)), //TODO get token expires_at
 	}, nil
 }
@@ -159,5 +161,5 @@ func (s *userService) setSessionAndToken(ctx context.Context, userID string) (st
 	// Cookieセット
 	cookie.SetCookie(ctx, sessionID)
 
-	return accessToken,  refreshToken, accessTokenPayload, refreshTokenPayload, nil
+	return accessToken, refreshToken, accessTokenPayload, refreshTokenPayload, nil
 }

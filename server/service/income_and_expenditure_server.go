@@ -22,10 +22,10 @@ func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Conf
 	t := ltime.NewRealClock(*time.Local)
 
 	return &incomeAndExpenditureService{
-		repo: r,
-		cfg: cfg,
+		repo:       r,
+		cfg:        cfg,
 		tokenMaker: tokenMaker,
-		time: t,
+		time:       t,
 	}
 }
 
@@ -41,11 +41,11 @@ func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Contex
 	log.Println("GetIncomeAndExpenditure was invoked.")
 
 	return &pb.GetIncomeAndExpenditureResponse{
-		Id: 1,
-		UserId: "userId",
-		Amount: 100,
+		Id:             1,
+		UserId:         "userId",
+		Amount:         100,
 		OccurrenceDate: "2023-01-01",
-		UserTagId: 1,
+		UserTagId:      1,
 		Classification: "INCOME",
 	}, nil
 }
@@ -54,11 +54,11 @@ func (s *incomeAndExpenditureService) RegisterIncomeAndExpenditure(ctx context.C
 	log.Println("RegisterIncomeAndExpenditure was invoked.")
 
 	return &pb.RegisterIncomeAndExpenditureResponse{
-		Id: 1,
-		UserId: "userId",
-		Amount: 100,
+		Id:             1,
+		UserId:         "userId",
+		Amount:         100,
 		OccurrenceDate: "2023-01-01",
-		UserTagId: 1,
+		UserTagId:      1,
 		Classification: "INCOME",
 	}, nil
 }
@@ -67,11 +67,11 @@ func (s *incomeAndExpenditureService) UpdateIncomeAndExpenditure(ctx context.Con
 	log.Println("UpdateIncomeAndExpenditure was invoked.")
 
 	return &pb.UpdateIncomeAndExpenditureResponse{
-		Id: 1,
-		UserId: "userId",
-		Amount: 100,
+		Id:             1,
+		UserId:         "userId",
+		Amount:         100,
 		OccurrenceDate: "2023-01-01",
-		UserTagId: 1,
+		UserTagId:      1,
 		Classification: "INCOME",
 	}, nil
 }
@@ -80,7 +80,7 @@ func (s *incomeAndExpenditureService) DeleteIncomeAndExpenditure(ctx context.Con
 	log.Println("DeleteIncomeAndExpenditure was invoked.")
 
 	return &pb.DeleteIncomeAndExpenditureResponse{
-		Id: 1,
+		Id:     1,
 		UserId: "userId",
 	}, nil
 }

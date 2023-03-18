@@ -2,6 +2,8 @@
   import "../app.css";
 	import Navigation from "$components/Navigation.svelte";
 	import type { LayoutData } from "./$types";
+	import { writable } from "svelte/store";
+	import { setContext } from "svelte";
 
   export let data: LayoutData;
 	let topbar: HTMLElement;
@@ -11,6 +13,11 @@
   $: if (topbar) {
 		headerOpacity = scrollY / topbar.offsetHeight < 1 ? scrollY / topbar.offsetHeight : 1;
 	}
+
+  const user = writable();
+  $: user.set(data.user);
+
+  setContext('user', user);
 </script>
 
 <div class="bg-white lg:pb-12">
@@ -27,18 +34,18 @@
       <!-- logo - end -->
 
       <!-- nav - start -->
-      {#if data.user}
+      {#if user}
         <Navigation />
       {/if}
       <!-- nav - end -->
 
       <!-- buttons - start -->
       <div class="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
-        {#if data.user}
+        {#if user}
           <a href="/#" class="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base">Sign out</a>
         {:else}
           <a href="/login" class="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base">Sign in</a>
-          <a href="#" class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Sign up</a>
+          <a href="/register" class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Sign up</a>
         {/if}
       </div>
 

@@ -5,7 +5,8 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			user?: {
-				userID: number;
+				userID: string;
+				sessionID: string;
 				isPrivacyChecked: boolean;
 			};
 		}

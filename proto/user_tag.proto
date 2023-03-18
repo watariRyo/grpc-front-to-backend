@@ -7,8 +7,7 @@ import "google/api/annotations.proto";
 option go_package = "github.com/watariRyo/balance/server/proto";
 
 message ListUserTagRequest {
-    string user_id = 1;
-    string sessoin_id = 2;
+    string sessoin_id = 1;
 }
 
 message ListUserTagResponse {
@@ -26,8 +25,7 @@ message UserTagResponse {
 
 message GetUserTagRequest {
     int64 id = 1;
-    string user_id = 2;
-    string sessoin_id = 3;
+    string sessoin_id = 2;
 }
 
 message GetUserTagResponse {
@@ -40,12 +38,11 @@ message GetUserTagResponse {
 }
 
 message RegisterUserTagRequest {
-    string user_id = 1;
-    string tag_name = 2;
-    bool has_group = 3;
-    int64 group_id = 4;
-    string grant_limit = 5;
-    string sessoin_id = 6;
+    string tag_name = 1;
+    bool has_group = 2;
+    int64 group_id = 3;
+    string grant_limit = 4;
+    string sessoin_id = 5;
 }
 
 message RegisterUserTagResponse {
@@ -59,8 +56,11 @@ message RegisterUserTagResponse {
 
 message UpdateUserTagRequest {
     int64 id = 1;
-    string user_id = 2;
-    string sessoin_id = 3;
+    bool has_group = 2;
+    int64 group_id = 3;
+    string grant_limit = 4;
+    string tag_name = 5;
+    string sessoin_id = 6;
 }
 
 message UpdateUserTagResponse {
@@ -74,8 +74,7 @@ message UpdateUserTagResponse {
 
 message DeleteUserTagRequest {
     int64 id = 1;
-    string user_id = 2;
-    string sessoin_id = 3;
+    string sessoin_id = 2;
 }
 
 message DeleteUserTagResponse {

@@ -4,11 +4,9 @@
 	import { redirect } from "@sveltejs/kit";
 	import { element_is, getContext, prevent_default } from "svelte/internal";
 	import { writable } from "svelte/store";
-  import { ApiError } from "../api/apiClient";
+import { ApiError } from "../api/apiClient";
 	import { httpStatusCodes, HttpStatusCodes300 } from "../../lib/enum/httpStatusCode";
-	import type { ActionData } from "./$types";
 
-  export let form: ActionData
 
   let userID = "";
   let password = "";
@@ -52,9 +50,7 @@
     const responseJson = await response.json()
     if (responseJson.ok) {
       // console.log(responseJson.grpcResponse)
-
-
-      goto('/')
+        //   goto('/')
     } else {
       // statusごとの処理
       alert(responseJson.grpcResponse.serverErrorContent.message)
@@ -67,9 +63,9 @@
 {/if}
 <div class="bg-white py-6 sm:py-8 lg:py-12">
   <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
-    <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-8 lg:text-3xl">Login</h2>
+    <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-8 lg:text-3xl">Register</h2>
 
-    <form class="mx-auto max-w-lg rounded-lg border" action="?/login" method="POST" use:enhance={({form, data, action, cancel}) => {
+    <form class="mx-auto max-w-lg rounded-lg border" action="?/register" method="POST" use:enhance={({form, data, action, cancel}) => {
       isLoading = true
       return ({result}) => {
         isLoading = false
@@ -85,22 +81,19 @@
         <div>
           <label for="userID" class="mb-2 inline-block text-sm text-gray-800 sm:text-base">User ID</label>
           <input name="userID" bind:value={userID} class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
-          <br />
-          {#if form?.userIDMissing}
-            <p style="color: red; margin-bottom: 0">Username is Required!</p>
-          {/if}
         </div>
 
         <div>
           <label for="password" class="mb-2 inline-block text-sm text-gray-800 sm:text-base">Password</label>
           <input name="password" bind:value={password} class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
-          <br />
-          {#if form?.passwordMissing}
-            <p style="color: red; margin-bottom: 0">Password is Required!</p>
-          {/if}
         </div>
 
-        <button type="submit" disabled={isLoading} class="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Sign in</button>
+        <div>
+          <label for="passwordConfirm" class="mb-2 inline-block text-sm text-gray-800 sm:text-base">Confirm Password</label>
+          <input name="passwordConfirm" bind:value={passwordConfirm} class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
+        </div>
+
+        <button type="submit" disabled={isLoading} class="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base">Sign Up</button>
 
         <!-- <div class="relative flex items-center justify-center">
           <span class="absolute inset-x-0 h-px bg-gray-300"></span>
@@ -128,8 +121,8 @@
       </div>
 
       <div class="flex items-center justify-center bg-gray-100 p-4">
-        <div class="text-center text-sm text-gray-500">Don't have an account?</div>
-        <button class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700 ml-2" on:click={() => goto('/register')}>Sign Up</button>
+        <div class="text-center text-sm text-gray-500">If you have an account. switch to the login.</div>
+        <button class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700 ml-2" on:click={() => goto('/login')}>Sign in</button>
       </div>
     </form>
   </div>

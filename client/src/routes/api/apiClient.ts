@@ -1,4 +1,4 @@
-import type { HttpStatusCodes } from './httpStatusCode';
+import type { HttpStatusCodes } from '../../lib/enum/httpStatusCode';
 
 export type ErrorResponseSchema = {
 	code?: number;
