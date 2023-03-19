@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -10,6 +9,7 @@ import (
 	"github.com/watariRyo/balance/server/cookie"
 	"github.com/watariRyo/balance/server/domain/model"
 	"github.com/watariRyo/balance/server/domain/repository"
+	"github.com/watariRyo/balance/server/logger"
 	"github.com/watariRyo/balance/server/messages"
 	pb "github.com/watariRyo/balance/server/proto"
 	ltime "github.com/watariRyo/balance/server/time"
@@ -30,11 +30,11 @@ func NewUserService(r *repository.AllRepository, cfg *config.Config, tokenMaker 
 }
 
 func (s *userService) GetUser(ctx context.Context, request *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	log.Println("GetUser was invoked.")
 
 	// セッション（Redis）取得
 	sessionData, err := s.repo.RedisClient.GetSession(request.SessionId)
 	if err != nil {
+		logger.Errorf(ctx, "something went wrong. %v.", err)
 		return nil, messages.SessionError(err.Error()).Err()
 	}
 
@@ -45,11 +45,10 @@ func (s *userService) GetUser(ctx context.Context, request *pb.GetUserRequest) (
 }
 
 func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUserRequest) (*pb.RegisterUserResponse, error) {
-	log.Println("RegisterUser was invoked.")
-
 	// create user
-	_, err := util.HashPassword(request.Password)
+	hashPassword, err := util.HashPassword(request.Password)
 	if err != nil {
+		logger.Errorf(ctx, "something went wrong. %v. user_id: %s", err, request.UserId)
 		return nil, messages.FailedMakePasswordHash().Err()
 	}
 
@@ -62,8 +61,21 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUser
 	accessTokenDuration := accessTokenPayload.ExpiredAt.Sub(s.time.Now())
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
+	if err = s.repo.DBTransaction(ctx, s.repo.DBConnection, func(ctx context.Context, conn repository.DBConnection) error {
+		request.Password = hashPassword
+
+		_, err := s.repo.UserRepository.Insert(ctx, conn, request)
+		if err != nil {
+			logger.Errorf(ctx, "something went wrong DB. %v. user_id: %s", err, request.UserId)
+			return messages.InternalDBError().Err()
+		}
+		return nil
+	}, nil); err != nil {
+		return nil, err
+	}
+
 	return &pb.RegisterUserResponse{
-		UserId:                "dummy-123",
+		UserId:                request.UserId,
 		SessionId:             sessionID,
 		AccessToken:           accessToken,
 		RefreshToken:          refreshToken,
@@ -73,7 +85,6 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUser
 }
 
 func (s *userService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
-	log.Println("UpdateUser was invoked.")
 
 	return &pb.UpdateUserResponse{
 		UserId:           "uuid-dummy",
@@ -82,7 +93,6 @@ func (s *userService) UpdateUser(ctx context.Context, request *pb.UpdateUserRequ
 }
 
 func (s *userService) DeleteUser(ctx context.Context, userID *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
-	log.Println("DeleteUser was invoked.")
 
 	return &pb.DeleteUserResponse{
 		UserId: "uuid-dummy",
@@ -90,10 +100,16 @@ func (s *userService) DeleteUser(ctx context.Context, userID *pb.DeleteUserReque
 }
 
 func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserRequest) (*pb.LoginUserResponse, error) {
-	log.Println("LoginUser was invoked.")
+	logger.Infof(ctx, "LoginUser was invoked. userId: %s", request.UserId)
+
+	user, err := s.repo.UserRepository.Login(ctx, s.repo.DBConnection, request)
+	if err != nil {
+		logger.Errorf(ctx, "something went wrong DB. %v. user_id: %s", err, request.UserId)
+		return nil, messages.GetNoData().Err()
+	}
 
 	// password mismatch
-	if err := util.CheckPassword(request.Password, "user.password"); err != nil {
+	if err := util.CheckPassword(request.Password, user.Password); err != nil {
 		return nil, messages.PasswordMismatch().Err()
 	}
 
@@ -106,7 +122,7 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
 	return &pb.LoginUserResponse{
-		UserId:                "dummy-123",
+		UserId:                user.UserId,
 		SessionId:             sessionID,
 		AccessToken:           accessToken,
 		RefreshToken:          refreshToken,
@@ -116,13 +132,11 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 }
 
 func (s *userService) LogoutUser(ctx context.Context, userID *pb.LogoutUserRequest) (*pb.LogoutUserResponse, error) {
-	log.Println("LogoutUser was invoked.")
 
 	// TODO セッション除去
 	_, err := cookie.ParseMetadataCookieSessionID(ctx)
 	if err != nil {
-		log.Printf("cookie: %v", err)
-		println("cookie error")
+		return nil, err
 	}
 
 	return &pb.LogoutUserResponse{
@@ -134,10 +148,12 @@ func (s *userService) setSessionAndToken(ctx context.Context, userID string) (st
 	// token生成
 	accessToken, err := s.tokenMaker.CreateToken(userID, s.cfg.Secret.AccessTokenDuration)
 	if err != nil {
+		logger.Errorf(ctx, "%v. user_id: %s", err, userID)
 		return "", "", nil, nil, "", messages.CreateTokenError().Err()
 	}
 	refreshToken, err := s.tokenMaker.CreateToken(userID, s.cfg.Secret.RefreshTokenDuration)
 	if err != nil {
+		logger.Errorf(ctx, "%v. user_id: %s", err, userID)
 		return "", "", nil, nil, "", messages.CreateTokenError().Err()
 	}
 
@@ -149,7 +165,7 @@ func (s *userService) setSessionAndToken(ctx context.Context, userID string) (st
 	sessionID := uuid.NewString()
 	err = s.repo.RedisClient.SaveSession(sessionID, model.SessionData{UserID: userID}, refreshTokenDuration)
 	if err != nil {
-		println(err.Error())
+		logger.Errorf(ctx, "%v. user_id: %s", err, userID)
 		return "", "", nil, nil, "", messages.SessionError(err.Error()).Err()
 	}
 	// Cookieセット

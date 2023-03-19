@@ -1,5 +1,7 @@
 package model
 
 type User struct {
-	UserId string
+	UserId           string
+	Password         string
+	IsPrivacyChecked bool
 }

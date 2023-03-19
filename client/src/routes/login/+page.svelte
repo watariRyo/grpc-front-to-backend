@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { applyAction, enhance } from "$app/forms";
 	import { goto } from "$app/navigation";
-	import { redirect } from "@sveltejs/kit";
-	import { element_is, getContext, prevent_default } from "svelte/internal";
-	import { writable } from "svelte/store";
-  import { ApiError } from "../api/apiClient";
-	import { httpStatusCodes, HttpStatusCodes300 } from "../../lib/enum/httpStatusCode";
 	import type { ActionData } from "./$types";
 
   export let form: ActionData
@@ -16,50 +11,6 @@
 
   let error = ''
   let isLoading = false
-
-  // const handleLogin = async() => {
-  //   const response = await fetch("/api/login", {
-  //       method: "POST",
-  //       headers: {
-  //       "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         userID,
-  //         password,
-  //       }),
-  //   });
-  //   const responseJson = await response.json()
-  //   if (responseJson.ok) {
-  //     console.log(responseJson.grpcResponse)
-  //   } else {
-  //     // statusごとの処理
-  //     console.log(responseJson.grpcResponse)
-  //   }
-  // }
-
-  const handleSignUp = async() => {
-    const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userID,
-          password,
-          passwordConfirm,
-        }),
-    });
-    const responseJson = await response.json()
-    if (responseJson.ok) {
-      // console.log(responseJson.grpcResponse)
-
-
-      goto('/')
-    } else {
-      // statusごとの処理
-      alert(responseJson.grpcResponse.serverErrorContent.message)
-    }
-  }
 </script>
 
 {#if error}
@@ -93,7 +44,7 @@
 
         <div>
           <label for="password" class="mb-2 inline-block text-sm text-gray-800 sm:text-base">Password</label>
-          <input name="password" bind:value={password} class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
+          <input name="password" type="password" bind:value={password} class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
           <br />
           {#if form?.passwordMissing}
             <p style="color: red; margin-bottom: 0">Password is Required!</p>
@@ -129,7 +80,7 @@
 
       <div class="flex items-center justify-center bg-gray-100 p-4">
         <div class="text-center text-sm text-gray-500">Don't have an account?</div>
-        <button class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700 ml-2" on:click={() => goto('/register')}>Sign Up</button>
+        <button class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700 ml-2" on:click|preventDefault={() => goto('/register')}>Sign Up</button>
       </div>
     </form>
   </div>

@@ -8,8 +8,9 @@ import (
 )
 
 type UserRepository interface {
-	Get(ctx context.Context, input *pb.GetUserRequest) (*pb.GetUserResponse, error)
-	Insert(ctx context.Context, input *pb.RegisterUserRequest) (*model.User, error)
-	Update(ctx context.Context, input *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error)
-	Delete(ctx context.Context, input *pb.DeleteUserRequest) (*pb.DeleteUserResponse , error)
+	Get(ctx context.Context, conn DBConnection, input *pb.GetUserRequest) (*pb.GetUserResponse, error)
+	Login(ctx context.Context, conn DBConnection, input *pb.LoginUserRequest) (*model.User, error)
+	Insert(ctx context.Context, conn DBConnection, input *pb.RegisterUserRequest) (*model.User, error)
+	Update(ctx context.Context, conn DBConnection, input *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error)
+	Delete(ctx context.Context, conn DBConnection, input *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error)
 }
