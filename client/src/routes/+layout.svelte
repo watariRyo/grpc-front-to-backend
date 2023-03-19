@@ -2,8 +2,6 @@
   import "../app.css";
 	import Navigation from "$components/Navigation.svelte";
 	import type { LayoutData } from "./$types";
-	import { writable } from "svelte/store";
-	import { setContext } from "svelte";
 
   export let data: LayoutData;
 	let topbar: HTMLElement;
@@ -14,10 +12,7 @@
 		headerOpacity = scrollY / topbar.offsetHeight < 1 ? scrollY / topbar.offsetHeight : 1;
 	}
 
-  const user = writable();
-  $: user.set(data.user);
-
-  setContext('user', user);
+  $: user = data.user
 </script>
 
 <div class="bg-white lg:pb-12">

@@ -19,7 +19,7 @@ var _ repository.RedisClient = (*RedisClient)(nil)
 func NewRedisClient(cfg *config.Redis) (*RedisClient, error) {
 	client := redis.NewClient(
 		&redis.Options{
-			Addr: cfg.Host + ":" + cfg.Port,
+			Addr:     cfg.Host + ":" + cfg.Port,
 			Password: cfg.Password,
 		},
 	)
@@ -38,30 +38,31 @@ func (rc *RedisClient) SaveSession(sessionID string, sessionData model.SessionDa
 	if err != nil {
 		return err
 	}
-    err = rc.client.Set(sessionID, seralized, duration).Err()
-    if err != nil {
-        return err
-    }
+	err = rc.client.Set(sessionID, seralized, duration).Err()
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }
 
-func (rc *RedisClient) GetSession(sessionID string) (string, error) {
-    sessionData, err := rc.client.Get(sessionID).Result()
-    if err != nil {
-        return "", err
-    }
+func (rc *RedisClient) GetSession(sessionID string) (*model.SessionData, error) {
+	// sessionData, err := rc.client.Get(sessionID).Result()
+	sessionData, err := rc.jsonToSessionData(sessionID)
+	if err != nil {
+		return nil, err
+	}
 
-    return sessionData, nil
+	return sessionData, nil
 }
 
 func (rc *RedisClient) DeleteSession(sessionID string) error {
-    err := rc.client.Del(sessionID).Err()
-    if err != nil {
-        return err
-    }
+	err := rc.client.Del(sessionID).Err()
+	if err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }
 
 func (rc *RedisClient) sessionDataToJSON(sessionData *model.SessionData) ([]byte, error) {

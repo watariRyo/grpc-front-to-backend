@@ -39,7 +39,7 @@ func (s *userService) GetUser(ctx context.Context, request *pb.GetUserRequest) (
 	}
 
 	return &pb.GetUserResponse{
-		UserId:           sessionData,
+		UserId:           sessionData.UserID,
 		IsPrivacyChecked: true,
 	}, nil
 }
