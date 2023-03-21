@@ -1061,12 +1061,7 @@
       }
     },
     "protoLogoutUserResponse": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string"
-        }
-      }
+      "type": "object"
     },
     "protoRegisterGroupRequest": {
       "type": "object",

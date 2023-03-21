@@ -35,7 +35,6 @@ export const createCustomApiError = (message: string, code: HttpStatusCodes) => 
 };
 
 export const apiClient = async (endPoint: RequestInfo, config: RequestInit) => {
-	console.log(config);
 	const response = await fetch(endPoint, {
 		mode: 'cors',
 		credentials: 'include', // サイトを跨ぐCookieの保持に必須

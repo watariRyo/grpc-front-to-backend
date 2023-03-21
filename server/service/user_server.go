@@ -6,7 +6,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/watariRyo/balance/server/config"
-	"github.com/watariRyo/balance/server/cookie"
 	"github.com/watariRyo/balance/server/domain/model"
 	"github.com/watariRyo/balance/server/domain/repository"
 	"github.com/watariRyo/balance/server/logger"
@@ -131,17 +130,16 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 	}, nil
 }
 
-func (s *userService) LogoutUser(ctx context.Context, userID *pb.LogoutUserRequest) (*pb.LogoutUserResponse, error) {
+func (s *userService) LogoutUser(ctx context.Context, request *pb.LogoutUserRequest) (*pb.LogoutUserResponse, error) {
 
-	// TODO セッション除去
-	_, err := cookie.ParseMetadataCookieSessionID(ctx)
+	// セッション（Redis）取得
+	err := s.repo.RedisClient.DeleteSession(request.SessionId)
 	if err != nil {
-		return nil, err
+		logger.Errorf(ctx, "something went wrong. %v.", err)
+		return nil, messages.SessionError(err.Error()).Err()
 	}
 
-	return &pb.LogoutUserResponse{
-		UserId: "uuid-dummy",
-	}, nil
+	return &pb.LogoutUserResponse{}, nil
 }
 
 func (s *userService) setSessionAndToken(ctx context.Context, userID string) (string, string, *model.Payload, *model.Payload, string, error) {

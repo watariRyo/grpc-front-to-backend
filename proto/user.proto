@@ -68,9 +68,7 @@ message LogoutUserRequest {
     string session_id = 1;
 }
 
-message LogoutUserResponse {
-    string user_id = 1;
-}
+message LogoutUserResponse {}
 
 service UserService {
     rpc GetUser (GetUserRequest) returns (GetUserResponse) {
