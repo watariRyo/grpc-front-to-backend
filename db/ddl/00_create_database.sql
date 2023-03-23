@@ -1,1 +1,2 @@
 CREATE DATABASE balance;
+CREATE DATABASE balance_test;

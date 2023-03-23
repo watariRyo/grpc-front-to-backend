@@ -5,3 +5,5 @@ migrate-install:
 migrate:
 	ridgepole --apply -c config.yml -f ./schema/Schemafile
 	
+migrate-test:
+	ridgepole --apply -c config.yml -f ./schema/Schemafile -E test

@@ -11,6 +11,7 @@ services:
       - ./db/ddl/00_create_database.sql:/docker-entrypoint-initdb.d/00_create_database.sql
       - ./db/ddl/01_create_user.sql:/docker-entrypoint-initdb.d/01_create_user.sql
       - ./db/data:/var/lib/mysql
+      - ./db/mysql:/etc/mysql/conf.d
     expose:
       - "3306"
     ports:
@@ -46,6 +47,7 @@ services:
       - ./server:/app
     depends_on:
       - db
+      - redis
     environment:
       EXEC_MODE: "docker"
       CONFIG_FILE: "/app/config/config.yaml"

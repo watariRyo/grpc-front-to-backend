@@ -126,3 +126,10 @@ evans-group:
 
 evans-income_and_expenditure:
 	evans --host localhost -p 8080 ../proto/income_and_expenditure.proto 
+
+TEST_FLAGS ?= -cover -race
+TEST_TAGS ?= ""
+COVER_PROFILE ?= ""
+
+docker-test:
+	docker compose run backend go test ./... ${TEST_FLAGS} -tags=${TEST_TAGS} -coverprofile=${COVER_PROFILE}

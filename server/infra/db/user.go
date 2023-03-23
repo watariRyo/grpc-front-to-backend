@@ -35,7 +35,6 @@ func (r *UserRepository) Login(ctx context.Context, conn repository.DBConnection
 
 	return &model.User{
 		UserId:           user.UserID,
-		Password:         user.Password,
 		IsPrivacyChecked: user.IsPrivacyChecked,
 	}, nil
 }
@@ -53,7 +52,8 @@ func (r *UserRepository) Insert(ctx context.Context, conn repository.DBConnectio
 	}
 
 	return &model.User{
-		UserId: user.UserID,
+		UserId:           user.UserID,
+		IsPrivacyChecked: true,
 	}, nil
 }
 

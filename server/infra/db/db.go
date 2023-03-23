@@ -12,25 +12,25 @@ import (
 )
 
 var defaultConnectionInfo = &connectionInfo{
-	username: 	"root",
-	password: 	"root",
-	host: 		"db",
-	port: 		"3306",
-	schema: 	"balance",
-	debugMode:	false,
+	username:  "root",
+	password:  "root",
+	host:      "db",
+	port:      "3306",
+	schema:    "balance",
+	debugMode: false,
 }
 
 type connectionInfo struct {
-	username 	string
-	password 	string
-	host 		string
-	port 		string
-	schema 		string
-	debugMode 	bool
+	username  string
+	password  string
+	host      string
+	port      string
+	schema    string
+	debugMode bool
 }
 
 func (c *connectionInfo) connectionString() string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charaset=utf8&parseTime=True&loc=Asia%%2FTokyo",c.username,c.password, c.host, c.port, c.schema)
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charaset=utf8&parseTime=True&loc=Asia%%2FTokyo", c.username, c.password, c.host, c.port, c.schema)
 }
 
 type OptionFunc func(c *connectionInfo)
