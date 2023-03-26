@@ -839,6 +839,9 @@
         "userId": {
           "type": "string"
         },
+        "name": {
+          "type": "string"
+        },
         "amount": {
           "type": "integer",
           "format": "int32"
@@ -932,6 +935,9 @@
           "format": "int64"
         },
         "userId": {
+          "type": "string"
+        },
+        "name": {
           "type": "string"
         },
         "amount": {
@@ -1121,6 +1127,9 @@
         "userId": {
           "type": "string"
         },
+        "name": {
+          "type": "string"
+        },
         "amount": {
           "type": "integer",
           "format": "int32"
@@ -1283,6 +1292,9 @@
           "format": "int64"
         },
         "userId": {
+          "type": "string"
+        },
+        "name": {
           "type": "string"
         },
         "amount": {

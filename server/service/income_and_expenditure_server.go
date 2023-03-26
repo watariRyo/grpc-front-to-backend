@@ -32,9 +32,7 @@ func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Conf
 func (s *incomeAndExpenditureService) ListIncomeAndExpenditure(ctx context.Context, request *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error) {
 	log.Println("ListIncomeAndExpenditure was invoked.")
 
-	return &pb.ListIncomeAndExpenditureResponse{
-		IncomeAndExpenditureList: []*pb.IncomeAndExpenditureResponse{},
-	}, nil
+	return s.repo.IncomeAndExpenditureRepository.List(ctx, request)
 }
 
 func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error) {

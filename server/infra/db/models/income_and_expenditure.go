@@ -27,6 +27,8 @@ type IncomeAndExpenditure struct { // ID
 	ID int64 `boil:"id" json:"id" toml:"id" yaml:"id"`
 	// ユーザーID
 	UserID string `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
+	// 名前
+	Name string `boil:"name" json:"name" toml:"name" yaml:"name"`
 	// 金額
 	Amount int `boil:"amount" json:"amount" toml:"amount" yaml:"amount"`
 	// 発生日
@@ -47,6 +49,7 @@ type IncomeAndExpenditure struct { // ID
 var IncomeAndExpenditureColumns = struct {
 	ID             string
 	UserID         string
+	Name           string
 	Amount         string
 	OccurrenceDate string
 	UserTagID      string
@@ -56,6 +59,7 @@ var IncomeAndExpenditureColumns = struct {
 }{
 	ID:             "id",
 	UserID:         "user_id",
+	Name:           "name",
 	Amount:         "amount",
 	OccurrenceDate: "occurrence_date",
 	UserTagID:      "user_tag_id",
@@ -67,6 +71,7 @@ var IncomeAndExpenditureColumns = struct {
 var IncomeAndExpenditureTableColumns = struct {
 	ID             string
 	UserID         string
+	Name           string
 	Amount         string
 	OccurrenceDate string
 	UserTagID      string
@@ -76,6 +81,7 @@ var IncomeAndExpenditureTableColumns = struct {
 }{
 	ID:             "income_and_expenditure.id",
 	UserID:         "income_and_expenditure.user_id",
+	Name:           "income_and_expenditure.name",
 	Amount:         "income_and_expenditure.amount",
 	OccurrenceDate: "income_and_expenditure.occurrence_date",
 	UserTagID:      "income_and_expenditure.user_tag_id",
@@ -127,6 +133,7 @@ func (w whereHelpernull_Int64) IsNotNull() qm.QueryMod { return qmhelper.WhereIs
 var IncomeAndExpenditureWhere = struct {
 	ID             whereHelperint64
 	UserID         whereHelperstring
+	Name           whereHelperstring
 	Amount         whereHelperint
 	OccurrenceDate whereHelperstring
 	UserTagID      whereHelpernull_Int64
@@ -136,6 +143,7 @@ var IncomeAndExpenditureWhere = struct {
 }{
 	ID:             whereHelperint64{field: "`income_and_expenditure`.`id`"},
 	UserID:         whereHelperstring{field: "`income_and_expenditure`.`user_id`"},
+	Name:           whereHelperstring{field: "`income_and_expenditure`.`name`"},
 	Amount:         whereHelperint{field: "`income_and_expenditure`.`amount`"},
 	OccurrenceDate: whereHelperstring{field: "`income_and_expenditure`.`occurrence_date`"},
 	UserTagID:      whereHelpernull_Int64{field: "`income_and_expenditure`.`user_tag_id`"},
@@ -182,8 +190,8 @@ func (r *incomeAndExpenditureR) GetUser() *User {
 type incomeAndExpenditureL struct{}
 
 var (
-	incomeAndExpenditureAllColumns            = []string{"id", "user_id", "amount", "occurrence_date", "user_tag_id", "classification", "created_at", "updated_at"}
-	incomeAndExpenditureColumnsWithoutDefault = []string{"user_id", "amount", "occurrence_date", "user_tag_id", "classification", "created_at", "updated_at"}
+	incomeAndExpenditureAllColumns            = []string{"id", "user_id", "name", "amount", "occurrence_date", "user_tag_id", "classification", "created_at", "updated_at"}
+	incomeAndExpenditureColumnsWithoutDefault = []string{"user_id", "name", "amount", "occurrence_date", "user_tag_id", "classification", "created_at", "updated_at"}
 	incomeAndExpenditureColumnsWithDefault    = []string{"id"}
 	incomeAndExpenditurePrimaryKeyColumns     = []string{"id"}
 	incomeAndExpenditureGeneratedColumns      = []string{}

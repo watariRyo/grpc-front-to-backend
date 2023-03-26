@@ -857,7 +857,7 @@ func testIncomeAndExpendituresSelect(t *testing.T) {
 }
 
 var (
-	incomeAndExpenditureDBTypes = map[string]string{`ID`: `bigint`, `UserID`: `varchar`, `Amount`: `int`, `OccurrenceDate`: `varchar`, `UserTagID`: `bigint`, `Classification`: `varchar`, `CreatedAt`: `datetime`, `UpdatedAt`: `datetime`}
+	incomeAndExpenditureDBTypes = map[string]string{`ID`: `bigint`, `UserID`: `varchar`, `Name`: `varchar`, `Amount`: `int`, `OccurrenceDate`: `varchar`, `UserTagID`: `bigint`, `Classification`: `varchar`, `CreatedAt`: `datetime`, `UpdatedAt`: `datetime`}
 	_                           = bytes.MinRead
 )
 

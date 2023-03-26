@@ -38,7 +38,10 @@ export const actions: Actions = {
 				isPrivacyChecked: true
 			};
 
-			throw redirect(HttpStatusCodes300.SEE_OTHER, url.searchParams.get('redirectTo') || '/');
+			throw redirect(
+				HttpStatusCodes300.SEE_OTHER,
+				url.searchParams.get('redirectTo') || '/balance'
+			);
 		} else {
 			throw error(responseJson.grpcResponse.status, {
 				message: responseJson.grpcResponse.serverErrorContent.message

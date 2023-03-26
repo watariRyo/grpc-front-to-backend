@@ -7,7 +7,6 @@
 
   let userID = "";
   let password = "";
-  let passwordConfirm = "";
 
   let error = ''
   let isLoading = false

@@ -1,5 +1,6 @@
 create_table "income_and_expenditure", primary_key: "id", id: {type: :bigint, comment:"ID"}, charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "収支", force: :cascade do |t|
   t.string "user_id", limit: 32, null: false, comment: "ユーザーID"
+  t.string "name", limit: 256, null: false, comment: "名前"
   t.integer "amount", null: false, comment: "金額"
   t.string "occurrence_date", limit: 8, null: false, comment: "発生日"
   t.bigint "user_tag_id", null: true, comment: "ユーザータグID"

@@ -19,10 +19,11 @@ message ListIncomeAndExpenditureResponse {
 message IncomeAndExpenditureResponse {
     int64 id = 1;
     string user_id = 2;
-    int32 amount = 3;
-    string occurrence_date = 4;
-    int64 user_tag_id = 5;
-    string classification = 6;
+    string name = 3;
+    int32 amount = 4;
+    string occurrence_date = 5;
+    int64 user_tag_id = 6;
+    string classification = 7;
 }
 
 message GetIncomeAndExpenditureRequest {
@@ -33,10 +34,11 @@ message GetIncomeAndExpenditureRequest {
 message GetIncomeAndExpenditureResponse {
     int64 id = 1;
     string user_id = 2;
-    int32 amount = 3;
-    string occurrence_date = 4;
-    int64 user_tag_id = 5;
-    string classification = 6;
+    string name = 3;
+    int32 amount = 4;
+    string occurrence_date = 5;
+    int64 user_tag_id = 6;
+    string classification = 7;
 }
 
 message RegisterIncomeAndExpenditureRequest {
@@ -50,10 +52,11 @@ message RegisterIncomeAndExpenditureRequest {
 message RegisterIncomeAndExpenditureResponse {
     int64 id = 1;
     string user_id = 2;
-    int32 amount = 3;
-    string occurrence_date = 4;
-    int64 user_tag_id = 5;
-    string classification = 6;
+    string name = 3;
+    int32 amount = 4;
+    string occurrence_date = 5;
+    int64 user_tag_id = 6;
+    string classification = 7;
 }
 
 message UpdateIncomeAndExpenditureRequest {
@@ -68,10 +71,11 @@ message UpdateIncomeAndExpenditureRequest {
 message UpdateIncomeAndExpenditureResponse {
     int64 id = 1;
     string user_id = 2;
-    int32 amount = 3;
-    string occurrence_date = 4;
-    int64 user_tag_id = 5;
-    string classification = 6;
+    string name = 3;
+    int32 amount = 4;
+    string occurrence_date = 5;
+    int64 user_tag_id = 6;
+    string classification = 7;    
 }
 
 message DeleteIncomeAndExpenditureRequest {

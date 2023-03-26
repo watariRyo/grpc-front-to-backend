@@ -10,7 +10,7 @@
 
   const navItems: { path: string; label: string }[] = [
     {
-      path: '/',
+      path: '/balance',
       label: 'Home',
     //   tailwindClass: getNavCssClass('/')
     },
