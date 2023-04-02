@@ -52,19 +52,34 @@ func (mr *MockUserRepositoryMockRecorder) Delete(ctx, conn, input interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockUserRepository)(nil).Delete), ctx, conn, input)
 }
 
-// Get mocks base method.
-func (m *MockUserRepository) Get(ctx context.Context, conn repository.DBConnection, input *proto.GetUserRequest) (*proto.GetUserResponse, error) {
+// Exist mocks base method.
+func (m *MockUserRepository) Exist(ctx context.Context, conn repository.DBConnection, userID string) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", ctx, conn, input)
-	ret0, _ := ret[0].(*proto.GetUserResponse)
+	ret := m.ctrl.Call(m, "Exist", ctx, conn, userID)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Exist indicates an expected call of Exist.
+func (mr *MockUserRepositoryMockRecorder) Exist(ctx, conn, userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exist", reflect.TypeOf((*MockUserRepository)(nil).Exist), ctx, conn, userID)
+}
+
+// Get mocks base method.
+func (m *MockUserRepository) Get(ctx context.Context, conn repository.DBConnection, userID string) (*model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", ctx, conn, userID)
+	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockUserRepositoryMockRecorder) Get(ctx, conn, input interface{}) *gomock.Call {
+func (mr *MockUserRepositoryMockRecorder) Get(ctx, conn, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockUserRepository)(nil).Get), ctx, conn, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockUserRepository)(nil).Get), ctx, conn, userID)
 }
 
 // Insert mocks base method.

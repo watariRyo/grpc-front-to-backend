@@ -9,7 +9,7 @@ option go_package = "github.com/watariRyo/balance/server/proto";
 message ListIncomeAndExpenditureRequest {
     string occurrence_date = 1;
     string classification = 2;
-    string sessoin_id = 3;
+    string session_id = 3;
 }
 
 message ListIncomeAndExpenditureResponse {
@@ -28,7 +28,7 @@ message IncomeAndExpenditureResponse {
 
 message GetIncomeAndExpenditureRequest {
     int64 id = 1;
-    string sessoin_id = 2;
+    string session_id = 2;
 }
 
 message GetIncomeAndExpenditureResponse {
@@ -46,7 +46,7 @@ message RegisterIncomeAndExpenditureRequest {
     string occurrence_date = 2;
     int64 user_tag_id = 3;
     string classification = 4;
-    string sessoin_id = 5;
+    string session_id = 5;
 }
 
 message RegisterIncomeAndExpenditureResponse {
@@ -65,7 +65,7 @@ message UpdateIncomeAndExpenditureRequest {
     string occurrence_date = 3;
     int64 user_tag_id = 4;
     string classification = 5;
-    string sessoin_id = 6;
+    string session_id = 6;
 }
 
 message UpdateIncomeAndExpenditureResponse {
@@ -80,7 +80,7 @@ message UpdateIncomeAndExpenditureResponse {
 
 message DeleteIncomeAndExpenditureRequest {
     int64 id = 1;
-    string sessoin_id = 2;
+    string session_id = 2;
 }
 
 message DeleteIncomeAndExpenditureResponse {

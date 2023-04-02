@@ -8,25 +8,35 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 		};
 	}
 
-	const response = await fetch('/api/list/balance', {
+	const balanceResponse = await fetch('/api/list/balance', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	});
+	const balanceResponseJson = await balanceResponse.json();
 
-	const responseJson = await response.json();
+	const userTagResponse = await fetch('/api/list/userTag', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
+	const userTagResponseJson = await userTagResponse.json();
 
-	console.log(responseJson.grpcResponse);
+	console.log('reload');
 
-	if (responseJson.ok) {
-		const balances = responseJson.grpcResponse.income_and_expenditure_list;
+	if (balanceResponseJson.ok && userTagResponseJson.ok) {
+		const balances = balanceResponseJson.grpcResponse.income_and_expenditure_list;
+		const userTags = userTagResponseJson.grpcResponse.user_tag_list;
 		return {
-			balances
+			balances,
+			userTags
 		};
 	} else {
 		return {
-			balances: []
+			balances: [],
+			userTags: []
 		};
 	}
 };

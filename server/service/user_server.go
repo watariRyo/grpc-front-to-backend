@@ -44,6 +44,17 @@ func (s *userService) GetUser(ctx context.Context, request *pb.GetUserRequest) (
 }
 
 func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUserRequest) (*pb.RegisterUserResponse, error) {
+
+	userExists, err := s.repo.UserRepository.Exist(ctx, s.repo.DBConnection, request.UserId)
+	if err != nil {
+		logger.Errorf(ctx, "something went wrong. %v. user_id: %s", err, request.UserId)
+		return nil, messages.InternalDBError().Err()
+	}
+
+	if userExists {
+		return nil, messages.UserIDDuplicated().Err()
+	}
+
 	// create user
 	hashPassword, err := util.HashPassword(request.Password)
 	if err != nil {

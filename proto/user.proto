@@ -43,7 +43,7 @@ message UpdateUserResponse {
 }
 
 message DeleteUserRequest {
-    string sessoin_id = 1;
+    string session_id = 1;
 }
 
 message DeleteUserResponse {

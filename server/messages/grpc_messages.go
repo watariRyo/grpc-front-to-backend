@@ -72,6 +72,17 @@ func Unauthorized() *status.Status {
 	return st
 }
 
+func UserIDDuplicated() *status.Status {
+	st := status.New(codes.Internal, "UserID is duplicated.")
+	st.WithDetails(
+		&errdetails.LocalizedMessage{
+			Locale:  "ja-JP",
+			Message: "そのユーザIDは使用済です",
+		},
+	)
+	return st
+}
+
 func SessionError(statusMessage string) *status.Status {
 	st := status.New(codes.Internal, statusMessage)
 	st.WithDetails(

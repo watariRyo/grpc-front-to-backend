@@ -8,7 +8,8 @@ import (
 )
 
 type UserRepository interface {
-	Get(ctx context.Context, conn DBConnection, input *pb.GetUserRequest) (*pb.GetUserResponse, error)
+	Get(ctx context.Context, conn DBConnection, userID string) (*model.User, error)
+	Exist(ctx context.Context, conn DBConnection, userID string) (bool, error)
 	Login(ctx context.Context, conn DBConnection, input *pb.LoginUserRequest) (*model.User, error)
 	Insert(ctx context.Context, conn DBConnection, input *pb.RegisterUserRequest) (*model.User, error)
 	Update(ctx context.Context, conn DBConnection, input *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error)
