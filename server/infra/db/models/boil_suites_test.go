@@ -13,88 +13,88 @@ import "testing"
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
 	t.Run("AdminTags", testAdminTags)
-	t.Run("Groups", testGroups)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpenditures)
+	t.Run("TagGroups", testTagGroups)
 	t.Run("Users", testUsers)
 	t.Run("UserTags", testUserTags)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsDelete)
-	t.Run("Groups", testGroupsDelete)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresDelete)
+	t.Run("TagGroups", testTagGroupsDelete)
 	t.Run("Users", testUsersDelete)
 	t.Run("UserTags", testUserTagsDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsQueryDeleteAll)
-	t.Run("Groups", testGroupsQueryDeleteAll)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresQueryDeleteAll)
+	t.Run("TagGroups", testTagGroupsQueryDeleteAll)
 	t.Run("Users", testUsersQueryDeleteAll)
 	t.Run("UserTags", testUserTagsQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsSliceDeleteAll)
-	t.Run("Groups", testGroupsSliceDeleteAll)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresSliceDeleteAll)
+	t.Run("TagGroups", testTagGroupsSliceDeleteAll)
 	t.Run("Users", testUsersSliceDeleteAll)
 	t.Run("UserTags", testUserTagsSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsExists)
-	t.Run("Groups", testGroupsExists)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresExists)
+	t.Run("TagGroups", testTagGroupsExists)
 	t.Run("Users", testUsersExists)
 	t.Run("UserTags", testUserTagsExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsFind)
-	t.Run("Groups", testGroupsFind)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresFind)
+	t.Run("TagGroups", testTagGroupsFind)
 	t.Run("Users", testUsersFind)
 	t.Run("UserTags", testUserTagsFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsBind)
-	t.Run("Groups", testGroupsBind)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresBind)
+	t.Run("TagGroups", testTagGroupsBind)
 	t.Run("Users", testUsersBind)
 	t.Run("UserTags", testUserTagsBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsOne)
-	t.Run("Groups", testGroupsOne)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresOne)
+	t.Run("TagGroups", testTagGroupsOne)
 	t.Run("Users", testUsersOne)
 	t.Run("UserTags", testUserTagsOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsAll)
-	t.Run("Groups", testGroupsAll)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresAll)
+	t.Run("TagGroups", testTagGroupsAll)
 	t.Run("Users", testUsersAll)
 	t.Run("UserTags", testUserTagsAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsCount)
-	t.Run("Groups", testGroupsCount)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresCount)
+	t.Run("TagGroups", testTagGroupsCount)
 	t.Run("Users", testUsersCount)
 	t.Run("UserTags", testUserTagsCount)
 }
 
 func TestHooks(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsHooks)
-	t.Run("Groups", testGroupsHooks)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresHooks)
+	t.Run("TagGroups", testTagGroupsHooks)
 	t.Run("Users", testUsersHooks)
 	t.Run("UserTags", testUserTagsHooks)
 }
@@ -102,10 +102,10 @@ func TestHooks(t *testing.T) {
 func TestInsert(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsInsert)
 	t.Run("AdminTags", testAdminTagsInsertWhitelist)
-	t.Run("Groups", testGroupsInsert)
-	t.Run("Groups", testGroupsInsertWhitelist)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresInsert)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresInsertWhitelist)
+	t.Run("TagGroups", testTagGroupsInsert)
+	t.Run("TagGroups", testTagGroupsInsertWhitelist)
 	t.Run("Users", testUsersInsert)
 	t.Run("Users", testUsersInsertWhitelist)
 	t.Run("UserTags", testUserTagsInsert)
@@ -115,10 +115,10 @@ func TestInsert(t *testing.T) {
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOne(t *testing.T) {
-	t.Run("GroupToUserUsingUser", testGroupToOneUserUsingUser)
 	t.Run("IncomeAndExpenditureToUserTagUsingUserTag", testIncomeAndExpenditureToOneUserTagUsingUserTag)
 	t.Run("IncomeAndExpenditureToUserUsingUser", testIncomeAndExpenditureToOneUserUsingUser)
-	t.Run("UserTagToGroupUsingGroup", testUserTagToOneGroupUsingGroup)
+	t.Run("TagGroupToUserUsingUser", testTagGroupToOneUserUsingUser)
+	t.Run("UserTagToTagGroupUsingGroup", testUserTagToOneTagGroupUsingGroup)
 	t.Run("UserTagToUserUsingUser", testUserTagToOneUserUsingUser)
 }
 
@@ -129,9 +129,9 @@ func TestOneToOne(t *testing.T) {}
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToMany(t *testing.T) {
-	t.Run("GroupToUserTags", testGroupToManyUserTags)
-	t.Run("UserToGroups", testUserToManyGroups)
+	t.Run("TagGroupToGroupUserTags", testTagGroupToManyGroupUserTags)
 	t.Run("UserToIncomeAndExpenditures", testUserToManyIncomeAndExpenditures)
+	t.Run("UserToTagGroups", testUserToManyTagGroups)
 	t.Run("UserToUserTags", testUserToManyUserTags)
 	t.Run("UserTagToIncomeAndExpenditures", testUserTagToManyIncomeAndExpenditures)
 }
@@ -139,10 +139,10 @@ func TestToMany(t *testing.T) {
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOneSet(t *testing.T) {
-	t.Run("GroupToUserUsingGroups", testGroupToOneSetOpUserUsingUser)
 	t.Run("IncomeAndExpenditureToUserTagUsingIncomeAndExpenditures", testIncomeAndExpenditureToOneSetOpUserTagUsingUserTag)
 	t.Run("IncomeAndExpenditureToUserUsingIncomeAndExpenditures", testIncomeAndExpenditureToOneSetOpUserUsingUser)
-	t.Run("UserTagToGroupUsingUserTags", testUserTagToOneSetOpGroupUsingGroup)
+	t.Run("TagGroupToUserUsingTagGroups", testTagGroupToOneSetOpUserUsingUser)
+	t.Run("UserTagToTagGroupUsingGroupUserTags", testUserTagToOneSetOpTagGroupUsingGroup)
 	t.Run("UserTagToUserUsingUserTags", testUserTagToOneSetOpUserUsingUser)
 }
 
@@ -150,7 +150,7 @@ func TestToOneSet(t *testing.T) {
 // or deadlocks can occur.
 func TestToOneRemove(t *testing.T) {
 	t.Run("IncomeAndExpenditureToUserTagUsingIncomeAndExpenditures", testIncomeAndExpenditureToOneRemoveOpUserTagUsingUserTag)
-	t.Run("UserTagToGroupUsingUserTags", testUserTagToOneRemoveOpGroupUsingGroup)
+	t.Run("UserTagToTagGroupUsingGroupUserTags", testUserTagToOneRemoveOpTagGroupUsingGroup)
 }
 
 // TestOneToOneSet tests cannot be run in parallel
@@ -164,9 +164,9 @@ func TestOneToOneRemove(t *testing.T) {}
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManyAdd(t *testing.T) {
-	t.Run("GroupToUserTags", testGroupToManyAddOpUserTags)
-	t.Run("UserToGroups", testUserToManyAddOpGroups)
+	t.Run("TagGroupToGroupUserTags", testTagGroupToManyAddOpGroupUserTags)
 	t.Run("UserToIncomeAndExpenditures", testUserToManyAddOpIncomeAndExpenditures)
+	t.Run("UserToTagGroups", testUserToManyAddOpTagGroups)
 	t.Run("UserToUserTags", testUserToManyAddOpUserTags)
 	t.Run("UserTagToIncomeAndExpenditures", testUserTagToManyAddOpIncomeAndExpenditures)
 }
@@ -174,53 +174,53 @@ func TestToManyAdd(t *testing.T) {
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManySet(t *testing.T) {
-	t.Run("GroupToUserTags", testGroupToManySetOpUserTags)
+	t.Run("TagGroupToGroupUserTags", testTagGroupToManySetOpGroupUserTags)
 	t.Run("UserTagToIncomeAndExpenditures", testUserTagToManySetOpIncomeAndExpenditures)
 }
 
 // TestToManyRemove tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManyRemove(t *testing.T) {
-	t.Run("GroupToUserTags", testGroupToManyRemoveOpUserTags)
+	t.Run("TagGroupToGroupUserTags", testTagGroupToManyRemoveOpGroupUserTags)
 	t.Run("UserTagToIncomeAndExpenditures", testUserTagToManyRemoveOpIncomeAndExpenditures)
 }
 
 func TestReload(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsReload)
-	t.Run("Groups", testGroupsReload)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresReload)
+	t.Run("TagGroups", testTagGroupsReload)
 	t.Run("Users", testUsersReload)
 	t.Run("UserTags", testUserTagsReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsReloadAll)
-	t.Run("Groups", testGroupsReloadAll)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresReloadAll)
+	t.Run("TagGroups", testTagGroupsReloadAll)
 	t.Run("Users", testUsersReloadAll)
 	t.Run("UserTags", testUserTagsReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsSelect)
-	t.Run("Groups", testGroupsSelect)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresSelect)
+	t.Run("TagGroups", testTagGroupsSelect)
 	t.Run("Users", testUsersSelect)
 	t.Run("UserTags", testUserTagsSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsUpdate)
-	t.Run("Groups", testGroupsUpdate)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresUpdate)
+	t.Run("TagGroups", testTagGroupsUpdate)
 	t.Run("Users", testUsersUpdate)
 	t.Run("UserTags", testUserTagsUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsSliceUpdateAll)
-	t.Run("Groups", testGroupsSliceUpdateAll)
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresSliceUpdateAll)
+	t.Run("TagGroups", testTagGroupsSliceUpdateAll)
 	t.Run("Users", testUsersSliceUpdateAll)
 	t.Run("UserTags", testUserTagsSliceUpdateAll)
 }

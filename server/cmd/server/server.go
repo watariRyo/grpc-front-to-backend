@@ -50,12 +50,12 @@ func main() {
 
 	// Repository作成
 	allRepository := &repository.AllRepository{
-		DBConnection: 					conn,
-		DBTransaction: 					db.Transaction,
-		RedisClient: 					redisClient,
-		UserRepository: 				db.NewUserRepository(),
-		UserTagRepository: 				db.NewUserTagRepository(),
-		GroupRepository: 				db.NewGroupRepository(),
+		DBConnection:                   conn,
+		DBTransaction:                  db.Transaction,
+		RedisClient:                    redisClient,
+		UserRepository:                 db.NewUserRepository(),
+		UserTagRepository:              db.NewUserTagRepository(),
+		TagGroupRepository:             db.NewTagGroupRepository(),
 		IncomeAndExpenditureRepository: db.NewIncomeAndExpenditureRepository(),
 	}
 

@@ -36,6 +36,24 @@ func (r *IncomeAndExpenditureRepository) List(tx context.Context, input *pb.List
 				UserTagId:      2,
 				Classification: "EXPENDITURE",
 			},
+			{
+				Id:             3,
+				UserId:         "hoge",
+				Name:           "income2",
+				Amount:         3000,
+				OccurrenceDate: "2022-01-05",
+				UserTagId:      1,
+				Classification: "INCOME",
+			},
+			{
+				Id:             4,
+				UserId:         "hoge",
+				Name:           "Expenditure2",
+				Amount:         4000,
+				OccurrenceDate: "2022-01-06",
+				UserTagId:      2,
+				Classification: "EXPENDITURE",
+			},
 		},
 	}, nil
 }

@@ -63,11 +63,19 @@ func (s *userService) RegisterUser(ctx context.Context, request *pb.RegisterUser
 	if err = s.repo.DBTransaction(ctx, s.repo.DBConnection, func(ctx context.Context, conn repository.DBConnection) error {
 		request.Password = hashPassword
 
-		_, err := s.repo.UserRepository.Insert(ctx, conn, request)
+		// user作成
+		user, err := s.repo.UserRepository.Insert(ctx, conn, request)
 		if err != nil {
 			logger.Errorf(ctx, "something went wrong DB. %v. user_id: %s", err, request.UserId)
 			return messages.InternalDBError().Err()
 		}
+
+		// デフォルトのタグをadmin_tagから作成する
+		err = s.repo.UserTagRepository.InitInsert(ctx, conn, user.UserID)
+		if err != nil {
+
+		}
+
 		return nil
 	}, nil); err != nil {
 		return nil, err
@@ -121,7 +129,7 @@ func (s *userService) LoginUser(ctx context.Context, request *pb.LoginUserReques
 	refreshTokenDuration := refreshTokenPayload.ExpiredAt.Sub(s.time.Now())
 
 	return &pb.LoginUserResponse{
-		UserId:                user.UserId,
+		UserId:                user.UserID,
 		SessionId:             sessionID,
 		AccessToken:           accessToken,
 		RefreshToken:          refreshToken,

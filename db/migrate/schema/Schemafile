@@ -1,6 +1,6 @@
 require 'user.schema'
 require 'admin_tag.schema'
-require 'group.schema'
+require 'tag_group.schema'
 require 'user_tag.schema'
 require 'income_and_expenditure.schema'
 require 'foreign_keys.schema'

@@ -5,7 +5,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
 
+	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/watariRyo/balance/server/domain/repository"
@@ -47,8 +49,24 @@ func NewConnectionManager(options ...OptionFunc) *ConnectionManager {
 	return &ConnectionManager{connInfo: c}
 }
 
-func (cm *ConnectionManager) DSN() string {
-	return cm.connInfo.connectionString()
+func (cm *ConnectionManager) DSN(c *connectionInfo) string {
+	jst, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		panic(err)
+	}
+
+	mc := mysql.Config{
+		DBName:    c.schema,
+		User:      c.username,
+		Passwd:    c.password,
+		Addr:      c.host,
+		Net:       "tcp",
+		ParseTime: true,
+		Collation: "utf8mb4_unicode_ci",
+		Loc:       jst,
+	}
+	return mc.FormatDSN()
+
 }
 
 func Username(username string) OptionFunc {

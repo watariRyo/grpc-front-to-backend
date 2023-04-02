@@ -2,7 +2,9 @@ package db
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/friendsofgo/errors"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/watariRyo/balance/server/domain/model"
 	"github.com/watariRyo/balance/server/domain/repository"
@@ -30,11 +32,11 @@ func (r *UserRepository) Login(ctx context.Context, conn repository.DBConnection
 		models.UserWhere.UserID.EQ(input.UserId),
 	).One(ctx, conn)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "Something went wrong. get user by userID")
 	}
 
 	return &model.User{
-		UserId:           user.UserID,
+		UserID:           user.UserID,
 		Password:         user.Password,
 		IsPrivacyChecked: user.IsPrivacyChecked,
 	}, nil
@@ -49,11 +51,11 @@ func (r *UserRepository) Insert(ctx context.Context, conn repository.DBConnectio
 
 	err := user.Insert(ctx, conn, boil.Infer())
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, fmt.Sprintf("Error inserting user. %s", input.UserId))
 	}
 
 	return &model.User{
-		UserId:           user.UserID,
+		UserID:           user.UserID,
 		IsPrivacyChecked: true,
 	}, nil
 }

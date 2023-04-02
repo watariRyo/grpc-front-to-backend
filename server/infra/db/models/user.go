@@ -92,19 +92,19 @@ var UserWhere = struct {
 
 // UserRels is where relationship names are stored.
 var UserRels = struct {
-	Groups                string
 	IncomeAndExpenditures string
+	TagGroups             string
 	UserTags              string
 }{
-	Groups:                "Groups",
 	IncomeAndExpenditures: "IncomeAndExpenditures",
+	TagGroups:             "TagGroups",
 	UserTags:              "UserTags",
 }
 
 // userR is where relationships are stored.
 type userR struct {
-	Groups                GroupSlice                `boil:"Groups" json:"Groups" toml:"Groups" yaml:"Groups"`
 	IncomeAndExpenditures IncomeAndExpenditureSlice `boil:"IncomeAndExpenditures" json:"IncomeAndExpenditures" toml:"IncomeAndExpenditures" yaml:"IncomeAndExpenditures"`
+	TagGroups             TagGroupSlice             `boil:"TagGroups" json:"TagGroups" toml:"TagGroups" yaml:"TagGroups"`
 	UserTags              UserTagSlice              `boil:"UserTags" json:"UserTags" toml:"UserTags" yaml:"UserTags"`
 }
 
@@ -113,18 +113,18 @@ func (*userR) NewStruct() *userR {
 	return &userR{}
 }
 
-func (r *userR) GetGroups() GroupSlice {
-	if r == nil {
-		return nil
-	}
-	return r.Groups
-}
-
 func (r *userR) GetIncomeAndExpenditures() IncomeAndExpenditureSlice {
 	if r == nil {
 		return nil
 	}
 	return r.IncomeAndExpenditures
+}
+
+func (r *userR) GetTagGroups() TagGroupSlice {
+	if r == nil {
+		return nil
+	}
+	return r.TagGroups
 }
 
 func (r *userR) GetUserTags() UserTagSlice {
@@ -423,20 +423,6 @@ func (q userQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool,
 	return count > 0, nil
 }
 
-// Groups retrieves all the group's Groups with an executor.
-func (o *User) Groups(mods ...qm.QueryMod) groupQuery {
-	var queryMods []qm.QueryMod
-	if len(mods) != 0 {
-		queryMods = append(queryMods, mods...)
-	}
-
-	queryMods = append(queryMods,
-		qm.Where("`group`.`user_id`=?", o.UserID),
-	)
-
-	return Groups(queryMods...)
-}
-
 // IncomeAndExpenditures retrieves all the income_and_expenditure's IncomeAndExpenditures with an executor.
 func (o *User) IncomeAndExpenditures(mods ...qm.QueryMod) incomeAndExpenditureQuery {
 	var queryMods []qm.QueryMod
@@ -451,6 +437,20 @@ func (o *User) IncomeAndExpenditures(mods ...qm.QueryMod) incomeAndExpenditureQu
 	return IncomeAndExpenditures(queryMods...)
 }
 
+// TagGroups retrieves all the tag_group's TagGroups with an executor.
+func (o *User) TagGroups(mods ...qm.QueryMod) tagGroupQuery {
+	var queryMods []qm.QueryMod
+	if len(mods) != 0 {
+		queryMods = append(queryMods, mods...)
+	}
+
+	queryMods = append(queryMods,
+		qm.Where("`tag_group`.`user_id`=?", o.UserID),
+	)
+
+	return TagGroups(queryMods...)
+}
+
 // UserTags retrieves all the user_tag's UserTags with an executor.
 func (o *User) UserTags(mods ...qm.QueryMod) userTagQuery {
 	var queryMods []qm.QueryMod
@@ -463,120 +463,6 @@ func (o *User) UserTags(mods ...qm.QueryMod) userTagQuery {
 	)
 
 	return UserTags(queryMods...)
-}
-
-// LoadGroups allows an eager lookup of values, cached into the
-// loaded structs of the objects. This is for a 1-M or N-M relationship.
-func (userL) LoadGroups(ctx context.Context, e boil.ContextExecutor, singular bool, maybeUser interface{}, mods queries.Applicator) error {
-	var slice []*User
-	var object *User
-
-	if singular {
-		var ok bool
-		object, ok = maybeUser.(*User)
-		if !ok {
-			object = new(User)
-			ok = queries.SetFromEmbeddedStruct(&object, &maybeUser)
-			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeUser))
-			}
-		}
-	} else {
-		s, ok := maybeUser.(*[]*User)
-		if ok {
-			slice = *s
-		} else {
-			ok = queries.SetFromEmbeddedStruct(&slice, maybeUser)
-			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeUser))
-			}
-		}
-	}
-
-	args := make([]interface{}, 0, 1)
-	if singular {
-		if object.R == nil {
-			object.R = &userR{}
-		}
-		args = append(args, object.UserID)
-	} else {
-	Outer:
-		for _, obj := range slice {
-			if obj.R == nil {
-				obj.R = &userR{}
-			}
-
-			for _, a := range args {
-				if a == obj.UserID {
-					continue Outer
-				}
-			}
-
-			args = append(args, obj.UserID)
-		}
-	}
-
-	if len(args) == 0 {
-		return nil
-	}
-
-	query := NewQuery(
-		qm.From(`group`),
-		qm.WhereIn(`group.user_id in ?`, args...),
-	)
-	if mods != nil {
-		mods.Apply(query)
-	}
-
-	results, err := query.QueryContext(ctx, e)
-	if err != nil {
-		return errors.Wrap(err, "failed to eager load group")
-	}
-
-	var resultSlice []*Group
-	if err = queries.Bind(results, &resultSlice); err != nil {
-		return errors.Wrap(err, "failed to bind eager loaded slice group")
-	}
-
-	if err = results.Close(); err != nil {
-		return errors.Wrap(err, "failed to close results in eager load on group")
-	}
-	if err = results.Err(); err != nil {
-		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for group")
-	}
-
-	if len(groupAfterSelectHooks) != 0 {
-		for _, obj := range resultSlice {
-			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
-				return err
-			}
-		}
-	}
-	if singular {
-		object.R.Groups = resultSlice
-		for _, foreign := range resultSlice {
-			if foreign.R == nil {
-				foreign.R = &groupR{}
-			}
-			foreign.R.User = object
-		}
-		return nil
-	}
-
-	for _, foreign := range resultSlice {
-		for _, local := range slice {
-			if local.UserID == foreign.UserID {
-				local.R.Groups = append(local.R.Groups, foreign)
-				if foreign.R == nil {
-					foreign.R = &groupR{}
-				}
-				foreign.R.User = local
-				break
-			}
-		}
-	}
-
-	return nil
 }
 
 // LoadIncomeAndExpenditures allows an eager lookup of values, cached into the
@@ -683,6 +569,120 @@ func (userL) LoadIncomeAndExpenditures(ctx context.Context, e boil.ContextExecut
 				local.R.IncomeAndExpenditures = append(local.R.IncomeAndExpenditures, foreign)
 				if foreign.R == nil {
 					foreign.R = &incomeAndExpenditureR{}
+				}
+				foreign.R.User = local
+				break
+			}
+		}
+	}
+
+	return nil
+}
+
+// LoadTagGroups allows an eager lookup of values, cached into the
+// loaded structs of the objects. This is for a 1-M or N-M relationship.
+func (userL) LoadTagGroups(ctx context.Context, e boil.ContextExecutor, singular bool, maybeUser interface{}, mods queries.Applicator) error {
+	var slice []*User
+	var object *User
+
+	if singular {
+		var ok bool
+		object, ok = maybeUser.(*User)
+		if !ok {
+			object = new(User)
+			ok = queries.SetFromEmbeddedStruct(&object, &maybeUser)
+			if !ok {
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeUser))
+			}
+		}
+	} else {
+		s, ok := maybeUser.(*[]*User)
+		if ok {
+			slice = *s
+		} else {
+			ok = queries.SetFromEmbeddedStruct(&slice, maybeUser)
+			if !ok {
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeUser))
+			}
+		}
+	}
+
+	args := make([]interface{}, 0, 1)
+	if singular {
+		if object.R == nil {
+			object.R = &userR{}
+		}
+		args = append(args, object.UserID)
+	} else {
+	Outer:
+		for _, obj := range slice {
+			if obj.R == nil {
+				obj.R = &userR{}
+			}
+
+			for _, a := range args {
+				if a == obj.UserID {
+					continue Outer
+				}
+			}
+
+			args = append(args, obj.UserID)
+		}
+	}
+
+	if len(args) == 0 {
+		return nil
+	}
+
+	query := NewQuery(
+		qm.From(`tag_group`),
+		qm.WhereIn(`tag_group.user_id in ?`, args...),
+	)
+	if mods != nil {
+		mods.Apply(query)
+	}
+
+	results, err := query.QueryContext(ctx, e)
+	if err != nil {
+		return errors.Wrap(err, "failed to eager load tag_group")
+	}
+
+	var resultSlice []*TagGroup
+	if err = queries.Bind(results, &resultSlice); err != nil {
+		return errors.Wrap(err, "failed to bind eager loaded slice tag_group")
+	}
+
+	if err = results.Close(); err != nil {
+		return errors.Wrap(err, "failed to close results in eager load on tag_group")
+	}
+	if err = results.Err(); err != nil {
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for tag_group")
+	}
+
+	if len(tagGroupAfterSelectHooks) != 0 {
+		for _, obj := range resultSlice {
+			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
+				return err
+			}
+		}
+	}
+	if singular {
+		object.R.TagGroups = resultSlice
+		for _, foreign := range resultSlice {
+			if foreign.R == nil {
+				foreign.R = &tagGroupR{}
+			}
+			foreign.R.User = object
+		}
+		return nil
+	}
+
+	for _, foreign := range resultSlice {
+		for _, local := range slice {
+			if local.UserID == foreign.UserID {
+				local.R.TagGroups = append(local.R.TagGroups, foreign)
+				if foreign.R == nil {
+					foreign.R = &tagGroupR{}
 				}
 				foreign.R.User = local
 				break
@@ -807,59 +807,6 @@ func (userL) LoadUserTags(ctx context.Context, e boil.ContextExecutor, singular 
 	return nil
 }
 
-// AddGroups adds the given related objects to the existing relationships
-// of the user, optionally inserting them as new records.
-// Appends related to o.R.Groups.
-// Sets related.R.User appropriately.
-func (o *User) AddGroups(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Group) error {
-	var err error
-	for _, rel := range related {
-		if insert {
-			rel.UserID = o.UserID
-			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
-				return errors.Wrap(err, "failed to insert into foreign table")
-			}
-		} else {
-			updateQuery := fmt.Sprintf(
-				"UPDATE `group` SET %s WHERE %s",
-				strmangle.SetParamNames("`", "`", 0, []string{"user_id"}),
-				strmangle.WhereClause("`", "`", 0, groupPrimaryKeyColumns),
-			)
-			values := []interface{}{o.UserID, rel.ID}
-
-			if boil.IsDebug(ctx) {
-				writer := boil.DebugWriterFrom(ctx)
-				fmt.Fprintln(writer, updateQuery)
-				fmt.Fprintln(writer, values)
-			}
-			if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
-				return errors.Wrap(err, "failed to update foreign table")
-			}
-
-			rel.UserID = o.UserID
-		}
-	}
-
-	if o.R == nil {
-		o.R = &userR{
-			Groups: related,
-		}
-	} else {
-		o.R.Groups = append(o.R.Groups, related...)
-	}
-
-	for _, rel := range related {
-		if rel.R == nil {
-			rel.R = &groupR{
-				User: o,
-			}
-		} else {
-			rel.R.User = o
-		}
-	}
-	return nil
-}
-
 // AddIncomeAndExpenditures adds the given related objects to the existing relationships
 // of the user, optionally inserting them as new records.
 // Appends related to o.R.IncomeAndExpenditures.
@@ -904,6 +851,59 @@ func (o *User) AddIncomeAndExpenditures(ctx context.Context, exec boil.ContextEx
 	for _, rel := range related {
 		if rel.R == nil {
 			rel.R = &incomeAndExpenditureR{
+				User: o,
+			}
+		} else {
+			rel.R.User = o
+		}
+	}
+	return nil
+}
+
+// AddTagGroups adds the given related objects to the existing relationships
+// of the user, optionally inserting them as new records.
+// Appends related to o.R.TagGroups.
+// Sets related.R.User appropriately.
+func (o *User) AddTagGroups(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*TagGroup) error {
+	var err error
+	for _, rel := range related {
+		if insert {
+			rel.UserID = o.UserID
+			if err = rel.Insert(ctx, exec, boil.Infer()); err != nil {
+				return errors.Wrap(err, "failed to insert into foreign table")
+			}
+		} else {
+			updateQuery := fmt.Sprintf(
+				"UPDATE `tag_group` SET %s WHERE %s",
+				strmangle.SetParamNames("`", "`", 0, []string{"user_id"}),
+				strmangle.WhereClause("`", "`", 0, tagGroupPrimaryKeyColumns),
+			)
+			values := []interface{}{o.UserID, rel.ID}
+
+			if boil.IsDebug(ctx) {
+				writer := boil.DebugWriterFrom(ctx)
+				fmt.Fprintln(writer, updateQuery)
+				fmt.Fprintln(writer, values)
+			}
+			if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
+				return errors.Wrap(err, "failed to update foreign table")
+			}
+
+			rel.UserID = o.UserID
+		}
+	}
+
+	if o.R == nil {
+		o.R = &userR{
+			TagGroups: related,
+		}
+	} else {
+		o.R.TagGroups = append(o.R.TagGroups, related...)
+	}
+
+	for _, rel := range related {
+		if rel.R == nil {
+			rel.R = &tagGroupR{
 				User: o,
 			}
 		} else {

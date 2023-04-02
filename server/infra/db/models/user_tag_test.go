@@ -822,20 +822,20 @@ func testUserTagToManyRemoveOpIncomeAndExpenditures(t *testing.T) {
 	}
 }
 
-func testUserTagToOneGroupUsingGroup(t *testing.T) {
+func testUserTagToOneTagGroupUsingGroup(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
 	var local UserTag
-	var foreign Group
+	var foreign TagGroup
 
 	seed := randomize.NewSeed()
 	if err := randomize.Struct(seed, &local, userTagDBTypes, true, userTagColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize UserTag struct: %s", err)
 	}
-	if err := randomize.Struct(seed, &foreign, groupDBTypes, false, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err := randomize.Struct(seed, &foreign, tagGroupDBTypes, false, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	if err := foreign.Insert(ctx, tx, boil.Infer()); err != nil {
@@ -857,7 +857,7 @@ func testUserTagToOneGroupUsingGroup(t *testing.T) {
 	}
 
 	ranAfterSelectHook := false
-	AddGroupHook(boil.AfterSelectHook, func(ctx context.Context, e boil.ContextExecutor, o *Group) error {
+	AddTagGroupHook(boil.AfterSelectHook, func(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
 		ranAfterSelectHook = true
 		return nil
 	})
@@ -944,7 +944,7 @@ func testUserTagToOneUserUsingUser(t *testing.T) {
 	}
 }
 
-func testUserTagToOneSetOpGroupUsingGroup(t *testing.T) {
+func testUserTagToOneSetOpTagGroupUsingGroup(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -952,16 +952,16 @@ func testUserTagToOneSetOpGroupUsingGroup(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a UserTag
-	var b, c Group
+	var b, c TagGroup
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, userTagDBTypes, false, strmangle.SetComplement(userTagPrimaryKeyColumns, userTagColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &b, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &b, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &c, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &c, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -972,7 +972,7 @@ func testUserTagToOneSetOpGroupUsingGroup(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for i, x := range []*Group{&b, &c} {
+	for i, x := range []*TagGroup{&b, &c} {
 		err = a.SetGroup(ctx, tx, i != 0, x)
 		if err != nil {
 			t.Fatal(err)
@@ -982,7 +982,7 @@ func testUserTagToOneSetOpGroupUsingGroup(t *testing.T) {
 			t.Error("relationship struct not set to correct value")
 		}
 
-		if x.R.UserTags[0] != &a {
+		if x.R.GroupUserTags[0] != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
 		if !queries.Equal(a.GroupID, x.ID) {
@@ -1002,7 +1002,7 @@ func testUserTagToOneSetOpGroupUsingGroup(t *testing.T) {
 	}
 }
 
-func testUserTagToOneRemoveOpGroupUsingGroup(t *testing.T) {
+func testUserTagToOneRemoveOpTagGroupUsingGroup(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
@@ -1010,13 +1010,13 @@ func testUserTagToOneRemoveOpGroupUsingGroup(t *testing.T) {
 	defer func() { _ = tx.Rollback() }()
 
 	var a UserTag
-	var b Group
+	var b TagGroup
 
 	seed := randomize.NewSeed()
 	if err = randomize.Struct(seed, &a, userTagDBTypes, false, strmangle.SetComplement(userTagPrimaryKeyColumns, userTagColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
-	if err = randomize.Struct(seed, &b, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &b, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 
@@ -1048,7 +1048,7 @@ func testUserTagToOneRemoveOpGroupUsingGroup(t *testing.T) {
 		t.Error("foreign key value should be nil")
 	}
 
-	if len(b.R.UserTags) != 0 {
+	if len(b.R.GroupUserTags) != 0 {
 		t.Error("failed to remove a from b's relationships")
 	}
 }

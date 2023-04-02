@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/suite"
 	"github.com/watariRyo/balance/server/domain/model"
 	"github.com/watariRyo/balance/server/domain/repository"
-	"github.com/watariRyo/balance/server/infra/db/models"
 	pb "github.com/watariRyo/balance/server/proto"
 )
 
@@ -28,8 +27,7 @@ func (s *UserRepositoryTestSuite) SetupSuite() {
 }
 
 func (s *UserRepositoryTestSuite) TearDownTest() {
-	user, _ := models.Users().All(s.ctx, s.conn)
-	user.DeleteAll(s.ctx, s.conn)
+	truncateTables(s.T())
 }
 
 func TestSuiteUserRepository(t *testing.T) {
@@ -48,7 +46,7 @@ func (s *UserRepositoryTestSuite) Test_UserRepositoryTestSuite_Insert() {
 	assert.Nil(t, err)
 
 	want := &model.User{
-		UserId:           req.UserId,
+		UserID:           req.UserId,
 		IsPrivacyChecked: true,
 	}
 
@@ -78,7 +76,7 @@ func (s *UserRepositoryTestSuite) Test_UserRepositoryTestSuite_Login() {
 	assert.Nil(t, err)
 
 	want := &model.User{
-		UserId:           loginReq.UserId,
+		UserID:           loginReq.UserId,
 		IsPrivacyChecked: true,
 	}
 

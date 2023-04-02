@@ -5,14 +5,14 @@ package models
 
 var TableNames = struct {
 	AdminTag             string
-	Group                string
 	IncomeAndExpenditure string
+	TagGroup             string
 	User                 string
 	UserTag              string
 }{
 	AdminTag:             "admin_tag",
-	Group:                "group",
 	IncomeAndExpenditure: "income_and_expenditure",
+	TagGroup:             "tag_group",
 	User:                 "user",
 	UserTag:              "user_tag",
 }

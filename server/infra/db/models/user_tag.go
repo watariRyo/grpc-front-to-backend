@@ -111,7 +111,7 @@ var UserTagRels = struct {
 
 // userTagR is where relationships are stored.
 type userTagR struct {
-	Group                 *Group                    `boil:"Group" json:"Group" toml:"Group" yaml:"Group"`
+	Group                 *TagGroup                 `boil:"Group" json:"Group" toml:"Group" yaml:"Group"`
 	User                  *User                     `boil:"User" json:"User" toml:"User" yaml:"User"`
 	IncomeAndExpenditures IncomeAndExpenditureSlice `boil:"IncomeAndExpenditures" json:"IncomeAndExpenditures" toml:"IncomeAndExpenditures" yaml:"IncomeAndExpenditures"`
 }
@@ -121,7 +121,7 @@ func (*userTagR) NewStruct() *userTagR {
 	return &userTagR{}
 }
 
-func (r *userTagR) GetGroup() *Group {
+func (r *userTagR) GetGroup() *TagGroup {
 	if r == nil {
 		return nil
 	}
@@ -432,14 +432,14 @@ func (q userTagQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bo
 }
 
 // Group pointed to by the foreign key.
-func (o *UserTag) Group(mods ...qm.QueryMod) groupQuery {
+func (o *UserTag) Group(mods ...qm.QueryMod) tagGroupQuery {
 	queryMods := []qm.QueryMod{
 		qm.Where("`id` = ?", o.GroupID),
 	}
 
 	queryMods = append(queryMods, mods...)
 
-	return Groups(queryMods...)
+	return TagGroups(queryMods...)
 }
 
 // User pointed to by the foreign key.
@@ -529,8 +529,8 @@ func (userTagL) LoadGroup(ctx context.Context, e boil.ContextExecutor, singular 
 	}
 
 	query := NewQuery(
-		qm.From(`group`),
-		qm.WhereIn(`group.id in ?`, args...),
+		qm.From(`tag_group`),
+		qm.WhereIn(`tag_group.id in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -538,22 +538,22 @@ func (userTagL) LoadGroup(ctx context.Context, e boil.ContextExecutor, singular 
 
 	results, err := query.QueryContext(ctx, e)
 	if err != nil {
-		return errors.Wrap(err, "failed to eager load Group")
+		return errors.Wrap(err, "failed to eager load TagGroup")
 	}
 
-	var resultSlice []*Group
+	var resultSlice []*TagGroup
 	if err = queries.Bind(results, &resultSlice); err != nil {
-		return errors.Wrap(err, "failed to bind eager loaded slice Group")
+		return errors.Wrap(err, "failed to bind eager loaded slice TagGroup")
 	}
 
 	if err = results.Close(); err != nil {
-		return errors.Wrap(err, "failed to close results of eager load for group")
+		return errors.Wrap(err, "failed to close results of eager load for tag_group")
 	}
 	if err = results.Err(); err != nil {
-		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for group")
+		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for tag_group")
 	}
 
-	if len(groupAfterSelectHooks) != 0 {
+	if len(tagGroupAfterSelectHooks) != 0 {
 		for _, obj := range resultSlice {
 			if err := obj.doAfterSelectHooks(ctx, e); err != nil {
 				return err
@@ -569,9 +569,9 @@ func (userTagL) LoadGroup(ctx context.Context, e boil.ContextExecutor, singular 
 		foreign := resultSlice[0]
 		object.R.Group = foreign
 		if foreign.R == nil {
-			foreign.R = &groupR{}
+			foreign.R = &tagGroupR{}
 		}
-		foreign.R.UserTags = append(foreign.R.UserTags, object)
+		foreign.R.GroupUserTags = append(foreign.R.GroupUserTags, object)
 		return nil
 	}
 
@@ -580,9 +580,9 @@ func (userTagL) LoadGroup(ctx context.Context, e boil.ContextExecutor, singular 
 			if queries.Equal(local.GroupID, foreign.ID) {
 				local.R.Group = foreign
 				if foreign.R == nil {
-					foreign.R = &groupR{}
+					foreign.R = &tagGroupR{}
 				}
-				foreign.R.UserTags = append(foreign.R.UserTags, local)
+				foreign.R.GroupUserTags = append(foreign.R.GroupUserTags, local)
 				break
 			}
 		}
@@ -827,8 +827,8 @@ func (userTagL) LoadIncomeAndExpenditures(ctx context.Context, e boil.ContextExe
 
 // SetGroup of the userTag to the related item.
 // Sets o.R.Group to related.
-// Adds o to related.R.UserTags.
-func (o *UserTag) SetGroup(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Group) error {
+// Adds o to related.R.GroupUserTags.
+func (o *UserTag) SetGroup(ctx context.Context, exec boil.ContextExecutor, insert bool, related *TagGroup) error {
 	var err error
 	if insert {
 		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
@@ -862,11 +862,11 @@ func (o *UserTag) SetGroup(ctx context.Context, exec boil.ContextExecutor, inser
 	}
 
 	if related.R == nil {
-		related.R = &groupR{
-			UserTags: UserTagSlice{o},
+		related.R = &tagGroupR{
+			GroupUserTags: UserTagSlice{o},
 		}
 	} else {
-		related.R.UserTags = append(related.R.UserTags, o)
+		related.R.GroupUserTags = append(related.R.GroupUserTags, o)
 	}
 
 	return nil
@@ -875,7 +875,7 @@ func (o *UserTag) SetGroup(ctx context.Context, exec boil.ContextExecutor, inser
 // RemoveGroup relationship.
 // Sets o.R.Group to nil.
 // Removes o from all passed in related items' relationships struct.
-func (o *UserTag) RemoveGroup(ctx context.Context, exec boil.ContextExecutor, related *Group) error {
+func (o *UserTag) RemoveGroup(ctx context.Context, exec boil.ContextExecutor, related *TagGroup) error {
 	var err error
 
 	queries.SetScanner(&o.GroupID, nil)
@@ -890,16 +890,16 @@ func (o *UserTag) RemoveGroup(ctx context.Context, exec boil.ContextExecutor, re
 		return nil
 	}
 
-	for i, ri := range related.R.UserTags {
+	for i, ri := range related.R.GroupUserTags {
 		if queries.Equal(o.GroupID, ri.GroupID) {
 			continue
 		}
 
-		ln := len(related.R.UserTags)
+		ln := len(related.R.GroupUserTags)
 		if ln > 1 && i < ln-1 {
-			related.R.UserTags[i] = related.R.UserTags[ln-1]
+			related.R.GroupUserTags[i] = related.R.GroupUserTags[ln-1]
 		}
-		related.R.UserTags = related.R.UserTags[:ln-1]
+		related.R.GroupUserTags = related.R.GroupUserTags[:ln-1]
 		break
 	}
 	return nil

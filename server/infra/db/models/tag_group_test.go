@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testGroups(t *testing.T) {
+func testTagGroups(t *testing.T) {
 	t.Parallel()
 
-	query := Groups()
+	query := TagGroups()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testGroupsDelete(t *testing.T) {
+func testTagGroupsDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testGroupsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testGroupsDelete(t *testing.T) {
 	}
 }
 
-func testGroupsQueryDeleteAll(t *testing.T) {
+func testTagGroupsQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testGroupsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Groups().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := TagGroups().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testGroupsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testGroupsSliceDeleteAll(t *testing.T) {
+func testTagGroupsSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testGroupsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := GroupSlice{o}
+	slice := TagGroupSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testGroupsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testGroupsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testGroupsExists(t *testing.T) {
+func testTagGroupsExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testGroupsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := GroupExists(ctx, tx, o.ID)
+	e, err := TagGroupExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Group exists: %s", err)
+		t.Errorf("Unable to check if TagGroup exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected GroupExists to return true, but got false.")
+		t.Errorf("Expected TagGroupExists to return true, but got false.")
 	}
 }
 
-func testGroupsFind(t *testing.T) {
+func testTagGroupsFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testGroupsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	groupFound, err := FindGroup(ctx, tx, o.ID)
+	tagGroupFound, err := FindTagGroup(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if groupFound == nil {
+	if tagGroupFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testGroupsBind(t *testing.T) {
+func testTagGroupsBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testGroupsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Groups().Bind(ctx, tx, o); err != nil {
+	if err = TagGroups().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testGroupsOne(t *testing.T) {
+func testTagGroupsOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testGroupsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Groups().One(ctx, tx); err != nil {
+	if x, err := TagGroups().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testGroupsAll(t *testing.T) {
+func testTagGroupsAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	groupOne := &Group{}
-	groupTwo := &Group{}
-	if err = randomize.Struct(seed, groupOne, groupDBTypes, false, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	tagGroupOne := &TagGroup{}
+	tagGroupTwo := &TagGroup{}
+	if err = randomize.Struct(seed, tagGroupOne, tagGroupDBTypes, false, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
-	if err = randomize.Struct(seed, groupTwo, groupDBTypes, false, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err = randomize.Struct(seed, tagGroupTwo, tagGroupDBTypes, false, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = groupOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = tagGroupOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = groupTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = tagGroupTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Groups().All(ctx, tx)
+	slice, err := TagGroups().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testGroupsAll(t *testing.T) {
 	}
 }
 
-func testGroupsCount(t *testing.T) {
+func testTagGroupsCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	groupOne := &Group{}
-	groupTwo := &Group{}
-	if err = randomize.Struct(seed, groupOne, groupDBTypes, false, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	tagGroupOne := &TagGroup{}
+	tagGroupTwo := &TagGroup{}
+	if err = randomize.Struct(seed, tagGroupOne, tagGroupDBTypes, false, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
-	if err = randomize.Struct(seed, groupTwo, groupDBTypes, false, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err = randomize.Struct(seed, tagGroupTwo, tagGroupDBTypes, false, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = groupOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = tagGroupOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = groupTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = tagGroupTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testGroupsCount(t *testing.T) {
 	}
 }
 
-func groupBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func groupAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Group) error {
-	*o = Group{}
+func tagGroupAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *TagGroup) error {
+	*o = TagGroup{}
 	return nil
 }
 
-func testGroupsHooks(t *testing.T) {
+func testTagGroupsHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Group{}
-	o := &Group{}
+	empty := &TagGroup{}
+	o := &TagGroup{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, groupDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Group object: %s", err)
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize TagGroup object: %s", err)
 	}
 
-	AddGroupHook(boil.BeforeInsertHook, groupBeforeInsertHook)
+	AddTagGroupHook(boil.BeforeInsertHook, tagGroupBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	groupBeforeInsertHooks = []GroupHook{}
+	tagGroupBeforeInsertHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.AfterInsertHook, groupAfterInsertHook)
+	AddTagGroupHook(boil.AfterInsertHook, tagGroupAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	groupAfterInsertHooks = []GroupHook{}
+	tagGroupAfterInsertHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.AfterSelectHook, groupAfterSelectHook)
+	AddTagGroupHook(boil.AfterSelectHook, tagGroupAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	groupAfterSelectHooks = []GroupHook{}
+	tagGroupAfterSelectHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.BeforeUpdateHook, groupBeforeUpdateHook)
+	AddTagGroupHook(boil.BeforeUpdateHook, tagGroupBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	groupBeforeUpdateHooks = []GroupHook{}
+	tagGroupBeforeUpdateHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.AfterUpdateHook, groupAfterUpdateHook)
+	AddTagGroupHook(boil.AfterUpdateHook, tagGroupAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	groupAfterUpdateHooks = []GroupHook{}
+	tagGroupAfterUpdateHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.BeforeDeleteHook, groupBeforeDeleteHook)
+	AddTagGroupHook(boil.BeforeDeleteHook, tagGroupBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	groupBeforeDeleteHooks = []GroupHook{}
+	tagGroupBeforeDeleteHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.AfterDeleteHook, groupAfterDeleteHook)
+	AddTagGroupHook(boil.AfterDeleteHook, tagGroupAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	groupAfterDeleteHooks = []GroupHook{}
+	tagGroupAfterDeleteHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.BeforeUpsertHook, groupBeforeUpsertHook)
+	AddTagGroupHook(boil.BeforeUpsertHook, tagGroupBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	groupBeforeUpsertHooks = []GroupHook{}
+	tagGroupBeforeUpsertHooks = []TagGroupHook{}
 
-	AddGroupHook(boil.AfterUpsertHook, groupAfterUpsertHook)
+	AddTagGroupHook(boil.AfterUpsertHook, tagGroupAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	groupAfterUpsertHooks = []GroupHook{}
+	tagGroupAfterUpsertHooks = []TagGroupHook{}
 }
 
-func testGroupsInsert(t *testing.T) {
+func testTagGroupsInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testGroupsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testGroupsInsert(t *testing.T) {
 	}
 }
 
-func testGroupsInsertWhitelist(t *testing.T) {
+func testTagGroupsInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(groupColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(tagGroupColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,18 +494,18 @@ func testGroupsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testGroupToManyUserTags(t *testing.T) {
+func testTagGroupToManyGroupUserTags(t *testing.T) {
 	var err error
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Group
+	var a TagGroup
 	var b, c UserTag
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err = randomize.Struct(seed, &a, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	if err := a.Insert(ctx, tx, boil.Infer()); err != nil {
@@ -528,7 +528,7 @@ func testGroupToManyUserTags(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	check, err := a.UserTags().All(ctx, tx)
+	check, err := a.GroupUserTags().All(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -550,19 +550,19 @@ func testGroupToManyUserTags(t *testing.T) {
 		t.Error("expected to find c")
 	}
 
-	slice := GroupSlice{&a}
-	if err = a.L.LoadUserTags(ctx, tx, false, (*[]*Group)(&slice), nil); err != nil {
+	slice := TagGroupSlice{&a}
+	if err = a.L.LoadGroupUserTags(ctx, tx, false, (*[]*TagGroup)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.UserTags); got != 2 {
+	if got := len(a.R.GroupUserTags); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
-	a.R.UserTags = nil
-	if err = a.L.LoadUserTags(ctx, tx, true, &a, nil); err != nil {
+	a.R.GroupUserTags = nil
+	if err = a.L.LoadGroupUserTags(ctx, tx, true, &a, nil); err != nil {
 		t.Fatal(err)
 	}
-	if got := len(a.R.UserTags); got != 2 {
+	if got := len(a.R.GroupUserTags); got != 2 {
 		t.Error("number of eager loaded records wrong, got:", got)
 	}
 
@@ -571,18 +571,18 @@ func testGroupToManyUserTags(t *testing.T) {
 	}
 }
 
-func testGroupToManyAddOpUserTags(t *testing.T) {
+func testTagGroupToManyAddOpGroupUserTags(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Group
+	var a TagGroup
 	var b, c, d, e UserTag
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	foreigners := []*UserTag{&b, &c, &d, &e}
@@ -608,7 +608,7 @@ func testGroupToManyAddOpUserTags(t *testing.T) {
 	}
 
 	for i, x := range foreignersSplitByInsertion {
-		err = a.AddUserTags(ctx, tx, i != 0, x...)
+		err = a.AddGroupUserTags(ctx, tx, i != 0, x...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -630,14 +630,14 @@ func testGroupToManyAddOpUserTags(t *testing.T) {
 			t.Error("relationship was not added properly to the foreign slice")
 		}
 
-		if a.R.UserTags[i*2] != first {
+		if a.R.GroupUserTags[i*2] != first {
 			t.Error("relationship struct slice not set to correct value")
 		}
-		if a.R.UserTags[i*2+1] != second {
+		if a.R.GroupUserTags[i*2+1] != second {
 			t.Error("relationship struct slice not set to correct value")
 		}
 
-		count, err := a.UserTags().Count(ctx, tx)
+		count, err := a.GroupUserTags().Count(ctx, tx)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -647,18 +647,18 @@ func testGroupToManyAddOpUserTags(t *testing.T) {
 	}
 }
 
-func testGroupToManySetOpUserTags(t *testing.T) {
+func testTagGroupToManySetOpGroupUserTags(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Group
+	var a TagGroup
 	var b, c, d, e UserTag
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	foreigners := []*UserTag{&b, &c, &d, &e}
@@ -678,12 +678,12 @@ func testGroupToManySetOpUserTags(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = a.SetUserTags(ctx, tx, false, &b, &c)
+	err = a.SetGroupUserTags(ctx, tx, false, &b, &c)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err := a.UserTags().Count(ctx, tx)
+	count, err := a.GroupUserTags().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -691,12 +691,12 @@ func testGroupToManySetOpUserTags(t *testing.T) {
 		t.Error("count was wrong:", count)
 	}
 
-	err = a.SetUserTags(ctx, tx, true, &d, &e)
+	err = a.SetGroupUserTags(ctx, tx, true, &d, &e)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err = a.UserTags().Count(ctx, tx)
+	count, err = a.GroupUserTags().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -730,26 +730,26 @@ func testGroupToManySetOpUserTags(t *testing.T) {
 		t.Error("relationship was not added properly to the foreign struct")
 	}
 
-	if a.R.UserTags[0] != &d {
+	if a.R.GroupUserTags[0] != &d {
 		t.Error("relationship struct slice not set to correct value")
 	}
-	if a.R.UserTags[1] != &e {
+	if a.R.GroupUserTags[1] != &e {
 		t.Error("relationship struct slice not set to correct value")
 	}
 }
 
-func testGroupToManyRemoveOpUserTags(t *testing.T) {
+func testTagGroupToManyRemoveOpGroupUserTags(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Group
+	var a TagGroup
 	var b, c, d, e UserTag
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	foreigners := []*UserTag{&b, &c, &d, &e}
@@ -763,12 +763,12 @@ func testGroupToManyRemoveOpUserTags(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = a.AddUserTags(ctx, tx, true, foreigners...)
+	err = a.AddGroupUserTags(ctx, tx, true, foreigners...)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err := a.UserTags().Count(ctx, tx)
+	count, err := a.GroupUserTags().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -776,12 +776,12 @@ func testGroupToManyRemoveOpUserTags(t *testing.T) {
 		t.Error("count was wrong:", count)
 	}
 
-	err = a.RemoveUserTags(ctx, tx, foreigners[:2]...)
+	err = a.RemoveGroupUserTags(ctx, tx, foreigners[:2]...)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	count, err = a.UserTags().Count(ctx, tx)
+	count, err = a.GroupUserTags().Count(ctx, tx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -809,30 +809,30 @@ func testGroupToManyRemoveOpUserTags(t *testing.T) {
 		t.Error("relationship to a should have been preserved")
 	}
 
-	if len(a.R.UserTags) != 2 {
+	if len(a.R.GroupUserTags) != 2 {
 		t.Error("should have preserved two relationships")
 	}
 
 	// Removal doesn't do a stable deletion for performance so we have to flip the order
-	if a.R.UserTags[1] != &d {
+	if a.R.GroupUserTags[1] != &d {
 		t.Error("relationship to d should have been preserved")
 	}
-	if a.R.UserTags[0] != &e {
+	if a.R.GroupUserTags[0] != &e {
 		t.Error("relationship to e should have been preserved")
 	}
 }
 
-func testGroupToOneUserUsingUser(t *testing.T) {
+func testTagGroupToOneUserUsingUser(t *testing.T) {
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var local Group
+	var local TagGroup
 	var foreign User
 
 	seed := randomize.NewSeed()
-	if err := randomize.Struct(seed, &local, groupDBTypes, false, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err := randomize.Struct(seed, &local, tagGroupDBTypes, false, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 	if err := randomize.Struct(seed, &foreign, userDBTypes, false, userColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize User struct: %s", err)
@@ -862,8 +862,8 @@ func testGroupToOneUserUsingUser(t *testing.T) {
 		return nil
 	})
 
-	slice := GroupSlice{&local}
-	if err = local.L.LoadUser(ctx, tx, false, (*[]*Group)(&slice), nil); err != nil {
+	slice := TagGroupSlice{&local}
+	if err = local.L.LoadUser(ctx, tx, false, (*[]*TagGroup)(&slice), nil); err != nil {
 		t.Fatal(err)
 	}
 	if local.R.User == nil {
@@ -883,18 +883,18 @@ func testGroupToOneUserUsingUser(t *testing.T) {
 	}
 }
 
-func testGroupToOneSetOpUserUsingUser(t *testing.T) {
+func testTagGroupToOneSetOpUserUsingUser(t *testing.T) {
 	var err error
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 
-	var a Group
+	var a TagGroup
 	var b, c User
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, &a, groupDBTypes, false, strmangle.SetComplement(groupPrimaryKeyColumns, groupColumnsWithoutDefault)...); err != nil {
+	if err = randomize.Struct(seed, &a, tagGroupDBTypes, false, strmangle.SetComplement(tagGroupPrimaryKeyColumns, tagGroupColumnsWithoutDefault)...); err != nil {
 		t.Fatal(err)
 	}
 	if err = randomize.Struct(seed, &b, userDBTypes, false, strmangle.SetComplement(userPrimaryKeyColumns, userColumnsWithoutDefault)...); err != nil {
@@ -921,7 +921,7 @@ func testGroupToOneSetOpUserUsingUser(t *testing.T) {
 			t.Error("relationship struct not set to correct value")
 		}
 
-		if x.R.Groups[0] != &a {
+		if x.R.TagGroups[0] != &a {
 			t.Error("failed to append to foreign relationship struct")
 		}
 		if a.UserID != x.UserID {
@@ -941,14 +941,14 @@ func testGroupToOneSetOpUserUsingUser(t *testing.T) {
 	}
 }
 
-func testGroupsReload(t *testing.T) {
+func testTagGroupsReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -963,14 +963,14 @@ func testGroupsReload(t *testing.T) {
 	}
 }
 
-func testGroupsReloadAll(t *testing.T) {
+func testTagGroupsReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -980,21 +980,21 @@ func testGroupsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := GroupSlice{o}
+	slice := TagGroupSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testGroupsSelect(t *testing.T) {
+func testTagGroupsSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -1004,7 +1004,7 @@ func testGroupsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Groups().All(ctx, tx)
+	slice, err := TagGroups().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1015,25 +1015,25 @@ func testGroupsSelect(t *testing.T) {
 }
 
 var (
-	groupDBTypes = map[string]string{`ID`: `bigint`, `UserID`: `varchar`, `GroupName`: `varchar`, `CreatedAt`: `datetime`, `UpdatedAt`: `datetime`}
-	_            = bytes.MinRead
+	tagGroupDBTypes = map[string]string{`ID`: `bigint`, `UserID`: `varchar`, `GroupName`: `varchar`, `CreatedAt`: `datetime`, `UpdatedAt`: `datetime`}
+	_               = bytes.MinRead
 )
 
-func testGroupsUpdate(t *testing.T) {
+func testTagGroupsUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(groupPrimaryKeyColumns) {
+	if 0 == len(tagGroupPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(groupAllColumns) == len(groupPrimaryKeyColumns) {
+	if len(tagGroupAllColumns) == len(tagGroupPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -1043,7 +1043,7 @@ func testGroupsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1052,8 +1052,8 @@ func testGroupsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -1063,18 +1063,18 @@ func testGroupsUpdate(t *testing.T) {
 	}
 }
 
-func testGroupsSliceUpdateAll(t *testing.T) {
+func testTagGroupsSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(groupAllColumns) == len(groupPrimaryKeyColumns) {
+	if len(tagGroupAllColumns) == len(tagGroupPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Group{}
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := &TagGroup{}
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -1084,7 +1084,7 @@ func testGroupsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1093,18 +1093,18 @@ func testGroupsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, groupDBTypes, true, groupPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err = randomize.Struct(seed, o, tagGroupDBTypes, true, tagGroupPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(groupAllColumns, groupPrimaryKeyColumns) {
-		fields = groupAllColumns
+	if strmangle.StringSliceMatch(tagGroupAllColumns, tagGroupPrimaryKeyColumns) {
+		fields = tagGroupAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			groupAllColumns,
-			groupPrimaryKeyColumns,
+			tagGroupAllColumns,
+			tagGroupPrimaryKeyColumns,
 		)
 	}
 
@@ -1122,7 +1122,7 @@ func testGroupsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := GroupSlice{o}
+	slice := TagGroupSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -1130,32 +1130,32 @@ func testGroupsSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testGroupsUpsert(t *testing.T) {
+func testTagGroupsUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(groupAllColumns) == len(groupPrimaryKeyColumns) {
+	if len(tagGroupAllColumns) == len(tagGroupPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
-	if len(mySQLGroupUniqueColumns) == 0 {
+	if len(mySQLTagGroupUniqueColumns) == 0 {
 		t.Skip("Skipping table with no unique columns to conflict on")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Group{}
-	if err = randomize.Struct(seed, &o, groupDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	o := TagGroup{}
+	if err = randomize.Struct(seed, &o, tagGroupDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Group: %s", err)
+		t.Errorf("Unable to upsert TagGroup: %s", err)
 	}
 
-	count, err := Groups().Count(ctx, tx)
+	count, err := TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1164,15 +1164,15 @@ func testGroupsUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, groupDBTypes, false, groupPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Group struct: %s", err)
+	if err = randomize.Struct(seed, &o, tagGroupDBTypes, false, tagGroupPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize TagGroup struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Group: %s", err)
+		t.Errorf("Unable to upsert TagGroup: %s", err)
 	}
 
-	count, err = Groups().Count(ctx, tx)
+	count, err = TagGroups().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}

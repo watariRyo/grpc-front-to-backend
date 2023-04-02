@@ -8,9 +8,9 @@ import "testing"
 func TestUpsert(t *testing.T) {
 	t.Run("AdminTags", testAdminTagsUpsert)
 
-	t.Run("Groups", testGroupsUpsert)
-
 	t.Run("IncomeAndExpenditures", testIncomeAndExpendituresUpsert)
+
+	t.Run("TagGroups", testTagGroupsUpsert)
 
 	t.Run("Users", testUsersUpsert)
 

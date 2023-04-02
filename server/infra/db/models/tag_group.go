@@ -21,8 +21,8 @@ import (
 	"github.com/volatiletech/strmangle"
 )
 
-// Group is an object representing the database table.
-type Group struct { // ID
+// TagGroup is an object representing the database table.
+type TagGroup struct { // ID
 	ID int64 `boil:"id" json:"id" toml:"id" yaml:"id"`
 	// ユーザーID
 	UserID string `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
@@ -33,11 +33,11 @@ type Group struct { // ID
 	// 更新日時
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
-	R *groupR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L groupL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *tagGroupR `boil:"-" json:"-" toml:"-" yaml:"-"`
+	L tagGroupL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
-var GroupColumns = struct {
+var TagGroupColumns = struct {
 	ID        string
 	UserID    string
 	GroupName string
@@ -51,127 +51,104 @@ var GroupColumns = struct {
 	UpdatedAt: "updated_at",
 }
 
-var GroupTableColumns = struct {
+var TagGroupTableColumns = struct {
 	ID        string
 	UserID    string
 	GroupName string
 	CreatedAt string
 	UpdatedAt string
 }{
-	ID:        "group.id",
-	UserID:    "group.user_id",
-	GroupName: "group.group_name",
-	CreatedAt: "group.created_at",
-	UpdatedAt: "group.updated_at",
+	ID:        "tag_group.id",
+	UserID:    "tag_group.user_id",
+	GroupName: "tag_group.group_name",
+	CreatedAt: "tag_group.created_at",
+	UpdatedAt: "tag_group.updated_at",
 }
 
 // Generated where
 
-type whereHelperint64 struct{ field string }
-
-func (w whereHelperint64) EQ(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint64) NEQ(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint64) LT(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint64) LTE(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint64) GT(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint64) GTE(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint64) IN(slice []int64) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperint64) NIN(slice []int64) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-var GroupWhere = struct {
+var TagGroupWhere = struct {
 	ID        whereHelperint64
 	UserID    whereHelperstring
 	GroupName whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperint64{field: "`group`.`id`"},
-	UserID:    whereHelperstring{field: "`group`.`user_id`"},
-	GroupName: whereHelperstring{field: "`group`.`group_name`"},
-	CreatedAt: whereHelpertime_Time{field: "`group`.`created_at`"},
-	UpdatedAt: whereHelpertime_Time{field: "`group`.`updated_at`"},
+	ID:        whereHelperint64{field: "`tag_group`.`id`"},
+	UserID:    whereHelperstring{field: "`tag_group`.`user_id`"},
+	GroupName: whereHelperstring{field: "`tag_group`.`group_name`"},
+	CreatedAt: whereHelpertime_Time{field: "`tag_group`.`created_at`"},
+	UpdatedAt: whereHelpertime_Time{field: "`tag_group`.`updated_at`"},
 }
 
-// GroupRels is where relationship names are stored.
-var GroupRels = struct {
-	User     string
-	UserTags string
+// TagGroupRels is where relationship names are stored.
+var TagGroupRels = struct {
+	User          string
+	GroupUserTags string
 }{
-	User:     "User",
-	UserTags: "UserTags",
+	User:          "User",
+	GroupUserTags: "GroupUserTags",
 }
 
-// groupR is where relationships are stored.
-type groupR struct {
-	User     *User        `boil:"User" json:"User" toml:"User" yaml:"User"`
-	UserTags UserTagSlice `boil:"UserTags" json:"UserTags" toml:"UserTags" yaml:"UserTags"`
+// tagGroupR is where relationships are stored.
+type tagGroupR struct {
+	User          *User        `boil:"User" json:"User" toml:"User" yaml:"User"`
+	GroupUserTags UserTagSlice `boil:"GroupUserTags" json:"GroupUserTags" toml:"GroupUserTags" yaml:"GroupUserTags"`
 }
 
 // NewStruct creates a new relationship struct
-func (*groupR) NewStruct() *groupR {
-	return &groupR{}
+func (*tagGroupR) NewStruct() *tagGroupR {
+	return &tagGroupR{}
 }
 
-func (r *groupR) GetUser() *User {
+func (r *tagGroupR) GetUser() *User {
 	if r == nil {
 		return nil
 	}
 	return r.User
 }
 
-func (r *groupR) GetUserTags() UserTagSlice {
+func (r *tagGroupR) GetGroupUserTags() UserTagSlice {
 	if r == nil {
 		return nil
 	}
-	return r.UserTags
+	return r.GroupUserTags
 }
 
-// groupL is where Load methods for each relationship are stored.
-type groupL struct{}
+// tagGroupL is where Load methods for each relationship are stored.
+type tagGroupL struct{}
 
 var (
-	groupAllColumns            = []string{"id", "user_id", "group_name", "created_at", "updated_at"}
-	groupColumnsWithoutDefault = []string{"user_id", "group_name", "created_at", "updated_at"}
-	groupColumnsWithDefault    = []string{"id"}
-	groupPrimaryKeyColumns     = []string{"id"}
-	groupGeneratedColumns      = []string{}
+	tagGroupAllColumns            = []string{"id", "user_id", "group_name", "created_at", "updated_at"}
+	tagGroupColumnsWithoutDefault = []string{"user_id", "group_name", "created_at", "updated_at"}
+	tagGroupColumnsWithDefault    = []string{"id"}
+	tagGroupPrimaryKeyColumns     = []string{"id"}
+	tagGroupGeneratedColumns      = []string{}
 )
 
 type (
-	// GroupSlice is an alias for a slice of pointers to Group.
-	// This should almost always be used instead of []Group.
-	GroupSlice []*Group
-	// GroupHook is the signature for custom Group hook methods
-	GroupHook func(context.Context, boil.ContextExecutor, *Group) error
+	// TagGroupSlice is an alias for a slice of pointers to TagGroup.
+	// This should almost always be used instead of []TagGroup.
+	TagGroupSlice []*TagGroup
+	// TagGroupHook is the signature for custom TagGroup hook methods
+	TagGroupHook func(context.Context, boil.ContextExecutor, *TagGroup) error
 
-	groupQuery struct {
+	tagGroupQuery struct {
 		*queries.Query
 	}
 )
 
 // Cache for insert, update and upsert
 var (
-	groupType                 = reflect.TypeOf(&Group{})
-	groupMapping              = queries.MakeStructMapping(groupType)
-	groupPrimaryKeyMapping, _ = queries.BindMapping(groupType, groupMapping, groupPrimaryKeyColumns)
-	groupInsertCacheMut       sync.RWMutex
-	groupInsertCache          = make(map[string]insertCache)
-	groupUpdateCacheMut       sync.RWMutex
-	groupUpdateCache          = make(map[string]updateCache)
-	groupUpsertCacheMut       sync.RWMutex
-	groupUpsertCache          = make(map[string]insertCache)
+	tagGroupType                 = reflect.TypeOf(&TagGroup{})
+	tagGroupMapping              = queries.MakeStructMapping(tagGroupType)
+	tagGroupPrimaryKeyMapping, _ = queries.BindMapping(tagGroupType, tagGroupMapping, tagGroupPrimaryKeyColumns)
+	tagGroupInsertCacheMut       sync.RWMutex
+	tagGroupInsertCache          = make(map[string]insertCache)
+	tagGroupUpdateCacheMut       sync.RWMutex
+	tagGroupUpdateCache          = make(map[string]updateCache)
+	tagGroupUpsertCacheMut       sync.RWMutex
+	tagGroupUpsertCache          = make(map[string]insertCache)
 )
 
 var (
@@ -182,27 +159,27 @@ var (
 	_ = qmhelper.Where
 )
 
-var groupAfterSelectHooks []GroupHook
+var tagGroupAfterSelectHooks []TagGroupHook
 
-var groupBeforeInsertHooks []GroupHook
-var groupAfterInsertHooks []GroupHook
+var tagGroupBeforeInsertHooks []TagGroupHook
+var tagGroupAfterInsertHooks []TagGroupHook
 
-var groupBeforeUpdateHooks []GroupHook
-var groupAfterUpdateHooks []GroupHook
+var tagGroupBeforeUpdateHooks []TagGroupHook
+var tagGroupAfterUpdateHooks []TagGroupHook
 
-var groupBeforeDeleteHooks []GroupHook
-var groupAfterDeleteHooks []GroupHook
+var tagGroupBeforeDeleteHooks []TagGroupHook
+var tagGroupAfterDeleteHooks []TagGroupHook
 
-var groupBeforeUpsertHooks []GroupHook
-var groupAfterUpsertHooks []GroupHook
+var tagGroupBeforeUpsertHooks []TagGroupHook
+var tagGroupAfterUpsertHooks []TagGroupHook
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *Group) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupAfterSelectHooks {
+	for _, hook := range tagGroupAfterSelectHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -212,12 +189,12 @@ func (o *Group) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *Group) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupBeforeInsertHooks {
+	for _, hook := range tagGroupBeforeInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -227,12 +204,12 @@ func (o *Group) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *Group) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupAfterInsertHooks {
+	for _, hook := range tagGroupAfterInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -242,12 +219,12 @@ func (o *Group) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *Group) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupBeforeUpdateHooks {
+	for _, hook := range tagGroupBeforeUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -257,12 +234,12 @@ func (o *Group) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *Group) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupAfterUpdateHooks {
+	for _, hook := range tagGroupAfterUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -272,12 +249,12 @@ func (o *Group) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *Group) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupBeforeDeleteHooks {
+	for _, hook := range tagGroupBeforeDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -287,12 +264,12 @@ func (o *Group) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *Group) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupAfterDeleteHooks {
+	for _, hook := range tagGroupAfterDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -302,12 +279,12 @@ func (o *Group) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *Group) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupBeforeUpsertHooks {
+	for _, hook := range tagGroupBeforeUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -317,12 +294,12 @@ func (o *Group) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *Group) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *TagGroup) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range groupAfterUpsertHooks {
+	for _, hook := range tagGroupAfterUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -331,33 +308,33 @@ func (o *Group) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecuto
 	return nil
 }
 
-// AddGroupHook registers your hook function for all future operations.
-func AddGroupHook(hookPoint boil.HookPoint, groupHook GroupHook) {
+// AddTagGroupHook registers your hook function for all future operations.
+func AddTagGroupHook(hookPoint boil.HookPoint, tagGroupHook TagGroupHook) {
 	switch hookPoint {
 	case boil.AfterSelectHook:
-		groupAfterSelectHooks = append(groupAfterSelectHooks, groupHook)
+		tagGroupAfterSelectHooks = append(tagGroupAfterSelectHooks, tagGroupHook)
 	case boil.BeforeInsertHook:
-		groupBeforeInsertHooks = append(groupBeforeInsertHooks, groupHook)
+		tagGroupBeforeInsertHooks = append(tagGroupBeforeInsertHooks, tagGroupHook)
 	case boil.AfterInsertHook:
-		groupAfterInsertHooks = append(groupAfterInsertHooks, groupHook)
+		tagGroupAfterInsertHooks = append(tagGroupAfterInsertHooks, tagGroupHook)
 	case boil.BeforeUpdateHook:
-		groupBeforeUpdateHooks = append(groupBeforeUpdateHooks, groupHook)
+		tagGroupBeforeUpdateHooks = append(tagGroupBeforeUpdateHooks, tagGroupHook)
 	case boil.AfterUpdateHook:
-		groupAfterUpdateHooks = append(groupAfterUpdateHooks, groupHook)
+		tagGroupAfterUpdateHooks = append(tagGroupAfterUpdateHooks, tagGroupHook)
 	case boil.BeforeDeleteHook:
-		groupBeforeDeleteHooks = append(groupBeforeDeleteHooks, groupHook)
+		tagGroupBeforeDeleteHooks = append(tagGroupBeforeDeleteHooks, tagGroupHook)
 	case boil.AfterDeleteHook:
-		groupAfterDeleteHooks = append(groupAfterDeleteHooks, groupHook)
+		tagGroupAfterDeleteHooks = append(tagGroupAfterDeleteHooks, tagGroupHook)
 	case boil.BeforeUpsertHook:
-		groupBeforeUpsertHooks = append(groupBeforeUpsertHooks, groupHook)
+		tagGroupBeforeUpsertHooks = append(tagGroupBeforeUpsertHooks, tagGroupHook)
 	case boil.AfterUpsertHook:
-		groupAfterUpsertHooks = append(groupAfterUpsertHooks, groupHook)
+		tagGroupAfterUpsertHooks = append(tagGroupAfterUpsertHooks, tagGroupHook)
 	}
 }
 
-// One returns a single group record from the query.
-func (q groupQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Group, error) {
-	o := &Group{}
+// One returns a single tagGroup record from the query.
+func (q tagGroupQuery) One(ctx context.Context, exec boil.ContextExecutor) (*TagGroup, error) {
+	o := &TagGroup{}
 
 	queries.SetLimit(q.Query, 1)
 
@@ -366,7 +343,7 @@ func (q groupQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Group,
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "models: failed to execute a one query for group")
+		return nil, errors.Wrap(err, "models: failed to execute a one query for tag_group")
 	}
 
 	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
@@ -376,16 +353,16 @@ func (q groupQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Group,
 	return o, nil
 }
 
-// All returns all Group records from the query.
-func (q groupQuery) All(ctx context.Context, exec boil.ContextExecutor) (GroupSlice, error) {
-	var o []*Group
+// All returns all TagGroup records from the query.
+func (q tagGroupQuery) All(ctx context.Context, exec boil.ContextExecutor) (TagGroupSlice, error) {
+	var o []*TagGroup
 
 	err := q.Bind(ctx, exec, &o)
 	if err != nil {
-		return nil, errors.Wrap(err, "models: failed to assign all query results to Group slice")
+		return nil, errors.Wrap(err, "models: failed to assign all query results to TagGroup slice")
 	}
 
-	if len(groupAfterSelectHooks) != 0 {
+	if len(tagGroupAfterSelectHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
@@ -396,8 +373,8 @@ func (q groupQuery) All(ctx context.Context, exec boil.ContextExecutor) (GroupSl
 	return o, nil
 }
 
-// Count returns the count of all Group records in the query.
-func (q groupQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+// Count returns the count of all TagGroup records in the query.
+func (q tagGroupQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -405,14 +382,14 @@ func (q groupQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to count group rows")
+		return 0, errors.Wrap(err, "models: failed to count tag_group rows")
 	}
 
 	return count, nil
 }
 
 // Exists checks if the row exists in the table.
-func (q groupQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+func (q tagGroupQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -421,14 +398,14 @@ func (q groupQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return false, errors.Wrap(err, "models: failed to check if group exists")
+		return false, errors.Wrap(err, "models: failed to check if tag_group exists")
 	}
 
 	return count > 0, nil
 }
 
 // User pointed to by the foreign key.
-func (o *Group) User(mods ...qm.QueryMod) userQuery {
+func (o *TagGroup) User(mods ...qm.QueryMod) userQuery {
 	queryMods := []qm.QueryMod{
 		qm.Where("`user_id` = ?", o.UserID),
 	}
@@ -438,8 +415,8 @@ func (o *Group) User(mods ...qm.QueryMod) userQuery {
 	return Users(queryMods...)
 }
 
-// UserTags retrieves all the user_tag's UserTags with an executor.
-func (o *Group) UserTags(mods ...qm.QueryMod) userTagQuery {
+// GroupUserTags retrieves all the user_tag's UserTags with an executor via group_id column.
+func (o *TagGroup) GroupUserTags(mods ...qm.QueryMod) userTagQuery {
 	var queryMods []qm.QueryMod
 	if len(mods) != 0 {
 		queryMods = append(queryMods, mods...)
@@ -454,28 +431,28 @@ func (o *Group) UserTags(mods ...qm.QueryMod) userTagQuery {
 
 // LoadUser allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for an N-1 relationship.
-func (groupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular bool, maybeGroup interface{}, mods queries.Applicator) error {
-	var slice []*Group
-	var object *Group
+func (tagGroupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular bool, maybeTagGroup interface{}, mods queries.Applicator) error {
+	var slice []*TagGroup
+	var object *TagGroup
 
 	if singular {
 		var ok bool
-		object, ok = maybeGroup.(*Group)
+		object, ok = maybeTagGroup.(*TagGroup)
 		if !ok {
-			object = new(Group)
-			ok = queries.SetFromEmbeddedStruct(&object, &maybeGroup)
+			object = new(TagGroup)
+			ok = queries.SetFromEmbeddedStruct(&object, &maybeTagGroup)
 			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeGroup))
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeTagGroup))
 			}
 		}
 	} else {
-		s, ok := maybeGroup.(*[]*Group)
+		s, ok := maybeTagGroup.(*[]*TagGroup)
 		if ok {
 			slice = *s
 		} else {
-			ok = queries.SetFromEmbeddedStruct(&slice, maybeGroup)
+			ok = queries.SetFromEmbeddedStruct(&slice, maybeTagGroup)
 			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeGroup))
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeTagGroup))
 			}
 		}
 	}
@@ -483,7 +460,7 @@ func (groupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular boo
 	args := make([]interface{}, 0, 1)
 	if singular {
 		if object.R == nil {
-			object.R = &groupR{}
+			object.R = &tagGroupR{}
 		}
 		args = append(args, object.UserID)
 
@@ -491,7 +468,7 @@ func (groupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular boo
 	Outer:
 		for _, obj := range slice {
 			if obj.R == nil {
-				obj.R = &groupR{}
+				obj.R = &tagGroupR{}
 			}
 
 			for _, a := range args {
@@ -552,7 +529,7 @@ func (groupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular boo
 		if foreign.R == nil {
 			foreign.R = &userR{}
 		}
-		foreign.R.Groups = append(foreign.R.Groups, object)
+		foreign.R.TagGroups = append(foreign.R.TagGroups, object)
 		return nil
 	}
 
@@ -563,7 +540,7 @@ func (groupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular boo
 				if foreign.R == nil {
 					foreign.R = &userR{}
 				}
-				foreign.R.Groups = append(foreign.R.Groups, local)
+				foreign.R.TagGroups = append(foreign.R.TagGroups, local)
 				break
 			}
 		}
@@ -572,30 +549,30 @@ func (groupL) LoadUser(ctx context.Context, e boil.ContextExecutor, singular boo
 	return nil
 }
 
-// LoadUserTags allows an eager lookup of values, cached into the
+// LoadGroupUserTags allows an eager lookup of values, cached into the
 // loaded structs of the objects. This is for a 1-M or N-M relationship.
-func (groupL) LoadUserTags(ctx context.Context, e boil.ContextExecutor, singular bool, maybeGroup interface{}, mods queries.Applicator) error {
-	var slice []*Group
-	var object *Group
+func (tagGroupL) LoadGroupUserTags(ctx context.Context, e boil.ContextExecutor, singular bool, maybeTagGroup interface{}, mods queries.Applicator) error {
+	var slice []*TagGroup
+	var object *TagGroup
 
 	if singular {
 		var ok bool
-		object, ok = maybeGroup.(*Group)
+		object, ok = maybeTagGroup.(*TagGroup)
 		if !ok {
-			object = new(Group)
-			ok = queries.SetFromEmbeddedStruct(&object, &maybeGroup)
+			object = new(TagGroup)
+			ok = queries.SetFromEmbeddedStruct(&object, &maybeTagGroup)
 			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeGroup))
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", object, maybeTagGroup))
 			}
 		}
 	} else {
-		s, ok := maybeGroup.(*[]*Group)
+		s, ok := maybeTagGroup.(*[]*TagGroup)
 		if ok {
 			slice = *s
 		} else {
-			ok = queries.SetFromEmbeddedStruct(&slice, maybeGroup)
+			ok = queries.SetFromEmbeddedStruct(&slice, maybeTagGroup)
 			if !ok {
-				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeGroup))
+				return errors.New(fmt.Sprintf("failed to set %T from embedded struct %T", slice, maybeTagGroup))
 			}
 		}
 	}
@@ -603,14 +580,14 @@ func (groupL) LoadUserTags(ctx context.Context, e boil.ContextExecutor, singular
 	args := make([]interface{}, 0, 1)
 	if singular {
 		if object.R == nil {
-			object.R = &groupR{}
+			object.R = &tagGroupR{}
 		}
 		args = append(args, object.ID)
 	} else {
 	Outer:
 		for _, obj := range slice {
 			if obj.R == nil {
-				obj.R = &groupR{}
+				obj.R = &tagGroupR{}
 			}
 
 			for _, a := range args {
@@ -660,7 +637,7 @@ func (groupL) LoadUserTags(ctx context.Context, e boil.ContextExecutor, singular
 		}
 	}
 	if singular {
-		object.R.UserTags = resultSlice
+		object.R.GroupUserTags = resultSlice
 		for _, foreign := range resultSlice {
 			if foreign.R == nil {
 				foreign.R = &userTagR{}
@@ -673,7 +650,7 @@ func (groupL) LoadUserTags(ctx context.Context, e boil.ContextExecutor, singular
 	for _, foreign := range resultSlice {
 		for _, local := range slice {
 			if queries.Equal(local.ID, foreign.GroupID) {
-				local.R.UserTags = append(local.R.UserTags, foreign)
+				local.R.GroupUserTags = append(local.R.GroupUserTags, foreign)
 				if foreign.R == nil {
 					foreign.R = &userTagR{}
 				}
@@ -686,10 +663,10 @@ func (groupL) LoadUserTags(ctx context.Context, e boil.ContextExecutor, singular
 	return nil
 }
 
-// SetUser of the group to the related item.
+// SetUser of the tagGroup to the related item.
 // Sets o.R.User to related.
-// Adds o to related.R.Groups.
-func (o *Group) SetUser(ctx context.Context, exec boil.ContextExecutor, insert bool, related *User) error {
+// Adds o to related.R.TagGroups.
+func (o *TagGroup) SetUser(ctx context.Context, exec boil.ContextExecutor, insert bool, related *User) error {
 	var err error
 	if insert {
 		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
@@ -698,9 +675,9 @@ func (o *Group) SetUser(ctx context.Context, exec boil.ContextExecutor, insert b
 	}
 
 	updateQuery := fmt.Sprintf(
-		"UPDATE `group` SET %s WHERE %s",
+		"UPDATE `tag_group` SET %s WHERE %s",
 		strmangle.SetParamNames("`", "`", 0, []string{"user_id"}),
-		strmangle.WhereClause("`", "`", 0, groupPrimaryKeyColumns),
+		strmangle.WhereClause("`", "`", 0, tagGroupPrimaryKeyColumns),
 	)
 	values := []interface{}{related.UserID, o.ID}
 
@@ -715,7 +692,7 @@ func (o *Group) SetUser(ctx context.Context, exec boil.ContextExecutor, insert b
 
 	o.UserID = related.UserID
 	if o.R == nil {
-		o.R = &groupR{
+		o.R = &tagGroupR{
 			User: related,
 		}
 	} else {
@@ -724,20 +701,20 @@ func (o *Group) SetUser(ctx context.Context, exec boil.ContextExecutor, insert b
 
 	if related.R == nil {
 		related.R = &userR{
-			Groups: GroupSlice{o},
+			TagGroups: TagGroupSlice{o},
 		}
 	} else {
-		related.R.Groups = append(related.R.Groups, o)
+		related.R.TagGroups = append(related.R.TagGroups, o)
 	}
 
 	return nil
 }
 
-// AddUserTags adds the given related objects to the existing relationships
-// of the group, optionally inserting them as new records.
-// Appends related to o.R.UserTags.
+// AddGroupUserTags adds the given related objects to the existing relationships
+// of the tag_group, optionally inserting them as new records.
+// Appends related to o.R.GroupUserTags.
 // Sets related.R.Group appropriately.
-func (o *Group) AddUserTags(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*UserTag) error {
+func (o *TagGroup) AddGroupUserTags(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*UserTag) error {
 	var err error
 	for _, rel := range related {
 		if insert {
@@ -767,11 +744,11 @@ func (o *Group) AddUserTags(ctx context.Context, exec boil.ContextExecutor, inse
 	}
 
 	if o.R == nil {
-		o.R = &groupR{
-			UserTags: related,
+		o.R = &tagGroupR{
+			GroupUserTags: related,
 		}
 	} else {
-		o.R.UserTags = append(o.R.UserTags, related...)
+		o.R.GroupUserTags = append(o.R.GroupUserTags, related...)
 	}
 
 	for _, rel := range related {
@@ -786,13 +763,13 @@ func (o *Group) AddUserTags(ctx context.Context, exec boil.ContextExecutor, inse
 	return nil
 }
 
-// SetUserTags removes all previously related items of the
-// group replacing them completely with the passed
+// SetGroupUserTags removes all previously related items of the
+// tag_group replacing them completely with the passed
 // in related items, optionally inserting them as new records.
-// Sets o.R.Group's UserTags accordingly.
-// Replaces o.R.UserTags with related.
-// Sets related.R.Group's UserTags accordingly.
-func (o *Group) SetUserTags(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*UserTag) error {
+// Sets o.R.Group's GroupUserTags accordingly.
+// Replaces o.R.GroupUserTags with related.
+// Sets related.R.Group's GroupUserTags accordingly.
+func (o *TagGroup) SetGroupUserTags(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*UserTag) error {
 	query := "update `user_tag` set `group_id` = null where `group_id` = ?"
 	values := []interface{}{o.ID}
 	if boil.IsDebug(ctx) {
@@ -806,7 +783,7 @@ func (o *Group) SetUserTags(ctx context.Context, exec boil.ContextExecutor, inse
 	}
 
 	if o.R != nil {
-		for _, rel := range o.R.UserTags {
+		for _, rel := range o.R.GroupUserTags {
 			queries.SetScanner(&rel.GroupID, nil)
 			if rel.R == nil {
 				continue
@@ -814,16 +791,16 @@ func (o *Group) SetUserTags(ctx context.Context, exec boil.ContextExecutor, inse
 
 			rel.R.Group = nil
 		}
-		o.R.UserTags = nil
+		o.R.GroupUserTags = nil
 	}
 
-	return o.AddUserTags(ctx, exec, insert, related...)
+	return o.AddGroupUserTags(ctx, exec, insert, related...)
 }
 
-// RemoveUserTags relationships from objects passed in.
-// Removes related items from R.UserTags (uses pointer comparison, removal does not keep order)
+// RemoveGroupUserTags relationships from objects passed in.
+// Removes related items from R.GroupUserTags (uses pointer comparison, removal does not keep order)
 // Sets related.R.Group.
-func (o *Group) RemoveUserTags(ctx context.Context, exec boil.ContextExecutor, related ...*UserTag) error {
+func (o *TagGroup) RemoveGroupUserTags(ctx context.Context, exec boil.ContextExecutor, related ...*UserTag) error {
 	if len(related) == 0 {
 		return nil
 	}
@@ -843,16 +820,16 @@ func (o *Group) RemoveUserTags(ctx context.Context, exec boil.ContextExecutor, r
 	}
 
 	for _, rel := range related {
-		for i, ri := range o.R.UserTags {
+		for i, ri := range o.R.GroupUserTags {
 			if rel != ri {
 				continue
 			}
 
-			ln := len(o.R.UserTags)
+			ln := len(o.R.GroupUserTags)
 			if ln > 1 && i < ln-1 {
-				o.R.UserTags[i] = o.R.UserTags[ln-1]
+				o.R.GroupUserTags[i] = o.R.GroupUserTags[ln-1]
 			}
-			o.R.UserTags = o.R.UserTags[:ln-1]
+			o.R.GroupUserTags = o.R.GroupUserTags[:ln-1]
 			break
 		}
 	}
@@ -860,52 +837,52 @@ func (o *Group) RemoveUserTags(ctx context.Context, exec boil.ContextExecutor, r
 	return nil
 }
 
-// Groups retrieves all the records using an executor.
-func Groups(mods ...qm.QueryMod) groupQuery {
-	mods = append(mods, qm.From("`group`"))
+// TagGroups retrieves all the records using an executor.
+func TagGroups(mods ...qm.QueryMod) tagGroupQuery {
+	mods = append(mods, qm.From("`tag_group`"))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"`group`.*"})
+		queries.SetSelect(q, []string{"`tag_group`.*"})
 	}
 
-	return groupQuery{q}
+	return tagGroupQuery{q}
 }
 
-// FindGroup retrieves a single record by ID with an executor.
+// FindTagGroup retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindGroup(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Group, error) {
-	groupObj := &Group{}
+func FindTagGroup(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*TagGroup, error) {
+	tagGroupObj := &TagGroup{}
 
 	sel := "*"
 	if len(selectCols) > 0 {
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from `group` where `id`=?", sel,
+		"select %s from `tag_group` where `id`=?", sel,
 	)
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(ctx, exec, groupObj)
+	err := q.Bind(ctx, exec, tagGroupObj)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "models: unable to select from group")
+		return nil, errors.Wrap(err, "models: unable to select from tag_group")
 	}
 
-	if err = groupObj.doAfterSelectHooks(ctx, exec); err != nil {
-		return groupObj, err
+	if err = tagGroupObj.doAfterSelectHooks(ctx, exec); err != nil {
+		return tagGroupObj, err
 	}
 
-	return groupObj, nil
+	return tagGroupObj, nil
 }
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *Group) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
+func (o *TagGroup) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
-		return errors.New("models: no group provided for insertion")
+		return errors.New("models: no tag_group provided for insertion")
 	}
 
 	var err error
@@ -924,39 +901,39 @@ func (o *Group) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(groupColumnsWithDefault, o)
+	nzDefaults := queries.NonZeroDefaultSet(tagGroupColumnsWithDefault, o)
 
 	key := makeCacheKey(columns, nzDefaults)
-	groupInsertCacheMut.RLock()
-	cache, cached := groupInsertCache[key]
-	groupInsertCacheMut.RUnlock()
+	tagGroupInsertCacheMut.RLock()
+	cache, cached := tagGroupInsertCache[key]
+	tagGroupInsertCacheMut.RUnlock()
 
 	if !cached {
 		wl, returnColumns := columns.InsertColumnSet(
-			groupAllColumns,
-			groupColumnsWithDefault,
-			groupColumnsWithoutDefault,
+			tagGroupAllColumns,
+			tagGroupColumnsWithDefault,
+			tagGroupColumnsWithoutDefault,
 			nzDefaults,
 		)
 
-		cache.valueMapping, err = queries.BindMapping(groupType, groupMapping, wl)
+		cache.valueMapping, err = queries.BindMapping(tagGroupType, tagGroupMapping, wl)
 		if err != nil {
 			return err
 		}
-		cache.retMapping, err = queries.BindMapping(groupType, groupMapping, returnColumns)
+		cache.retMapping, err = queries.BindMapping(tagGroupType, tagGroupMapping, returnColumns)
 		if err != nil {
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO `group` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO `tag_group` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO `group` () VALUES ()%s%s"
+			cache.query = "INSERT INTO `tag_group` () VALUES ()%s%s"
 		}
 
 		var queryOutput, queryReturning string
 
 		if len(cache.retMapping) != 0 {
-			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `group` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, groupPrimaryKeyColumns))
+			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `tag_group` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, tagGroupPrimaryKeyColumns))
 		}
 
 		cache.query = fmt.Sprintf(cache.query, queryOutput, queryReturning)
@@ -973,7 +950,7 @@ func (o *Group) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 	result, err := exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "models: unable to insert into group")
+		return errors.Wrap(err, "models: unable to insert into tag_group")
 	}
 
 	var lastID int64
@@ -989,7 +966,7 @@ func (o *Group) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 	}
 
 	o.ID = int64(lastID)
-	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == groupMapping["id"] {
+	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == tagGroupMapping["id"] {
 		goto CacheNoHooks
 	}
 
@@ -1004,23 +981,23 @@ func (o *Group) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, identifierCols...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to populate default values for group")
+		return errors.Wrap(err, "models: unable to populate default values for tag_group")
 	}
 
 CacheNoHooks:
 	if !cached {
-		groupInsertCacheMut.Lock()
-		groupInsertCache[key] = cache
-		groupInsertCacheMut.Unlock()
+		tagGroupInsertCacheMut.Lock()
+		tagGroupInsertCache[key] = cache
+		tagGroupInsertCacheMut.Unlock()
 	}
 
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// Update uses an executor to update the Group.
+// Update uses an executor to update the TagGroup.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *Group) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
+func (o *TagGroup) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	if !boil.TimestampsAreSkipped(ctx) {
 		currTime := time.Now().In(boil.GetLocation())
 
@@ -1032,28 +1009,28 @@ func (o *Group) Update(ctx context.Context, exec boil.ContextExecutor, columns b
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
-	groupUpdateCacheMut.RLock()
-	cache, cached := groupUpdateCache[key]
-	groupUpdateCacheMut.RUnlock()
+	tagGroupUpdateCacheMut.RLock()
+	cache, cached := tagGroupUpdateCache[key]
+	tagGroupUpdateCacheMut.RUnlock()
 
 	if !cached {
 		wl := columns.UpdateColumnSet(
-			groupAllColumns,
-			groupPrimaryKeyColumns,
+			tagGroupAllColumns,
+			tagGroupPrimaryKeyColumns,
 		)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
 		}
 		if len(wl) == 0 {
-			return 0, errors.New("models: unable to update group, could not build whitelist")
+			return 0, errors.New("models: unable to update tag_group, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE `group` SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE `tag_group` SET %s WHERE %s",
 			strmangle.SetParamNames("`", "`", 0, wl),
-			strmangle.WhereClause("`", "`", 0, groupPrimaryKeyColumns),
+			strmangle.WhereClause("`", "`", 0, tagGroupPrimaryKeyColumns),
 		)
-		cache.valueMapping, err = queries.BindMapping(groupType, groupMapping, append(wl, groupPrimaryKeyColumns...))
+		cache.valueMapping, err = queries.BindMapping(tagGroupType, tagGroupMapping, append(wl, tagGroupPrimaryKeyColumns...))
 		if err != nil {
 			return 0, err
 		}
@@ -1069,42 +1046,42 @@ func (o *Group) Update(ctx context.Context, exec boil.ContextExecutor, columns b
 	var result sql.Result
 	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update group row")
+		return 0, errors.Wrap(err, "models: unable to update tag_group row")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by update for group")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by update for tag_group")
 	}
 
 	if !cached {
-		groupUpdateCacheMut.Lock()
-		groupUpdateCache[key] = cache
-		groupUpdateCacheMut.Unlock()
+		tagGroupUpdateCacheMut.Lock()
+		tagGroupUpdateCache[key] = cache
+		tagGroupUpdateCacheMut.Unlock()
 	}
 
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q groupQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (q tagGroupQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update all for group")
+		return 0, errors.Wrap(err, "models: unable to update all for tag_group")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to retrieve rows affected for group")
+		return 0, errors.Wrap(err, "models: unable to retrieve rows affected for tag_group")
 	}
 
 	return rowsAff, nil
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o GroupSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (o TagGroupSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -1126,13 +1103,13 @@ func (o GroupSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 
 	// Append all of the primary key values for each column
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), groupPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), tagGroupPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE `group` SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE `tag_group` SET %s WHERE %s",
 		strmangle.SetParamNames("`", "`", 0, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, groupPrimaryKeyColumns, len(o)))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, tagGroupPrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1141,25 +1118,25 @@ func (o GroupSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update all in group slice")
+		return 0, errors.Wrap(err, "models: unable to update all in tagGroup slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to retrieve rows affected all in update all group")
+		return 0, errors.Wrap(err, "models: unable to retrieve rows affected all in update all tagGroup")
 	}
 	return rowsAff, nil
 }
 
-var mySQLGroupUniqueColumns = []string{
+var mySQLTagGroupUniqueColumns = []string{
 	"id",
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *Group) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
+func (o *TagGroup) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
-		return errors.New("models: no group provided for upsert")
+		return errors.New("models: no tag_group provided for upsert")
 	}
 	if !boil.TimestampsAreSkipped(ctx) {
 		currTime := time.Now().In(boil.GetLocation())
@@ -1174,8 +1151,8 @@ func (o *Group) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(groupColumnsWithDefault, o)
-	nzUniques := queries.NonZeroDefaultSet(mySQLGroupUniqueColumns, o)
+	nzDefaults := queries.NonZeroDefaultSet(tagGroupColumnsWithDefault, o)
+	nzUniques := queries.NonZeroDefaultSet(mySQLTagGroupUniqueColumns, o)
 
 	if len(nzUniques) == 0 {
 		return errors.New("cannot upsert with a table that cannot conflict on a unique column")
@@ -1203,43 +1180,43 @@ func (o *Group) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	key := buf.String()
 	strmangle.PutBuffer(buf)
 
-	groupUpsertCacheMut.RLock()
-	cache, cached := groupUpsertCache[key]
-	groupUpsertCacheMut.RUnlock()
+	tagGroupUpsertCacheMut.RLock()
+	cache, cached := tagGroupUpsertCache[key]
+	tagGroupUpsertCacheMut.RUnlock()
 
 	var err error
 
 	if !cached {
 		insert, ret := insertColumns.InsertColumnSet(
-			groupAllColumns,
-			groupColumnsWithDefault,
-			groupColumnsWithoutDefault,
+			tagGroupAllColumns,
+			tagGroupColumnsWithDefault,
+			tagGroupColumnsWithoutDefault,
 			nzDefaults,
 		)
 
 		update := updateColumns.UpdateColumnSet(
-			groupAllColumns,
-			groupPrimaryKeyColumns,
+			tagGroupAllColumns,
+			tagGroupPrimaryKeyColumns,
 		)
 
 		if !updateColumns.IsNone() && len(update) == 0 {
-			return errors.New("models: unable to upsert group, could not build update column list")
+			return errors.New("models: unable to upsert tag_group, could not build update column list")
 		}
 
 		ret = strmangle.SetComplement(ret, nzUniques)
-		cache.query = buildUpsertQueryMySQL(dialect, "`group`", update, insert)
+		cache.query = buildUpsertQueryMySQL(dialect, "`tag_group`", update, insert)
 		cache.retQuery = fmt.Sprintf(
-			"SELECT %s FROM `group` WHERE %s",
+			"SELECT %s FROM `tag_group` WHERE %s",
 			strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, ret), ","),
 			strmangle.WhereClause("`", "`", 0, nzUniques),
 		)
 
-		cache.valueMapping, err = queries.BindMapping(groupType, groupMapping, insert)
+		cache.valueMapping, err = queries.BindMapping(tagGroupType, tagGroupMapping, insert)
 		if err != nil {
 			return err
 		}
 		if len(ret) != 0 {
-			cache.retMapping, err = queries.BindMapping(groupType, groupMapping, ret)
+			cache.retMapping, err = queries.BindMapping(tagGroupType, tagGroupMapping, ret)
 			if err != nil {
 				return err
 			}
@@ -1261,7 +1238,7 @@ func (o *Group) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	result, err := exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "models: unable to upsert for group")
+		return errors.Wrap(err, "models: unable to upsert for tag_group")
 	}
 
 	var lastID int64
@@ -1278,13 +1255,13 @@ func (o *Group) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	}
 
 	o.ID = int64(lastID)
-	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == groupMapping["id"] {
+	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == tagGroupMapping["id"] {
 		goto CacheNoHooks
 	}
 
-	uniqueMap, err = queries.BindMapping(groupType, groupMapping, nzUniques)
+	uniqueMap, err = queries.BindMapping(tagGroupType, tagGroupMapping, nzUniques)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to retrieve unique values for group")
+		return errors.Wrap(err, "models: unable to retrieve unique values for tag_group")
 	}
 	nzUniqueCols = queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), uniqueMap)
 
@@ -1295,32 +1272,32 @@ func (o *Group) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, nzUniqueCols...).Scan(returns...)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to populate default values for group")
+		return errors.Wrap(err, "models: unable to populate default values for tag_group")
 	}
 
 CacheNoHooks:
 	if !cached {
-		groupUpsertCacheMut.Lock()
-		groupUpsertCache[key] = cache
-		groupUpsertCacheMut.Unlock()
+		tagGroupUpsertCacheMut.Lock()
+		tagGroupUpsertCache[key] = cache
+		tagGroupUpsertCacheMut.Unlock()
 	}
 
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// Delete deletes a single Group record with an executor.
+// Delete deletes a single TagGroup record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *Group) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o *TagGroup) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
-		return 0, errors.New("models: no Group provided for delete")
+		return 0, errors.New("models: no TagGroup provided for delete")
 	}
 
 	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
-	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), groupPrimaryKeyMapping)
-	sql := "DELETE FROM `group` WHERE `id`=?"
+	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), tagGroupPrimaryKeyMapping)
+	sql := "DELETE FROM `tag_group` WHERE `id`=?"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1329,12 +1306,12 @@ func (o *Group) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, e
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete from group")
+		return 0, errors.Wrap(err, "models: unable to delete from tag_group")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for group")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for tag_group")
 	}
 
 	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
@@ -1345,33 +1322,33 @@ func (o *Group) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, e
 }
 
 // DeleteAll deletes all matching rows.
-func (q groupQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (q tagGroupQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
-		return 0, errors.New("models: no groupQuery provided for delete all")
+		return 0, errors.New("models: no tagGroupQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete all from group")
+		return 0, errors.Wrap(err, "models: unable to delete all from tag_group")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for group")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for tag_group")
 	}
 
 	return rowsAff, nil
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o GroupSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o TagGroupSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
-	if len(groupBeforeDeleteHooks) != 0 {
+	if len(tagGroupBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -1381,12 +1358,12 @@ func (o GroupSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 
 	var args []interface{}
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), groupPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), tagGroupPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM `group` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, groupPrimaryKeyColumns, len(o))
+	sql := "DELETE FROM `tag_group` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, tagGroupPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1395,15 +1372,15 @@ func (o GroupSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete all from group slice")
+		return 0, errors.Wrap(err, "models: unable to delete all from tagGroup slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for group")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for tag_group")
 	}
 
-	if len(groupAfterDeleteHooks) != 0 {
+	if len(tagGroupAfterDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -1416,8 +1393,8 @@ func (o GroupSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *Group) Reload(ctx context.Context, exec boil.ContextExecutor) error {
-	ret, err := FindGroup(ctx, exec, o.ID)
+func (o *TagGroup) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindTagGroup(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -1428,26 +1405,26 @@ func (o *Group) Reload(ctx context.Context, exec boil.ContextExecutor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *GroupSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
+func (o *TagGroupSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
 
-	slice := GroupSlice{}
+	slice := TagGroupSlice{}
 	var args []interface{}
 	for _, obj := range *o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), groupPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), tagGroupPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT `group`.* FROM `group` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, groupPrimaryKeyColumns, len(*o))
+	sql := "SELECT `tag_group`.* FROM `tag_group` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, tagGroupPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
 	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to reload all in GroupSlice")
+		return errors.Wrap(err, "models: unable to reload all in TagGroupSlice")
 	}
 
 	*o = slice
@@ -1455,10 +1432,10 @@ func (o *GroupSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 	return nil
 }
 
-// GroupExists checks if the Group row exists.
-func GroupExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
+// TagGroupExists checks if the TagGroup row exists.
+func TagGroupExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from `group` where `id`=? limit 1)"
+	sql := "select exists(select 1 from `tag_group` where `id`=? limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1469,13 +1446,13 @@ func GroupExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool
 
 	err := row.Scan(&exists)
 	if err != nil {
-		return false, errors.Wrap(err, "models: unable to check if group exists")
+		return false, errors.Wrap(err, "models: unable to check if tag_group exists")
 	}
 
 	return exists, nil
 }
 
-// Exists checks if the Group row exists.
-func (o *Group) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
-	return GroupExists(ctx, exec, o.ID)
+// Exists checks if the TagGroup row exists.
+func (o *TagGroup) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+	return TagGroupExists(ctx, exec, o.ID)
 }
