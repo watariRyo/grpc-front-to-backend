@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { applyAction, enhance } from "$app/forms";
     import Modal from "$components/Modal.svelte";
-    import type { LayoutData } from "./$types";
+    import type { ActionData, LayoutData } from "./$types";
   
     export let data: LayoutData;
+    export let form: ActionData
     let topbar: HTMLElement;
     let scrollY: number;
     let headerOpacity = 0;
@@ -76,6 +77,18 @@
                 <div class="sm:col-span-2">
                     <label for="name" class="mb-2 inline-block text-sm text-gray-800 sm:text-base">Name</label>
                     <input name="name" class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
+                    <br>
+                    {#if form?.nameMissing}
+                        <p style="color: red; margin-bottom: 0">Name is Required!</p>
+                    {/if}
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="amount" class="mb-2 inline-block text-sm text-gray-800 sm:text-base">Amount</label>
+                    <input name="amount" type="number" class="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring" />
+                    {#if form?.amountMissing}
+                        <p style="color: red; margin-bottom: 0">Amount is Required!</p>
+                    {/if}
                 </div>
             
                 <div class="sm:col-span-2">

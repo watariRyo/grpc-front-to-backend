@@ -8,7 +8,7 @@ export const load: LayoutServerLoad = async ({ cookies, locals, fetch }) => {
 		};
 	}
 
-	const response = await fetch('/api/get/user', {
+	const response = await fetch('/api/user', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'

@@ -8,7 +8,7 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 		};
 	}
 
-	const balanceResponse = await fetch('/api/list/balance', {
+	const balanceResponse = await fetch('/api/balance', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -16,7 +16,7 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 	});
 	const balanceResponseJson = await balanceResponse.json();
 
-	const userTagResponse = await fetch('/api/list/userTag', {
+	const userTagResponse = await fetch('/api/userTag', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
