@@ -24,8 +24,6 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 	});
 	const userTagResponseJson = await userTagResponse.json();
 
-	console.log('reload');
-
 	if (balanceResponseJson.ok && userTagResponseJson.ok) {
 		const balances = balanceResponseJson.grpcResponse.income_and_expenditure_list;
 		const userTags = userTagResponseJson.grpcResponse.user_tag_list;

@@ -1102,6 +1102,9 @@
           "type": "integer",
           "format": "int32"
         },
+        "name": {
+          "type": "string"
+        },
         "occurrenceDate": {
           "type": "string"
         },
@@ -1268,6 +1271,9 @@
         "amount": {
           "type": "integer",
           "format": "int32"
+        },
+        "name": {
+          "type": "string"
         },
         "occurrenceDate": {
           "type": "string"

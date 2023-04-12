@@ -43,10 +43,11 @@ message GetIncomeAndExpenditureResponse {
 
 message RegisterIncomeAndExpenditureRequest {
     int32 amount = 1;
-    string occurrence_date = 2;
-    int64 user_tag_id = 3;
-    string classification = 4;
-    string session_id = 5;
+    string name = 2;
+    string occurrence_date = 3;
+    int64 user_tag_id = 4;
+    string classification = 5;
+    string session_id = 6;
 }
 
 message RegisterIncomeAndExpenditureResponse {
@@ -62,10 +63,11 @@ message RegisterIncomeAndExpenditureResponse {
 message UpdateIncomeAndExpenditureRequest {
     int64 id = 1;
     int32 amount = 2;
-    string occurrence_date = 3;
-    int64 user_tag_id = 4;
-    string classification = 5;
-    string session_id = 6;
+    string name = 3;
+    string occurrence_date = 4;
+    int64 user_tag_id = 5;
+    string classification = 6;
+    string session_id = 7;
 }
 
 message UpdateIncomeAndExpenditureResponse {

@@ -9,6 +9,8 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	model "github.com/watariRyo/balance/server/domain/model"
+	repository "github.com/watariRyo/balance/server/domain/repository"
 	proto "github.com/watariRyo/balance/server/proto"
 )
 
@@ -66,18 +68,18 @@ func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Get(ctx, input interfa
 }
 
 // Insert mocks base method.
-func (m *MockIncomeAndExpenditureRepository) Insert(ctx context.Context, input *proto.RegisterIncomeAndExpenditureRequest) (*proto.RegisterIncomeAndExpenditureResponse, error) {
+func (m *MockIncomeAndExpenditureRepository) Insert(ctx context.Context, conn repository.DBConnection, input *model.IncomeAndExpenditure) (*model.IncomeAndExpenditure, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Insert", ctx, input)
-	ret0, _ := ret[0].(*proto.RegisterIncomeAndExpenditureResponse)
+	ret := m.ctrl.Call(m, "Insert", ctx, conn, input)
+	ret0, _ := ret[0].(*model.IncomeAndExpenditure)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Insert(ctx, input interface{}) *gomock.Call {
+func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Insert(ctx, conn, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).Insert), ctx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).Insert), ctx, conn, input)
 }
 
 // List mocks base method.

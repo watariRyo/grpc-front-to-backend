@@ -30,7 +30,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
 	}
 };
 
-export const POST: RequestHandler = async ({ request, cookies }) => {
+export const POST: RequestHandler = async ({ request }) => {
 	const data = await request.json();
 
 	const response = await apiClient(`${BASE_URL}/api/register/user`, {

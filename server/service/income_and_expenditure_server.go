@@ -12,7 +12,10 @@ import (
 	"time"
 
 	"github.com/watariRyo/balance/server/config"
+	"github.com/watariRyo/balance/server/domain/model"
 	"github.com/watariRyo/balance/server/domain/repository"
+	"github.com/watariRyo/balance/server/logger"
+	"github.com/watariRyo/balance/server/messages"
 	pb "github.com/watariRyo/balance/server/proto"
 	ltime "github.com/watariRyo/balance/server/time"
 	"github.com/watariRyo/balance/server/token"
@@ -51,13 +54,30 @@ func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Contex
 func (s *incomeAndExpenditureService) RegisterIncomeAndExpenditure(ctx context.Context, request *pb.RegisterIncomeAndExpenditureRequest) (*pb.RegisterIncomeAndExpenditureResponse, error) {
 	log.Println("RegisterIncomeAndExpenditure was invoked.")
 
+	// セッション（Redis）取得
+	sessionData, err := s.repo.RedisClient.GetSession(request.SessionId)
+	if err != nil {
+		logger.Errorf(ctx, "something went wrong. %v.", err)
+		return nil, messages.SessionError(err.Error()).Err()
+	}
+
+	registeredIncomeAndExpenditure, err := s.repo.IncomeAndExpenditureRepository.Insert(ctx, s.repo.DBConnection, &model.IncomeAndExpenditure{
+		UserID:         sessionData.UserID,
+		Name:           request.Name,
+		Amount:         request.Amount,
+		OccurrenceDate: request.OccurrenceDate,
+		UserTagID:      request.UserTagId,
+		Classification: request.Classification,
+	})
+
 	return &pb.RegisterIncomeAndExpenditureResponse{
-		Id:             1,
-		UserId:         "userId",
-		Amount:         100,
-		OccurrenceDate: "2023-01-01",
-		UserTagId:      1,
-		Classification: "INCOME",
+		Id:             registeredIncomeAndExpenditure.ID,
+		UserId:         registeredIncomeAndExpenditure.UserID,
+		Name:           registeredIncomeAndExpenditure.Name,
+		Amount:         registeredIncomeAndExpenditure.Amount,
+		OccurrenceDate: registeredIncomeAndExpenditure.OccurrenceDate,
+		UserTagId:      registeredIncomeAndExpenditure.UserTagID,
+		Classification: registeredIncomeAndExpenditure.Classification,
 	}, nil
 }
 

@@ -1,5 +1,5 @@
-import { HttpStatusCodes400 } from '$enum/httpStatusCode';
-import { fail, type Actions } from '@sveltejs/kit';
+import { HttpStatusCodes300, HttpStatusCodes400 } from '$enum/httpStatusCode';
+import { error, fail, json, redirect, type Actions } from '@sveltejs/kit';
 export const actions: Actions = {
 	registerBalance: async ({ fetch, request, cookies, url, locals }) => {
 		const form = await request.formData();
@@ -7,6 +7,7 @@ export const actions: Actions = {
 		const classification = form.get('classification');
 		const tag = form.get('tag');
 		const amount = form.get('amount');
+		const occurrenceDate = form.get('occurrence_date');
 
 		await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -16,10 +17,37 @@ export const actions: Actions = {
 		if (!amount) {
 			return fail(HttpStatusCodes400.BAD_REQUEST, { amountMissing: true });
 		}
+		if (!occurrenceDate) {
+			return fail(HttpStatusCodes400.BAD_REQUEST, { occurrenceDateMissing: true });
+		}
 
-		console.log(name);
-		console.log(classification);
-		console.log(tag);
-		console.log(amount);
+		if (isNaN(new Date(occurrenceDate.toString()).getTime())) {
+			return fail(HttpStatusCodes400.BAD_REQUEST, { occurrenceInvalidDate: true });
+		}
+
+		const formatForDate = new Date(occurrenceDate.toString());
+		const requestDate = formatForDate.toISOString().split('T')[0].replaceAll('-', '');
+
+		const response = await fetch('/api/balance', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				name,
+				classification,
+				tag,
+				amount,
+				occurrenceDate: requestDate
+			})
+		});
+		const responseJson = await response.json();
+		if (responseJson.ok) {
+			return responseJson.grpcResponse;
+		} else {
+			throw error(responseJson.grpcResponse.status, {
+				message: responseJson.grpcResponse.serverErrorContent.message
+			});
+		}
 	}
 };
