@@ -35,7 +35,52 @@ func NewIncomAndExpenditureService(r *repository.AllRepository, cfg *config.Conf
 func (s *incomeAndExpenditureService) ListIncomeAndExpenditure(ctx context.Context, request *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error) {
 	log.Println("ListIncomeAndExpenditure was invoked.")
 
-	return s.repo.IncomeAndExpenditureRepository.List(ctx, request)
+	// セッション（Redis）取得
+	sessionData, err := s.repo.RedisClient.GetSession(request.SessionId)
+	if err != nil {
+		logger.Errorf(ctx, "something went wrong. %v.", err)
+		return nil, messages.SessionError(err.Error()).Err()
+	}
+
+	// layout
+	var layout = "2006-01-02"
+	var searchLayout = "20060102"
+
+	// time parse
+	requestTime := s.time.StringToTime(request.OccurrenceDate, layout)
+
+	// 月初
+	occurrenceDateFrom := time.Date(requestTime.Year(), requestTime.Month(), 1, 0, 0, 0, 0, s.time.Now().Location())
+	nextFirstOfMotnh := occurrenceDateFrom.AddDate(0, 1, 0)
+	// 月末
+	occurrenceDateTo := time.Date(nextFirstOfMotnh.Year(), nextFirstOfMotnh.Month(), 1, 23, 59, 59, 999, s.time.Now().Location()).AddDate(0, 0, -1)
+
+	incomeAndExpenditures, err := s.repo.IncomeAndExpenditureRepository.List(ctx, s.repo.DBConnection, &model.IncomeAndExpenditureListByQuery{
+		UserID:             sessionData.UserID,
+		OccurrenceDateFrom: occurrenceDateFrom.Format(searchLayout),
+		OccurrenceDateTo:   occurrenceDateTo.Format(searchLayout),
+	})
+	if err != nil {
+		return nil, messages.GetNoData().Err()
+	}
+
+	var responseList []*pb.IncomeAndExpenditureResponse
+
+	for _, incomeAndExpend := range incomeAndExpenditures {
+		responseList = append(responseList, &pb.IncomeAndExpenditureResponse{
+			Id:             incomeAndExpend.ID,
+			UserId:         sessionData.UserID,
+			Name:           incomeAndExpend.Name,
+			Amount:         incomeAndExpend.Amount,
+			OccurrenceDate: incomeAndExpend.OccurrenceDate,
+			UserTagId:      incomeAndExpend.UserTagID,
+			Classification: incomeAndExpend.Classification,
+		})
+	}
+
+	return &pb.ListIncomeAndExpenditureResponse{
+		IncomeAndExpenditureList: responseList,
+	}, nil
 }
 
 func (s *incomeAndExpenditureService) GetIncomeAndExpenditure(ctx context.Context, incomeAndExpenditureID *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error) {

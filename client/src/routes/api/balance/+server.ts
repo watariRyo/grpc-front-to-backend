@@ -3,9 +3,19 @@ import { apiClient, ApiError } from '../apiClient';
 import { BASE_URL } from '$env/static/private';
 import { access } from 'fs';
 
-export const GET: RequestHandler = async ({ cookies }) => {
+export const GET: RequestHandler = async ({ cookies, url }) => {
 	const accessToken = cookies.get('access_token');
 	const sessionID = cookies.get('session_id');
+
+	const queries = url.searchParams;
+
+	const today = new Date();
+	const year = today.getFullYear();
+	const month = ('00' + (today.getMonth() + 1)).slice(-2);
+	const day = ('00' + today.getDate()).slice(-2);
+	const defaultDate = year + '-' + month + '-' + day;
+
+	const occurrenceDate = queries.has('occurenceDate') ? queries.get('occurenceDate') : defaultDate;
 
 	const response = await apiClient(`${BASE_URL}/api/list/incomeAndExpenditure`, {
 		method: 'POST',
@@ -14,7 +24,8 @@ export const GET: RequestHandler = async ({ cookies }) => {
 			Authorization: accessToken || ''
 		},
 		body: JSON.stringify({
-			session_id: sessionID
+			session_id: sessionID,
+			occurrence_date: occurrenceDate
 		})
 	});
 

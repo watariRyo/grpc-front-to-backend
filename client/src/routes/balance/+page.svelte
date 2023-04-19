@@ -205,9 +205,21 @@
               <li class="bg-indigo-500 text-gray-100">INCOME</li>
               {#each incomes as income, i}
                   {#if i % 2 == 0}
-                      <li class="border-b-2">{GetFormatDate(income.occurrence_date)} {income.name}</li>
+                      <li class="border-b-2">
+                        <div class="flex flex-row justify-start">
+                            <div class="columns-1">{GetFormatDate(income.occurrence_date)}</div>
+                            <div class="ml-2">{income.name}</div>
+                            <div class="mr-2 ml-auto">{income.amount}</div>
+                        </div>
+                    </li>
                   {:else}
-                      <li class="border-b-2 bg-indigo-200">{GetFormatDate(income.occurrence_date)} {income.name}</li>
+                      <li class="border-b-2 bg-indigo-200">
+                        <div class="flex flex-row justify-start">
+                            <div class="columns-1">{GetFormatDate(income.occurrence_date)}</div>
+                            <div class="ml-2">{income.name}</div>
+                            <div class="mr-2 ml-auto">{income.amount}</div>
+                        </div>
+                      </li>
                   {/if}
               {/each}
           </ul>
@@ -217,9 +229,21 @@
               <li class="bg-indigo-500 text-gray-100">EXPENDITURE</li>
               {#each expenditures as expenditure, i}
                   {#if i % 2 == 0}
-                      <li class="border-b-2">{GetFormatDate(expenditure.occurrence_date)} {expenditure.name}</li>
+                      <li class="border-b-2">
+                        <div class="flex flex-row justify-start">
+                            <div class="columns-1">{GetFormatDate(expenditure.occurrence_date)}</div>
+                            <div class="ml-2">{expenditure.name}</div>
+                            <div class="mr-2 ml-auto">{expenditure.amount}</div>
+                        </div>
+                    </li>
                   {:else}
-                      <li class="border-b-2 bg-indigo-200">{GetFormatDate(expenditure.occurrence_date)} {expenditure.name}</li>
+                      <li class="border-b-2 bg-indigo-200">
+                        <div class="flex flex-row justify-start">
+                            <div class="columns-1">{GetFormatDate(expenditure.occurrence_date)}</div>
+                            <div class="ml-2">{expenditure.name}</div>
+                            <div class="mr-2 ml-auto">{expenditure.amount}</div>
+                        </div>
+                      </li>
                   {/if}
               {/each}
           </ul>

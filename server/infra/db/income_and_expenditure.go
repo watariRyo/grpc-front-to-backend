@@ -7,6 +7,7 @@ import (
 	"github.com/friendsofgo/errors"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 	"github.com/watariRyo/balance/server/domain/model"
 	"github.com/watariRyo/balance/server/domain/repository"
 	"github.com/watariRyo/balance/server/infra/db/models"
@@ -33,47 +34,26 @@ func (r *IncomeAndExpenditureRepository) toDomain(input models.IncomeAndExpendit
 	}
 }
 
-func (r *IncomeAndExpenditureRepository) List(tx context.Context, input *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error) {
-	return &pb.ListIncomeAndExpenditureResponse{
-		IncomeAndExpenditureList: []*pb.IncomeAndExpenditureResponse{
-			{
-				Id:             1,
-				UserId:         "hoge",
-				Name:           "income",
-				Amount:         1000,
-				OccurrenceDate: "20220101",
-				UserTagId:      1,
-				Classification: "INCOME",
-			},
-			{
-				Id:             2,
-				UserId:         "hoge",
-				Name:           "Expenditure",
-				Amount:         2000,
-				OccurrenceDate: "20220102",
-				UserTagId:      2,
-				Classification: "EXPENDITURE",
-			},
-			{
-				Id:             3,
-				UserId:         "hoge",
-				Name:           "income2",
-				Amount:         3000,
-				OccurrenceDate: "20220105",
-				UserTagId:      1,
-				Classification: "INCOME",
-			},
-			{
-				Id:             4,
-				UserId:         "hoge",
-				Name:           "Expenditure2",
-				Amount:         4000,
-				OccurrenceDate: "20220106",
-				UserTagId:      2,
-				Classification: "EXPENDITURE",
-			},
-		},
-	}, nil
+func (r *IncomeAndExpenditureRepository) List(ctx context.Context, conn repository.DBConnection, input *model.IncomeAndExpenditureListByQuery) ([]*model.IncomeAndExpenditure, error) {
+
+	balances, err := models.IncomeAndExpenditures(
+		models.IncomeAndExpenditureWhere.UserID.EQ(input.UserID),
+		models.IncomeAndExpenditureWhere.OccurrenceDate.GTE(input.OccurrenceDateFrom),
+		models.IncomeAndExpenditureWhere.OccurrenceDate.LTE(input.OccurrenceDateTo),
+		qm.OrderBy(fmt.Sprintf("%s asc", models.IncomeAndExpenditureColumns.OccurrenceDate)),
+	).All(ctx, conn)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var incomeAndExpenditures []*model.IncomeAndExpenditure
+
+	for _, incomeAndExpend := range balances {
+		incomeAndExpenditures = append(incomeAndExpenditures, r.toDomain(*incomeAndExpend))
+	}
+
+	return incomeAndExpenditures, nil
 }
 
 func (r *IncomeAndExpenditureRepository) Get(ctx context.Context, input *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error) {

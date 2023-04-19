@@ -9,7 +9,7 @@ import (
 
 type IncomeAndExpenditureRepository interface {
 	Get(ctx context.Context, input *pb.GetIncomeAndExpenditureRequest) (*pb.GetIncomeAndExpenditureResponse, error)
-	List(tx context.Context, input *pb.ListIncomeAndExpenditureRequest) (*pb.ListIncomeAndExpenditureResponse, error)
+	List(tx context.Context, conn DBConnection, input *model.IncomeAndExpenditureListByQuery) ([]*model.IncomeAndExpenditure, error)
 	Insert(ctx context.Context, conn DBConnection, input *model.IncomeAndExpenditure) (*model.IncomeAndExpenditure, error)
 	Update(ctx context.Context, input *pb.UpdateIncomeAndExpenditureRequest) (*pb.UpdateIncomeAndExpenditureResponse, error)
 	Delete(ctx context.Context, input *pb.DeleteIncomeAndExpenditureRequest) (*pb.DeleteIncomeAndExpenditureResponse, error)

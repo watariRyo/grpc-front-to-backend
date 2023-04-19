@@ -83,18 +83,18 @@ func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) Insert(ctx, conn, inpu
 }
 
 // List mocks base method.
-func (m *MockIncomeAndExpenditureRepository) List(tx context.Context, input *proto.ListIncomeAndExpenditureRequest) (*proto.ListIncomeAndExpenditureResponse, error) {
+func (m *MockIncomeAndExpenditureRepository) List(tx context.Context, conn repository.DBConnection, input *model.IncomeAndExpenditureListByQuery) ([]*model.IncomeAndExpenditure, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "List", tx, input)
-	ret0, _ := ret[0].(*proto.ListIncomeAndExpenditureResponse)
+	ret := m.ctrl.Call(m, "List", tx, conn, input)
+	ret0, _ := ret[0].([]*model.IncomeAndExpenditure)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // List indicates an expected call of List.
-func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) List(tx, input interface{}) *gomock.Call {
+func (mr *MockIncomeAndExpenditureRepositoryMockRecorder) List(tx, conn, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).List), tx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockIncomeAndExpenditureRepository)(nil).List), tx, conn, input)
 }
 
 // Update mocks base method.
