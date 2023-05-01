@@ -75,3 +75,40 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		});
 	}
 };
+
+export const PUT: RequestHandler = async ({ request, cookies }) => {
+	const data = await request.json();
+	const accessToken = cookies.get('access_token');
+	const sessionID = cookies.get('session_id');
+
+	const response = await apiClient(`${BASE_URL}/api/update/incomeAndExpenditure`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: accessToken || ''
+		},
+		body: JSON.stringify({
+			id: data.id,
+			amount: data.amount,
+			name: data.name,
+			occurrence_date: data.occurrenceDate,
+			user_tag_id: data.tag,
+			classification: data.classification,
+			session_id: sessionID
+		})
+	});
+
+	console.log(response);
+
+	if (response instanceof ApiError) {
+		return json({
+			ok: false,
+			grpcResponse: response
+		});
+	} else {
+		return json({
+			ok: true,
+			grpcResponse: response
+		});
+	}
+};

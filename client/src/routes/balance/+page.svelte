@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { applyAction, enhance } from "$app/forms";
+	import IncomeAndExpenditure from "$components/IncomeAndExpenditure.svelte";
     import Modal from "$components/Modal.svelte";
 	import type { Balance } from "$lib/model/balance";
-	import { GetFormatDate } from "$lib/model/date";
 	import type { UserTag } from "$lib/model/userTag";
     import type { ActionData, LayoutData } from "./$types";
   
@@ -78,6 +78,7 @@
     }
 
     const updateBalanceList = (data: Balance) => {
+        console.log("updateBalanceList")
         if (data.classification == "INCOME") {
             incomes = [...incomes, data].sort((i1: Balance, i2: Balance) => {
             if (i1.occurrence_date > i2.occurrence_date) {
@@ -89,6 +90,7 @@
             }
             return 0
             })            
+            console.log(incomes)
         } else {
             expenditures = [...expenditures, data].sort((e1: Balance, e2: Balance) => {
             if (e1.occurrence_date > e2.occurrence_date) {
@@ -190,7 +192,6 @@
         
             <div class="flex items-center justify-between sm:col-span-2">
                 <button type="submit" class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Send</button>
-        
                 <span class="text-sm text-gray-500">*Required</span>
             </div>
         
@@ -202,50 +203,18 @@
   <div class="flex flex-row mx-auto max-w-screen-2xl justify-center">
       <div class="border-2 w-1/2">
           <ul>
-              <li class="bg-indigo-500 text-gray-100">INCOME</li>
-              {#each incomes as income, i}
-                  {#if i % 2 == 0}
-                      <li class="border-b-2">
-                        <div class="flex flex-row justify-start">
-                            <div class="columns-1">{GetFormatDate(income.occurrence_date)}</div>
-                            <div class="ml-2">{income.name}</div>
-                            <div class="mr-2 ml-auto">{income.amount}</div>
-                        </div>
-                    </li>
-                  {:else}
-                      <li class="border-b-2 bg-indigo-200">
-                        <div class="flex flex-row justify-start">
-                            <div class="columns-1">{GetFormatDate(income.occurrence_date)}</div>
-                            <div class="ml-2">{income.name}</div>
-                            <div class="mr-2 ml-auto">{income.amount}</div>
-                        </div>
-                      </li>
-                  {/if}
-              {/each}
+            <li class="bg-indigo-500 text-gray-100">INCOME</li>
+            {#each incomes as income, i}
+                <IncomeAndExpenditure balance={income} isPaintBackground={i % 2 == 0} userTags={incomesTag} parentUpdate={updateBalanceList} />
+            {/each}
           </ul>
       </div>
       <div class="border-2 w-1/2">
           <ul>
-              <li class="bg-indigo-500 text-gray-100">EXPENDITURE</li>
-              {#each expenditures as expenditure, i}
-                  {#if i % 2 == 0}
-                      <li class="border-b-2">
-                        <div class="flex flex-row justify-start">
-                            <div class="columns-1">{GetFormatDate(expenditure.occurrence_date)}</div>
-                            <div class="ml-2">{expenditure.name}</div>
-                            <div class="mr-2 ml-auto">{expenditure.amount}</div>
-                        </div>
-                    </li>
-                  {:else}
-                      <li class="border-b-2 bg-indigo-200">
-                        <div class="flex flex-row justify-start">
-                            <div class="columns-1">{GetFormatDate(expenditure.occurrence_date)}</div>
-                            <div class="ml-2">{expenditure.name}</div>
-                            <div class="mr-2 ml-auto">{expenditure.amount}</div>
-                        </div>
-                      </li>
-                  {/if}
-              {/each}
+                <li class="bg-indigo-500 text-gray-100">EXPENDITURE</li>
+                {#each expenditures as expenditure, i}
+                    <IncomeAndExpenditure balance={expenditure} isPaintBackground={i % 2 == 0} userTags={expenditureTag} parentUpdate={updateBalanceList} />
+                {/each}
           </ul>
       </div>
   </div>
