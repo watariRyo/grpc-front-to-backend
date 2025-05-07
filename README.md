@@ -1,4 +1,4 @@
-# balance
+grpc検証
 ## 概要
 client（sveltekit）->(REST) grpc-gateway ->(gRPC) grpc server
 
